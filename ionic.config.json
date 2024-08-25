@@ -1,0 +1,7 @@
+{
+  "name": "travelST",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
