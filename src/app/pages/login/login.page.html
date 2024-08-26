@@ -1,0 +1,14 @@
+<ion-content>
+  <p class="txtTitulo">Bienvenido a TravelST</p>
+  <ion-input type="text" label="Nombre de usuario" labelPlacement="stacked" placeholder="Ingrese su nombre de usuario">
+    <ion-icon slot="start" name="person"></ion-icon>
+  </ion-input>
+  <ion-input type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese su contraseña">
+    <ion-icon slot="start" name="key"></ion-icon>
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+  <br>
+  <ion-button class="btnLogin" color="primary" expand="block" routerLink="/home">Iniciar sesión</ion-button>
+  <p class="txtRegister">¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
+  <p class="txtRegister">¿Olvidó la contraseña? <a routerLink="/recover">Restablecer</a></p>
+</ion-content>

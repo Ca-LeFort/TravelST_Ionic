@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+    <ion-buttons slot="start"><ion-back-button></ion-back-button></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-input type="text" label="RUT" labelPlacement="stacked" placeholder="Ingrese su RUT"></ion-input>
+  <ion-input type="text" label="Nombre" labelPlacement="stacked" placeholder="Ingrese su nombre"></ion-input>
+  <ion-input type="text" label="Apellidos" labelPlacement="stacked" placeholder="Ingrese apellidos"></ion-input>
+  <ion-select label="Género" label-placement="stacked" placeholder="Seleccionar">
+    <ion-select-option>Masculino</ion-select-option>
+    <ion-select-option>Femenino</ion-select-option>
+    <ion-select-option>Otro</ion-select-option>
+  </ion-select>
+  <ion-input type="text" label="Usuario" labelPlacement="stacked" placeholder="Ingrese el nombre de usuario"></ion-input>
+  <ion-input label="Email" type="email" labelPlacement="stacked" placeholder="Ingrese su correo electronico"></ion-input>
+  <ion-input type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese contraseña">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+  <ion-input type="password" label="Confirmar Contraseña" labelPlacement="stacked" placeholder="Ingrese de nuevo la contraseña">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+  <ion-button class="btnLogin" color="primary" expand="block" routerLink="/login">Registrar</ion-button>
+</ion-content>
+
+
+<!--  NO BORRAR
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Género" value="Género">
+        <ion-select-option value="masculino">Masculino</ion-select-option>
+        <ion-select-option value="femenino">Femenino</ion-select-option>
+        <ion-select-option value="otro">Otro</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  -->
