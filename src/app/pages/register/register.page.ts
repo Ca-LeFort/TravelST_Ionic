@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterPage implements OnInit {
 
-  constructor() { }
+  // Variables:
+  usuario = new FormGroup({
+    rut : new FormControl('',[Validators.minLength(9),Validators.maxLength(10),Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
+    nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
+    apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
+    genero : new FormControl('',[Validators.required]),
+    usuario : new FormControl('',[Validators.minLength(3),Validators.required]),
+    email : new FormControl('',[Validators.required]),
+    password : new FormControl('',[Validators.minLength(8),Validators.required])
+  });
+
+  constructor(private router : Router) { }
 
   ngOnInit() {
+  }
+
+
+  //Metodos
+  public registrar():void{
+    //validaciones? llamar DAO? conversiones?
+    console.log(this.usuario.value)
+    alert("registrado");
+    this.router.navigate(['/login']);
   }
 
 }
