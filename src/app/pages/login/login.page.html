@@ -1,14 +1,38 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <p class="txtTitulo">Bienvenido a TravelST</p>
-  <ion-input type="text" label="Nombre de usuario" labelPlacement="stacked" placeholder="Ingrese su nombre de usuario">
-    <ion-icon slot="start" name="person"></ion-icon>
-  </ion-input>
-  <ion-input type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese su contraseña">
-    <ion-icon slot="start" name="key"></ion-icon>
-    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-  </ion-input>
-  <br>
-  <ion-button class="btnLogin" color="primary" expand="block" routerLink="/home">Iniciar sesión</ion-button>
-  <p class="txtRegister">¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
-  <p class="txtRegister">¿Olvidó la contraseña? <a routerLink="/recover">Restablecer</a></p>
+  <div class="header">
+    <div class="title ion-text-center">
+      <img src="../../../assets/icon/logo.png" alt="">
+      <h1 class="txtTitulo">TravelST</h1>
+    </div>
+  </div>
+
+  <div class="login-container">
+    
+    <ion-list lines="none" class="form fade-in">
+        <ion-item>
+          <ion-input aria-label="Light input" color="light"type="text" labelPlacement="stacked" placeholder="Usuario">
+            <ion-icon slot="start" name="person"></ion-icon>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input aria-label="Light input" color="light" type="password" labelPlacement="stacked" placeholder="Contraseña">
+            <ion-icon slot="start" name="key"></ion-icon>
+            <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="ion-text-center fade-in">
+        <ion-button class="btnLogin"  expand="block" routerLink="/home">Iniciar sesión</ion-button>
+        <p class="txtRegister"><a routerLink="/register">¿No tienes una cuenta? </a></p>
+        <p class="txtRegister"><a routerLink="/recover">¿Olvidó la contraseña?</a></p>
+      </div>
+    </div>
+  
 </ion-content>

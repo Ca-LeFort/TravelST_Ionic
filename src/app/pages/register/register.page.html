@@ -6,27 +6,27 @@
 </ion-header>
 
 <ion-content>
-<form [formGroup]="usuario" (ngSubmit)="registrar()">
-  <ion-input formControlName="rut" type="text" label="RUT" labelPlacement="stacked" placeholder="Ingrese su RUT con guion"></ion-input>
-  <ion-input formControlName="nombre" type="text" label="Nombre" labelPlacement="stacked" placeholder="Ingrese su nombre"></ion-input>
-  <ion-input formControlName="apellidos" type="text" label="Apellidos" labelPlacement="stacked" placeholder="Ingrese apellidos"></ion-input>
-  <ion-select formControlName="genero"  label="Género" label-placement="stacked" placeholder="Seleccionar">
-    <ion-select-option>Masculino</ion-select-option>
-    <ion-select-option>Femenino</ion-select-option>
-    <ion-select-option>Otro</ion-select-option>
-  </ion-select>
-  <ion-input formControlName="usuario" type="text" label="Usuario" labelPlacement="stacked" placeholder="Ingrese el nombre de usuario"></ion-input>
-  <ion-input formControlName="email" label="Email" type="email" labelPlacement="stacked" placeholder="Ingrese su correo electronico"></ion-input>
-  <ion-input formControlName="password" type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese contraseña">
-    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-  </ion-input>
-  <ion-input type="password" label="Confirmar Contraseña" labelPlacement="stacked" placeholder="Ingrese de nuevo la contraseña">
-    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-  </ion-input>
-  
-  <ion-button type="submit" class="btnLogin" color="primary" expand="block" >Registrar</ion-button>
+    <form [formGroup]="usuario" (ngSubmit)="registrar()">
+      <ion-input formControlName="rut" type="text" label="RUT" labelPlacement="stacked" placeholder="Ingrese su RUT con guion"></ion-input>
+      <ion-input formControlName="nombre" type="text" label="Nombre" labelPlacement="stacked" placeholder="Ingrese su nombre"></ion-input>
+      <ion-input formControlName="apellidos" type="text" label="Apellidos" labelPlacement="stacked" placeholder="Ingrese apellidos"></ion-input>
+      <ion-select formControlName="genero"  label="Género" label-placement="stacked" placeholder="Seleccionar">
+        <ion-select-option>Masculino</ion-select-option>
+        <ion-select-option>Femenino</ion-select-option>
+        <ion-select-option>Otro</ion-select-option>
+      </ion-select>
+      <ion-input formControlName="usuario" type="text" label="Usuario" labelPlacement="stacked" placeholder="Ingrese el nombre de usuario"></ion-input>
+      <ion-input formControlName="email" label="Email" type="email" labelPlacement="stacked" placeholder="Ingrese su correo electronico"></ion-input>
+      <ion-input formControlName="password" type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese contraseña">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+      <ion-input type="password" label="Confirmar Contraseña" labelPlacement="stacked" placeholder="Ingrese de nuevo la contraseña">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+      
+      <ion-button type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
+    </form>
 
-</form>
 <!--test
 <p>{{usuario.value | json}}</p>  
 -->
