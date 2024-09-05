@@ -1,21 +1,29 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Recuperar contraseña</ion-title>
-
-    <!--Font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Jersey+10&family=New+Amsterdam&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    
+  <ion-toolbar color="dark">
+    <ion-title>Recuperar contraseña</ion-title>    
     <ion-buttons slot="start"><ion-back-button></ion-back-button></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <br>
-  <ion-input type="text" label="Nombre de usuario" labelPlacement="stacked" placeholder="Ingrese su nombre de usuario">
-    <ion-icon slot="start" name="person"></ion-icon>
-  </ion-input>
-  <br>
-  <ion-button class="btnLogin" color="primary" expand="block" routerLink="/login">Recuperar</ion-button>
+  <div class="header">
+    <img src="../../../assets/icon/candado azul.png" width="150px" alt="">
+  </div>
+
+  <div class="recovery">
+    <ion-list lines="none" class="form fade-in">
+      <ion-item>
+        <ion-input aria-label="Light input" color="light" type="text" label="Nombre de usuario" labelPlacement="stacked" placeholder="Ingrese su nombre de usuario">
+          <ion-icon slot="start" name="person"></ion-icon>
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  
+    <div class="ion-text-center fade-in">
+      <ion-button class="btnLogin"  expand="block" routerLink="/login">Recuperar</ion-button>
+    </div>
+  </div>
+  
+  
 </ion-content>
+

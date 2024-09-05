@@ -1,18 +1,32 @@
-ion-content{
+ion-content {
+    --ion-background-color: transparent; /* Hacemos el fondo transparente para aplicar el degradado */
+    background-image: linear-gradient(#005aba,#017cfc,#0b4cbe); /* Degradado vertical */
+    background-size: cover; /* Asegura que el degradado cubra todo el fondo */
+    background-repeat: no-repeat; /* Evita la repetición del fondo */
     margin: 20px;
-}
-
-ion-input {
-    width: 92%;
-    margin: auto;
-}
-
-ion-select {
-    width: 92%;
-    margin: auto;
-}
-
+  }
+  
 ion-button {
     width: 92%;
     margin: auto;
-}
+    --background: #3fd969; /* Color de fondo */
+    --border-radius: 8px;  /* Radio del borde */
+    --color: white;
+  }
+  
+ion-item {
+    color: white;
+    border: 2px solid #ffffff; /* Borde de 2 píxeles sólido */
+    border-radius: 20px;
+    margin: 10px;
+  }
+  
+ion-input {
+    margin: 10px;
+  }
+
+  .header {
+    margin:40px;
+    text-align: center;
+  
+  }

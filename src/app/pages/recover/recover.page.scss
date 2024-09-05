@@ -1,17 +1,31 @@
-.txtTitulo {
-    text-align: center;
-    font-weight: bold;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+.header {
+  margin:40px;
+  text-align: center;
+
 }
 
-ion-input {
-    width: 92%;
-    margin: auto;
+ion-content {
+  --ion-background-color: transparent; /* Fondo transparente para aplicar degradado */
+  background-image: linear-gradient(#005aba, #017cfc, #0b4cbe); /* Degradado vertical */
+  background-size: cover; /* El degradado cubre todo el fondo */
+  background-repeat: no-repeat; /* Evita la repetición del fondo */
 }
 
 ion-button {
-    width: 92%;
-    margin: auto;
+  width: 92%;
+  margin: auto;
+  --background: #3fd969; /* Color de fondo */
+  --border-radius: 8px;  /* Radio del borde */
+  --color: white;
+}
+
+ion-item {
+  color: white;
+  border: 2px solid #ffffff; /* Borde de 2 píxeles sólido */
+  border-radius: 20px;
+  margin: 10px;
+}
+
+ion-input {
+  margin: 10px;
 }
