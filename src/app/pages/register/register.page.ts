@@ -16,9 +16,13 @@ export class RegisterPage implements OnInit {
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
     genero : new FormControl('',[Validators.required]),
     usuario : new FormControl('',[Validators.minLength(3),Validators.required]),
-    email : new FormControl('',[Validators.required]),
+    email : new FormControl('',[Validators.email,Validators.required]),
     password : new FormControl('',[Validators.minLength(8),Validators.required])
   });
+
+  /*Boton*/
+  alertButtons = ['Aceptar'];
+
 
   constructor(private router : Router) { }
 
@@ -30,8 +34,16 @@ export class RegisterPage implements OnInit {
   public registrar():void{
     //validaciones? llamar DAO? conversiones?
     console.log(this.usuario.value)
-    alert("registrado");
     this.router.navigate(['/login']);
   }
+
+ /* 
+  public habilitar_boton():boolean{
+    if (this.usuario.valid){
+      return false;
+    }
+    return true;
+  }
+  */
 
 }

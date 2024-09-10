@@ -23,6 +23,26 @@ const routes: Routes = [
     path: 'recover',
     loadChildren: () => import('./pages/recover/recover.module').then( m => m.RecoverPageModule)
   },
+  
+  {
+    path: 'administrar',
+    loadChildren: () => import('./pages/administrar/administrar.module').then( m => m.AdministrarPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
+  },  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
+    path: 'reservas',
+    loadChildren: () => import('./pages/reservas/reservas.module').then( m => m.ReservasPageModule)
+  },
+
+
+
+  
 ];
 
 @NgModule({
