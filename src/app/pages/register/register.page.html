@@ -41,11 +41,17 @@
           </ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="password" label="Confirmar Contraseña" labelPlacement="stacked" placeholder="Ingrese de nuevo la contraseña" aria-label="Light input" color="light">
-            <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
-          </ion-input>
+          <ion-label>¿Tiene Vehiculo?</ion-label>
+      <ion-radio-group formControlName="tiene_vehiculo">
+        <ion-radio value="si">Si</ion-radio>
+        <ion-radio value="no">No</ion-radio>
+      </ion-radio-group>
         </ion-item>
+        <ion-item>
+        <ion-input *ngIf="usuario.controls.tiene_vehiculo.value=='si'" formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
+      </ion-item>
         <ion-button id="present-alert" [disabled]="usuario.invalid" type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
+        
         <ion-alert
           trigger="present-alert" 
           header="¡Bienvenido a TravelSt!" 
@@ -58,23 +64,11 @@
   </div>
     
 
-<!--test
-<p>{{usuario.value | json}}</p>  
--->
-  
+<!--esto es solo para hacer un test
+<p>{{usuario.value | json}}</p>
+<p>{{usuario.value.nombre}}</p>
+--> 
 
 
 </ion-content>
 
-
-<!--  NO BORRAR
-  <ion-list>
-    <ion-item>
-      <ion-select aria-label="Género" value="Género">
-        <ion-select-option value="masculino">Masculino</ion-select-option>
-        <ion-select-option value="femenino">Femenino</ion-select-option>
-        <ion-select-option value="otro">Otro</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-  -->

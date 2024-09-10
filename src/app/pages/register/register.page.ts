@@ -17,7 +17,9 @@ export class RegisterPage implements OnInit {
     genero : new FormControl('',[Validators.required]),
     usuario : new FormControl('',[Validators.minLength(3),Validators.required]),
     email : new FormControl('',[Validators.email,Validators.required]),
-    password : new FormControl('',[Validators.minLength(8),Validators.required])
+    password : new FormControl('',[Validators.minLength(8),Validators.required]),
+    tiene_vehiculo: new FormControl('no',[Validators.required]),
+    nombre_modelo: new FormControl('',[])
   });
 
   /*Boton*/
@@ -30,10 +32,11 @@ export class RegisterPage implements OnInit {
   }
 
 
-  //Metodos
-  public registrar():void{
-    //validaciones? llamar DAO? conversiones?
-    console.log(this.usuario.value)
+   //podemos crear métodos:
+   public registrar():void{
+    //validaciones? llamar un DAO? conversión?
+    console.log(this.usuario.value);
+    //alert("registrado!");
     this.router.navigate(['/login']);
   }
 
@@ -46,4 +49,6 @@ export class RegisterPage implements OnInit {
   }
   */
 
+
+  
 }
