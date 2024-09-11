@@ -1,0 +1,107 @@
+.header{
+    margin: 20px;
+  }
+
+  body {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins' , sans-serif;
+    color: white;
+    background-image: linear-gradient(#042950,#073361,#022055);
+  }
+  
+  a {
+    text-decoration: none; /* Elimina el subrayado */
+    color: rgb(177, 40, 40);        /* Hereda el color del texto del elemento contenedor (opcional) */
+    border: none;          /* Elimina cualquier borde (si existe) */
+    background: none;      /* Elimina cualquier fondo (si existe) */
+  }
+  
+
+  .spider {
+    font-size: 3rem;
+    animation: animate3 2s linear infinite alternate;
+    position: absolute;
+    top: 0;
+    transform: rotate(180deg);
+  }
+  
+  .spider::after {
+    content: '';
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    width: 0.5px;
+    height: 30vh;
+    opacity: 0.5;
+    background-color: white;
+  }
+  
+  .spider::before {
+    content: '404';
+    position: fixed;
+    top: -50px;
+    left: -18px;
+    opacity: 0.5;
+    transform: rotate(180deg);
+  }
+  
+  .container {
+    text-align: center;
+    user-select: none;
+
+  }
+  
+  .container h1 {
+    font-size: 6rem;
+    margin: 50px;
+  }
+  
+  .container h1 .fas {
+    animation: animate1 2s linear infinite alternate;
+  }
+  
+  .container h1 .num {
+    animation: animate2 2s  linear infinite alternate;
+  }
+  
+  .container p {
+    margin-top: 20px;
+    word-spacing: 5px;
+  }
+  
+  @keyframes animate1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes animate2 {
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes animate3 {
+    0% {
+      opacity: 0.1;
+    }
+    100% {
+      top: 20%;
+      opacity: 1;
+    }
+  }
+  
