@@ -19,7 +19,9 @@ export class RegisterPage implements OnInit {
     email : new FormControl('',[Validators.email,Validators.required]),
     password : new FormControl('',[Validators.minLength(8),Validators.required]),
     tiene_vehiculo: new FormControl('no',[Validators.required]),
-    nombre_modelo: new FormControl('',[])
+    nombre_modelo: new FormControl('',[]),
+    // Campo oculto que indica el tipo de usuario
+    tipo_usuario: new FormControl('comun', []), // Valor por defecto 'normal'
   });
 
   /*Boton*/

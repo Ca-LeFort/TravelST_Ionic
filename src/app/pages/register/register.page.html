@@ -47,8 +47,8 @@
         <ion-radio value="no">No</ion-radio>
       </ion-radio-group>
         </ion-item>
-        <ion-item>
-        <ion-input *ngIf="usuario.controls.tiene_vehiculo.value=='si'" formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
+        <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
+        <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
       </ion-item>
         <ion-button id="present-alert" [disabled]="usuario.invalid" type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
         

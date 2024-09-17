@@ -5,8 +5,25 @@ import { Injectable } from '@angular/core';
 })
 export class UsuarioService {
 
-  //variables
-  usuarios : any[] = [];
+  //acá podemos crear variables:
+    usuarios: any[] = [
+      {
+        "rut": "21638902-6",
+        "nombre": "javier",
+        "apellidos": "soto jaque",
+        "genero": "Masculino",
+        "usuario": "soto34",
+        "email": "javier@gmail.com",
+        "password": "administrador",
+        "tiene_vehiculo" : "si",
+        "nombre_modelo" : "nissan",
+        "tipo_usuario" : "administrador"
+      }
+  ];
+
+
+
+
 
   constructor() { }
 
