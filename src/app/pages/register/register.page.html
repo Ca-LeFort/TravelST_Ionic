@@ -6,12 +6,14 @@
 </ion-header>
 
 <ion-content>
-  <div class="header">
-    <img src="../../../assets/icon/registro.png" width="200px">
-  </div>
+  
 
-  <div class="register">
-    
+  <div class="form-register">
+    <div class="header">
+      <img src="../../../assets/icon/registro.png" width="200px">
+      <h4>Crea tu cuenta</h4>
+    </div>
+
       <form [formGroup]="usuario" (ngSubmit)="registrar()">
         <ion-item>
           <ion-input formControlName="rut" type="text" label="RUT" labelPlacement="stacked" placeholder="Ingrese su RUT con guion" aria-label="Light input" color="light"></ion-input>
@@ -44,9 +46,9 @@
             <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
-        <ion-item *ngIf="isPasswordMismatch()" class="error-message" color="danger">
+        <div *ngIf="isPasswordMismatch()" class="error-message" color="danger">
           <p>Las contraseñas no coinciden.</p>
-        </ion-item>
+        </div>
         
 
 
@@ -61,7 +63,8 @@
         <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
       </ion-item>
         <ion-button id="present-alert" [disabled]="usuario.invalid" type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
-        
+        <p><a a routerLink="/login">¿Ya tengo Cuenta?</a></p>
+
         <ion-alert
           trigger="present-alert" 
           header="¡Bienvenido a TravelSt!" 
