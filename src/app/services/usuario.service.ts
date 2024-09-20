@@ -10,6 +10,7 @@ export class UsuarioService {
       {
         "rut": "21638902-6",
         "nombre": "javier",
+        "fechaNacimiento": "2004-08-01",
         "apellidos": "soto jaque",
         "genero": "Masculino",
         "email": "javier@duocuc.cl",

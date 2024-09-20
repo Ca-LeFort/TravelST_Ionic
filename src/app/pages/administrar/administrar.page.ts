@@ -11,6 +11,7 @@ export class AdministrarPage implements OnInit {
   usuario = new FormGroup({
     rut : new FormControl('',[Validators.minLength(9),Validators.maxLength(10),Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
     nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
+    fechaNacimiento : new FormControl('',[Validators.required]),
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
     genero : new FormControl('',[Validators.required]),
     email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
@@ -18,7 +19,7 @@ export class AdministrarPage implements OnInit {
     repeat_password : new FormControl('',[Validators.minLength(8),Validators.required]),
     tiene_vehiculo: new FormControl('si',[Validators.required]),
     nombre_modelo: new FormControl('',[]),
-    tipo_usuario: new FormControl('comun', []), // Valor por defecto 
+    tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 
   });
 
   // Método para comprobar si las contraseñas coinciden
@@ -40,11 +41,18 @@ export class AdministrarPage implements OnInit {
     this.usuarios = this.usuarioService.getUsuarios();
   }
 
-  registrar(){
-    if( this.usuarioService.createUsuario(this.usuario.value) ){
+  registrar() {
+    // Validar que las contraseñas coincidan
+    if (this.isPasswordMismatch()) {
+      alert("ERROR! LAS CONTRASEÑAS NO COINCIDEN!");
+      return;
+    }
+  
+    // Intentar crear el usuario
+    if (this.usuarioService.createUsuario(this.usuario.value)) {
       alert("USUARIO CREADO CON ÉXITO!");
       this.usuario.reset();
-    }else{
+    } else {
       alert("ERROR! NO SE PUDO CREAR EL USUARIO!");
     }
   }
@@ -54,13 +62,19 @@ export class AdministrarPage implements OnInit {
     this.botonModificar = false;
   }
 
-  modificar(){
+  modificar() {
+    // Validar que las contraseñas coincidan
+    if (this.isPasswordMismatch()) {
+      alert("ERROR! LAS CONTRASEÑAS NO COINCIDEN!");
+      return;
+    }
+  
     var rut_buscar: string = this.usuario.controls.rut.value || "";
-    if(this.usuarioService.updateUsuario( rut_buscar , this.usuario.value)){
+    if (this.usuarioService.updateUsuario(rut_buscar, this.usuario.value)) {
       alert("USUARIO MODIFICADO CON ÉXITO!");
       this.botonModificar = true;
       this.usuario.reset();
-    }else{
+    } else {
       alert("ERROR! USUARIO NO MODIFICADO!");
     }
   }

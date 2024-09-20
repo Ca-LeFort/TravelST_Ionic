@@ -14,6 +14,14 @@
         <ion-input formControlName="nombre" type="text" label="Nombre" labelPlacement="stacked" placeholder="Ingrese su nombre" aria-label="Light input" color="light"></ion-input>
       </ion-item>
 
+
+      <!--FECHA-->
+      <ion-item>
+        <ion-input formControlName="fechaNacimiento" type="date" label="Fecha de Nacimiento" labelPlacement="stacked" placeholder="Ingrese su fecha de nacimiento" aria-label="Fecha de Nacimiento" color="light">
+        </ion-input>
+      </ion-item>
+
+
       <!--APELLIDOS-->
       <ion-item>
         <ion-input formControlName="apellidos" type="text" label="Apellidos" labelPlacement="stacked" placeholder="Ingrese apellidos" aria-label="Light input" color="light"></ion-input>
@@ -67,14 +75,14 @@
     <ion-item>
       <ion-label>Tipo de usuario</ion-label>
       <ion-radio-group formControlName="tipo_usuario">
-        <ion-radio value="comun">Comun</ion-radio>
+        <ion-radio value="estudiante">Estudiante</ion-radio>
         <ion-radio value="administrador">Administrador</ion-radio>
       </ion-radio-group>
     </ion-item>
       
     <!--BOTONES-->
-      <ion-button [disabled]="usuario.invalid" type="submit" size="block" color="warning">REGISTRAR</ion-button>
-      <ion-button [disabled]="botonModificar || usuario.invalid" (click)="modificar()" size="block" color="dark">MODIFICAR</ion-button>
+      <ion-button [disabled]="usuario.invalid || isPasswordMismatch()" type="submit" size="block" color="warning">REGISTRAR</ion-button>
+      <ion-button [disabled]="botonModificar || usuario.invalid || isPasswordMismatch()" (click)="modificar()" size="block" color="dark">MODIFICAR</ion-button>
       <ion-button type="reset" size="block" color="secondary">LIMPIAR</ion-button>
       
       

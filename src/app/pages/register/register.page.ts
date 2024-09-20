@@ -13,6 +13,7 @@ export class RegisterPage implements OnInit {
   usuario = new FormGroup({
     rut : new FormControl('',[Validators.minLength(9),Validators.maxLength(10),Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
     nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
+    fechaNacimiento : new FormControl('',[Validators.required]),
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
     genero : new FormControl('',[Validators.required]),
     email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
@@ -21,7 +22,7 @@ export class RegisterPage implements OnInit {
     tiene_vehiculo: new FormControl('no',[Validators.required]),
     nombre_modelo: new FormControl('',[]),
     // Campo oculto que indica el tipo de usuario
-    tipo_usuario: new FormControl('comun', []), // Valor por defecto 'normal'
+    tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 'normal'
   });
 
   // Método para comprobar si las contraseñas coinciden
@@ -48,13 +49,22 @@ export class RegisterPage implements OnInit {
 
 
 
-   //podemos crear métodos:
-   public registrar():void{
-    //validaciones? llamar un DAO? conversión?
+  public registrar(): void {
+    // Validar que las contraseñas coincidan
+    if (this.isPasswordMismatch()) {
+      // Mostrar un mensaje de error, por ejemplo, usando un alert o un toast
+      console.error('Las contraseñas no coinciden.');
+      return;
+    }
+  
+    // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
     console.log(this.usuario.value);
-    //alert("registrado!");
+    
+    // Suponiendo que la llamada al registro es exitosa:
+    // alert("Registrado con éxito!");
     this.router.navigate(['/login']);
   }
+  
 
  /* 
   public habilitar_boton():boolean{
