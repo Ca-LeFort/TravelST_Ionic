@@ -1,0 +1,21 @@
+ion-content {
+    --ion-background-color: transparent; /* Hacemos el fondo transparente para aplicar el degradado */
+    background-image: linear-gradient(#ffffff,#ffffff,#ffffff); /* Degradado vertical */
+    background-size: cover; /* Asegura que el degradado cubra todo el fondo */
+    background-repeat: no-repeat; /* Evita la repetición del fondo */
+    margin: 20px;
+  }
+
+h1{
+    text-align: center;
+    color: #000000;
+    padding: 20px;
+
+}
+
+ion-item{
+    margin-left: 0px;
+    margin-right: 50px;
+    padding: 10px;
+}
+

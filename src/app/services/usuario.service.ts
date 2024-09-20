@@ -14,6 +14,7 @@ export class UsuarioService {
         "genero": "Masculino",
         "email": "javier@duocuc.cl",
         "password": "administrador",
+        "repeat_password": "12345678",
         "tiene_vehiculo" : "si",
         "nombre_modelo" : "nissan",
         "tipo_usuario" : "administrador"
