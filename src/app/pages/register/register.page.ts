@@ -15,15 +15,25 @@ export class RegisterPage implements OnInit {
     nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
     genero : new FormControl('',[Validators.required]),
-    usuario : new FormControl('',[Validators.minLength(3),Validators.required]),
-    email : new FormControl('',[Validators.email,Validators.required]),
+    email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
     password : new FormControl('',[Validators.minLength(8),Validators.required]),
+    repeat_password : new FormControl('',[Validators.minLength(8),Validators.required]),
     tiene_vehiculo: new FormControl('no',[Validators.required]),
-    nombre_modelo: new FormControl('',[]),
+    nombre_modelo: new FormControl('',[Validators.required]),
     // Campo oculto que indica el tipo de usuario
     tipo_usuario: new FormControl('comun', []), // Valor por defecto 'normal'
   });
 
+  // Método para comprobar si las contraseñas coinciden
+  isPasswordMismatch(): boolean {
+    const password = this.usuario.get('password')?.value;
+    const repeatPassword = this.usuario.get('repeat_password')?.value;
+  
+    // Asegúrate de que siempre devuelva un booleano
+    return !!(password && repeatPassword && password !== repeatPassword);
+  }
+
+  
   /*Boton*/
   alertButtons = ['Aceptar'];
 
@@ -32,6 +42,10 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
   }
+
+  
+
+
 
 
    //podemos crear métodos:

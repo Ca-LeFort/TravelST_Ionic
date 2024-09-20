@@ -30,16 +30,26 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="usuario" type="text" label="Usuario" labelPlacement="stacked" placeholder="Ingrese el nombre de usuario" aria-label="Light input" color="light"></ion-input>
-        </ion-item>
-        <ion-item>
           <ion-input formControlName="email" label="Email" type="email" labelPlacement="stacked" placeholder="Ingrese su correo electronico" aria-label="Light input" color="light" ></ion-input>
         </ion-item>
+        
         <ion-item>
           <ion-input formControlName="password" type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese contraseña" aria-label="Light input" color="light">
             <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
+
+        <ion-item>
+          <ion-input formControlName="repeat_password" type="password" label="Repetir Contraseña" labelPlacement="stacked" placeholder="Repita la contraseña" aria-label="Light input" color="light" [ngClass]="{'invalid': isPasswordMismatch()}">
+            <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
+          </ion-input>
+        </ion-item>
+        <ion-item *ngIf="isPasswordMismatch()" class="error-message" color="danger">
+          <p>Las contraseñas no coinciden.</p>
+        </ion-item>
+        
+
+
         <ion-item>
           <ion-label>¿Tiene Vehiculo?</ion-label>
       <ion-radio-group formControlName="tiene_vehiculo">
