@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-register',
@@ -33,21 +34,15 @@ export class RegisterPage implements OnInit {
     // Asegúrate de que siempre devuelva un booleano
     return !!(password && repeatPassword && password !== repeatPassword);
   }
-
   
   /*Boton*/
   alertButtons = ['Aceptar'];
 
-
-  constructor(private router : Router) { }
+  constructor(private router : Router, 
+    private usuarioService: UsuarioService) { }
 
   ngOnInit() {
   }
-
-  
-
-
-
 
   public registrar(): void {
     // Validar que las contraseñas coincidan
@@ -58,11 +53,15 @@ export class RegisterPage implements OnInit {
     }
   
     // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
-    console.log(this.usuario.value);
-    
+    //console.log(this.usuario.value);
+    if(this.usuarioService.createUsuario(this.usuario.value)){
+      alert("Se ha creado el usuario con éxito");
+      this.router.navigate(['/login']);
+    }else{
+      alert("No se pudo crear el usuario");
+    }
     // Suponiendo que la llamada al registro es exitosa:
     // alert("Registrado con éxito!");
-    this.router.navigate(['/login']);
   }
   
 

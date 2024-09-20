@@ -22,10 +22,6 @@ export class UsuarioService {
       }
   ];
 
-
-
-
-
   constructor() { }
 
   //logica
@@ -55,8 +51,6 @@ export class UsuarioService {
     return true;
   }
 
-
-  
   public deleteUsuario(rut:string):boolean{
     const indice = this.usuarios.findIndex(elemento => elemento.rut == rut);
     if (indice ==-1){
