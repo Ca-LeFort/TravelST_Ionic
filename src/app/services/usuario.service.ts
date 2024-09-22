@@ -15,10 +15,23 @@ export class UsuarioService {
         "genero": "Masculino",
         "email": "javier@duocuc.cl",
         "password": "administrador",
-        "repeat_password": "12345678",
+        "repeat_password": "administrador",
         "tiene_vehiculo" : "si",
         "nombre_modelo" : "nissan",
         "tipo_usuario" : "administrador"
+      },
+      {
+        "rut": "15444532-6",
+        "nombre": "alejandro",
+        "fechaNacimiento": "2000-05-02",
+        "apellidos": "gonzales muñoz",
+        "genero": "Masculino",
+        "email": "gonz@duocuc.cl",
+        "password": "12345678",
+        "repeat_password": "12345678",
+        "tiene_vehiculo" : "si",
+        "nombre_modelo" : "nissan",
+        "tipo_usuario" : "estudiante"
       }
   ];
 
