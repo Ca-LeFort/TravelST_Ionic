@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -39,7 +40,8 @@ export class RegisterPage implements OnInit {
   alertButtons = ['Aceptar'];
 
   constructor(private router : Router, 
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -55,14 +57,25 @@ export class RegisterPage implements OnInit {
     // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
     //console.log(this.usuario.value);
     if(this.usuarioService.createUsuario(this.usuario.value)){
-      alert("Se ha creado el usuario con éxito");
+      this.presentAlert('¡Bienvenido a TravelSt!', 'Comienza tu aventura con nosotros', 'Tu cuenta ha sido creada exitosamente. Ya puedes empezar a explorar y planificar tu próximo viaje.');
       this.router.navigate(['/login']);
     }else{
-      alert("No se pudo crear el usuario");
+      this.presentAlert('Error', '', 'No se pudo crear el usuario.');
     }
-    // Suponiendo que la llamada al registro es exitosa:
-    // alert("Registrado con éxito!");
   }
+
+  async presentAlert(header: string, subHeader: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      subHeader: subHeader,
+      message: message,
+      buttons: ['Aceptar'],
+    });
+
+    await alert.present();
+  }
+
+  
   
 
  /* 

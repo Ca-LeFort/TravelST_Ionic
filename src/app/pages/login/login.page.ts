@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -24,18 +25,32 @@ export class LoginPage implements OnInit {
   email: string = "";
   password: string = "";
 
-  constructor(private router: Router, private usuarioService: UsuarioService) { }
+  constructor(private router: Router, private usuarioService: UsuarioService,
+    private alertController: AlertController // Controlador de alerta
+  ) { }
 
   ngOnInit() {
   }
 
+  //Alerta del boton de login
+  alertButtons = ['Aceptar'];
+
+
   //método asociado al boton para hacer un login:
-  login(){
+  async login(){
     const user = this.usuarioService.getUsuarios().find((u: any) => u.email === this.email && u.password === this.password);
     if(user){
       this.router.navigate(['/home']);
     }else{
-      alert("CORREO O CONTRASEÑA INCORRECTOS!");
+      // Si el usuario no es válido, muestra una alerta
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Usuario o contraseña incorrectos',
+        buttons: ['Aceptar'],
+        cssClass: 'custom-alert'  // Aplica la clase personalizada
+      });
+
+      await alert.present();  // Muestra la alerta
     }
   }
 }
