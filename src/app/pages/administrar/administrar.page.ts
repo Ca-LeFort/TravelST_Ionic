@@ -12,8 +12,8 @@ export class AdministrarPage implements OnInit {
   usuario = new FormGroup({
     rut : new FormControl('',[Validators.minLength(9),Validators.maxLength(10),Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
     nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
-    fechaNacimiento : new FormControl('',[Validators.required]),
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
+    fechaNacimiento : new FormControl('',[Validators.required]),
     genero : new FormControl('',[Validators.required]),
     email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
     password : new FormControl('',[Validators.minLength(8),Validators.required]),
