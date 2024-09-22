@@ -42,15 +42,17 @@ export class LoginPage implements OnInit {
     if(user){
       this.router.navigate(['/home']);
     }else{
-      // Si el usuario no es válido, muestra una alerta
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Usuario o contraseña incorrectos',
-        buttons: ['Aceptar'],
-        cssClass: 'custom-alert'  // Aplica la clase personalizada
-      });
-
-      await alert.present();  // Muestra la alerta
+      await this.presentAlert(); // Llama al método de alerta aquí
     }
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Usuario o contraseña incorrectos',
+      buttons: ['Aceptar'],
+    });
+
+    await alert.present();
   }
 }

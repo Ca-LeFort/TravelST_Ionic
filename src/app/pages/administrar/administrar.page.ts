@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -35,13 +36,13 @@ export class AdministrarPage implements OnInit {
   botonModificar: boolean = true;
 
   //el servicio nos permite trabajar la información:
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService,private alertController: AlertController) { }
 
   ngOnInit() {
     this.usuarios = this.usuarioService.getUsuarios();
   }
 
-  registrar() {
+  async registrar() {
     // Validar que las contraseñas coincidan
     if (this.isPasswordMismatch()) {
       alert("ERROR! LAS CONTRASEÑAS NO COINCIDEN!");
@@ -50,10 +51,18 @@ export class AdministrarPage implements OnInit {
   
     // Intentar crear el usuario
     if (this.usuarioService.createUsuario(this.usuario.value)) {
-      alert("USUARIO CREADO CON ÉXITO!");
+      await this.presentAlert(
+        'Operacion exitosa', 
+        'Registrado', 
+        'Usuario registrado con exito'
+      );
       this.usuario.reset();
     } else {
-      alert("ERROR! NO SE PUDO CREAR EL USUARIO!");
+      await this.presentAlert(
+        'Operacion fallida', 
+        'No ha sido registrado', 
+        'Ha ocurrido un problema, revisa los datos ingresados.'
+      );
     }
   }
 
@@ -62,10 +71,14 @@ export class AdministrarPage implements OnInit {
     this.botonModificar = false;
   }
 
-  modificar() {
+  async modificar() {
     // Validar que las contraseñas coincidan
     if (this.isPasswordMismatch()) {
-      alert("ERROR! LAS CONTRASEÑAS NO COINCIDEN!");
+      await this.presentAlert(
+        'Operacion exitosa', 
+        'Modificado', 
+        'El usuario ha sido modificado con exito'
+      );
       return;
     }
   
@@ -88,4 +101,19 @@ export class AdministrarPage implements OnInit {
     }
   }
 
+
+  /*Alerta*/
+  async presentAlert(header: string, subHeader: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,       // Título de la alerta
+      subHeader: subHeader, // Subtítulo de la alerta
+      message: message,     // Mensaje de la alerta
+      buttons: ['OK']       // Botones de la alerta (puedes reemplazar 'OK' por this.alertButtons si lo prefieres)
+    });
+  
+    await alert.present();
+  }
+
+  /*Alerta de modificar*/
+  
 }

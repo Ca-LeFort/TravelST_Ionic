@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-recover',
@@ -9,25 +10,46 @@ import { AlertController } from '@ionic/angular';
 export class RecoverPage implements OnInit {
 
   //NgModel:
-  usuario: string = "";
+  rut: string = "";
 
   /*Boton*/
   alertButtons = ['Aceptar'];
 
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController, private usuarioService: UsuarioService) { }
 
   ngOnInit() {
   }
 
-  async presentAlert() {
+  
+  async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Recuperar Contraseña',
-      subHeader: 'Proceso de recuperación',
-      message: `Se ha enviado un correo a ${this.usuario} para recuperar su contraseña.`,
-      buttons: this.alertButtons,
+      header: header,       // Título de la alerta
+      subHeader: subHeader, // Subtítulo de la alerta
+      message: message,     // Mensaje de la alerta
+      buttons: ['OK']       // Botones de la alerta (puedes reemplazar 'OK' por this.alertButtons si lo prefieres)
     });
-
+  
     await alert.present();
   }
   
+  /* Método para verificar la existencia de un usuario */
+  async comprobarUsuario() {
+    const user = this.usuarioService.getUsuarios().find((u: any) => u.rut === this.rut);
+    
+    if (user) {
+      // Si el usuario existe, muestra el mensaje de que se envió un correo
+      await this.presentAlert(
+        'Recuperar Contraseña', 
+        'Proceso de recuperación', 
+        `Se ha enviado un correo para recuperar la contraseña del usuario ${user.nombre}.`
+      );
+    } else {
+      // Si el usuario no existe, muestra un mensaje de error
+      await this.presentAlert(
+        'Error', 
+        'Usuario no encontrado', 
+        'No existe un usuario con ese RUT registrado.'
+      );
+    }
+  }
 }
