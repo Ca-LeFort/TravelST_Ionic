@@ -5,7 +5,6 @@
 TravelST es una **aplicación móvil** diseñada para facilitar el retorno de los alumnos de **Duoc UC** a sus hogares tras la jornada académica. En el contexto de la pandemia, muchos estudiantes se han enfrentado a desafíos en el transporte. Esta aplicación busca resolver esas dificultades, promoviendo la colaboración entre estudiantes y fomentando un ambiente de compañerismo.
 
 ## 🌍 Contexto
-
 Durante la pandemia, las instituciones de educación superior se vieron obligadas a adaptar sus modalidades de enseñanza, pasando de clases presenciales a remotas. Con el regreso gradual a la presencialidad, han surgido problemas en el transporte de los estudiantes, especialmente en horas vespertinas. Las principales dificultades son:
 
 - ❌ Falta de transporte público en horario vespertino.
