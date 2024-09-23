@@ -1,8 +1,8 @@
-# 🚗 TeLlevoAPP - README
+# 🚗 TravelST - README
 
 ## 📖 Introducción
 
-TeLlevoAPP es una **aplicación móvil** diseñada para facilitar el retorno de los alumnos de **Duoc UC** a sus hogares tras la jornada académica. En el contexto de la pandemia, muchos estudiantes se han enfrentado a desafíos en el transporte. Esta aplicación busca resolver esas dificultades, promoviendo la colaboración entre estudiantes y fomentando un ambiente de compañerismo.
+TravelST es una **aplicación móvil** diseñada para facilitar el retorno de los alumnos de **Duoc UC** a sus hogares tras la jornada académica. En el contexto de la pandemia, muchos estudiantes se han enfrentado a desafíos en el transporte. Esta aplicación busca resolver esas dificultades, promoviendo la colaboración entre estudiantes y fomentando un ambiente de compañerismo.
 
 ## 🌍 Contexto
 
@@ -15,7 +15,7 @@ Durante la pandemia, las instituciones de educación superior se vieron obligada
 
 ## 🎯 Objetivos de la App
 
-TeLlevoAPP tiene como objetivos principales:
+TravelST tiene como objetivos principales:
 
 - ⏱ **Reducir los tiempos** para encontrar movilización de retorno.
 - 🤝 **Fomentar el compañerismo** entre alumnos.
@@ -24,7 +24,7 @@ TeLlevoAPP tiene como objetivos principales:
 
 ## 🔄 Funcionamiento de la Aplicación
 
-La lógica de funcionamiento de TeLlevoAPP es la siguiente:
+La lógica de funcionamiento de TravelST es la siguiente:
 
 1. **Registro de Conductores**: 
    - 🚗 Alumnos con vehículo ingresan a la App, programan su viaje de retorno y fijan el costo por persona.
@@ -39,7 +39,7 @@ La lógica de funcionamiento de TeLlevoAPP es la siguiente:
 
 ## ⚙️ Tecnologías Utilizadas
 
-TeLlevoAPP se desarrollará utilizando las siguientes tecnologías:
+TravelST se desarrollará utilizando las siguientes tecnologías:
 
 - **Ionic**: Para el desarrollo de aplicaciones móviles multiplataforma.
 - **Angular**: Para la estructura de la aplicación y manejo de la lógica del frontend.
