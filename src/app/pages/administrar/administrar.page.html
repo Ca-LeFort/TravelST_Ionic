@@ -66,8 +66,11 @@
       </ion-item>
 
       <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
-      <ion-input  formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
-    </ion-item>
+        <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
+        <ion-input formControlName="capacidad" type="Number" label="Capacidad" labelPlacement="stacked"></ion-input>
+      </ion-item>
 
     <!--USUARIO-->
     <ion-item>
