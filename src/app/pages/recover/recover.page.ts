@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -15,7 +16,7 @@ export class RecoverPage implements OnInit {
   /*Boton*/
   alertButtons = ['Aceptar'];
 
-  constructor(private alertController: AlertController, private usuarioService: UsuarioService) { }
+  constructor(private router: Router,private alertController: AlertController, private usuarioService: UsuarioService) { }
 
   ngOnInit() {
   }
@@ -43,6 +44,7 @@ export class RecoverPage implements OnInit {
         'Proceso de recuperación', 
         `Se ha enviado un correo para recuperar la contraseña del usuario ${user.nombre}.`
       );
+      this.router.navigate(['/login'])
     } else {
       // Si el usuario no existe, muestra un mensaje de error
       await this.presentAlert(
