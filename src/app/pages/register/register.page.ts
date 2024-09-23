@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -22,7 +22,8 @@ export class RegisterPage implements OnInit {
     password : new FormControl('',[Validators.minLength(8),Validators.required]),
     repeat_password : new FormControl('',[Validators.minLength(8),Validators.required]),
     tiene_vehiculo: new FormControl('no',[Validators.required]),
-    nombre_modelo: new FormControl('',[]),
+    nombre_modelo: new FormControl('',[this.MarcaAuto.bind(this)]),
+    capacidad: new FormControl('',[]),
     // Campo oculto que indica el tipo de usuario
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 'normal'
   });
@@ -43,7 +44,40 @@ export class RegisterPage implements OnInit {
     private usuarioService: UsuarioService,
     private alertController: AlertController) { }
 
+
+  //Lista de marcas
+  marcasAuto: string[] = [
+    'abarth', 'acura', 'alfa romeo', 'audi', 'bmw', 'bentley', 'buick', 'cadillac', 
+    'chevrolet', 'citroën', 'dodge', 'fiat', 'ford', 'genesis', 'honda', 'hyundai', 
+    'infiniti', 'jaguar', 'jeep', 'kia', 'lamborghini', 'land rover', 'lexus', 
+    'lincoln', 'maserati', 'mazda', 'mclaren', 'mercedes benz', 'mini', 'mitsubishi', 
+    'nissan', 'pagani', 'peugeot', 'porsche', 'ram', 'renault', 'rolls royce', 
+    'saab', 'seat', 'skoda', 'smart', 'subaru', 'suzuki', 'tesla', 'toyota', 
+    'volkswagen', 'volvo', 'byd', 'jac', 'changan', 'great wall', 'geely', 
+    'haval', 'mg', 'brilliance', 'foton', 'lynk & co', 'dongfeng', 'xpeng', 
+    'nio', 'ora', 'rivian', 'polestar', 'karma', 'landwind', 'zotye', 
+    'wuling', 'baojun', 'gac', 'hummer', 'chrysler', 'daihatsu', 
+    'ferrari', 'gmc', 'isuzu', 'lotus', 'morris', 'noble', 
+    'pininfarina', 'ram', 'shelby', 'ssangyong', 'zenvo', 'chana', 
+    'daewoo', 'perodua', 'suzuki', 'mahindra', 'maruti suzuki', 
+    'rally', 'morgan', 'tvr', 'viper', 'wiesmann', 'mercury', 
+    'oldsmobile', 'packard', 'tucker', 'scion', 'saturn', 
+    'lancia', 'alpine', 'ferrari', 'koenigsegg'
+];
+
+
+
   ngOnInit() {
+  }
+
+  
+  //Marca Auto
+  MarcaAuto(control: AbstractControl) {
+    const marca = control.value ? control.value.toLowerCase() : '';
+    if (marca && !this.marcasAuto.includes(marca)) {
+      return { marcaNoExiste: true };
+    }
+    return null;
   }
 
   public registrar(): void {

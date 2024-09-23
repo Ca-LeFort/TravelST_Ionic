@@ -15,9 +15,12 @@
       <ion-tab-button tab="reservas">
         <ion-icon name="calendar-number-sharp"></ion-icon>
       </ion-tab-button>
-      <ion-tab-button tab="administrar">
+      
+       <!-- Ocultar el botón si el usuario es estudiante -->
+       <ion-tab-button tab="administrar" *ngIf="usuarioService.getUsuarioAutenticado()?.tipo_usuario !== 'estudiante'">
         <ion-icon name="key-sharp"></ion-icon>
       </ion-tab-button>
+
       <ion-tab-button tab="perfil">
         <ion-icon name="person-sharp"></ion-icon>
       </ion-tab-button>

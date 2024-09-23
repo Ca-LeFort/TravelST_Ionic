@@ -24,6 +24,7 @@ export class LoginPage implements OnInit {
   //NgModel:
   email: string = "";
   password: string = "";
+  tipo_user:string="";
 
   constructor(private router: Router, private usuarioService: UsuarioService,
     private alertController: AlertController // Controlador de alerta
@@ -37,14 +38,16 @@ export class LoginPage implements OnInit {
 
 
   //método asociado al boton para hacer un login:
-  async login(){
-    const user = this.usuarioService.getUsuarios().find((u: any) => u.email === this.email && u.password === this.password);
-    if(user){
-      this.router.navigate(['/home']);
-    }else{
+  async login() {
+    // Autenticar el usuario usando el servicio
+    const isAuthenticated = this.usuarioService.authenticate(this.email, this.password);
+    if (isAuthenticated) {
+      this.router.navigate(['/home']); // Navegar a la página principal
+    } else {
       await this.presentAlert(); // Llama al método de alerta aquí
     }
   }
+  
 
   async presentAlert() {
     const alert = await this.alertController.create({

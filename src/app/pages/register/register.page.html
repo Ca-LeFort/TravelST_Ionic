@@ -66,6 +66,9 @@
         <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
         <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
       </ion-item>
+      <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
+        <ion-input formControlName="capacidad" type="Number" label="Capacidad" labelPlacement="stacked"></ion-input>
+      </ion-item>
         <ion-button id="present-alert" [disabled]="usuario.invalid || isPasswordMismatch()" type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
         <p><a a routerLink="/login">¿Ya tengo Cuenta?</a></p>
 

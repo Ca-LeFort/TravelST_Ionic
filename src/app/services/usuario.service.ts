@@ -6,7 +6,11 @@ import { Injectable } from '@angular/core';
 export class UsuarioService {
 
   //acá podemos crear variables:
-    usuarios: any[] = [
+  usuarios: any[] = [];
+  private usuariosAutenticados: any = null;  
+
+  constructor() { 
+    this.usuarios.push( 
       {
         "rut": "21638902-6",
         "nombre": "javier",
@@ -33,9 +37,8 @@ export class UsuarioService {
         "nombre_modelo" : "nissan",
         "tipo_usuario" : "estudiante"
       }
-  ];
-
-  constructor() { }
+    );
+  }
 
   //logica
   //DAO:
@@ -73,5 +76,18 @@ export class UsuarioService {
     return true;
   }
 
+
+  public authenticate(email: string, password: string): boolean {
+    const usuario = this.usuarios.find(user => user.email === email && user.password === password);
+    if (usuario) {
+      this.usuariosAutenticados = usuario; // Asegúrate de que esto esté configurado correctamente
+      return true;
+    }
+    return false;
+  }
+
+  public getUsuarioAutenticado() {
+    return this.usuariosAutenticados; // Obtener usuario autenticado
+  }
 
 }
