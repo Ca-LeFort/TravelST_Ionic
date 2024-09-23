@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -13,14 +13,14 @@ export class AdministrarPage implements OnInit {
     rut : new FormControl('',[Validators.minLength(9),Validators.maxLength(10),Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
     nombre: new FormControl('',[Validators.minLength(3),Validators.required,Validators.pattern("[a-zA-Z ]{3,15}")]),
     apellidos : new FormControl('', [Validators.minLength(3), Validators.required, Validators.pattern("[a-zA-Z ]{3,25}")]),
-    fechaNacimiento : new FormControl('',[Validators.required]),
+    fechaNacimiento: new FormControl('', [Validators.required, this.fechaNacimientoValidator()]),
     genero : new FormControl('',[Validators.required]),
     email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
     password : new FormControl('',[Validators.minLength(8),Validators.required]),
     repeat_password : new FormControl('',[Validators.minLength(8),Validators.required]),
     tiene_vehiculo: new FormControl('si',[Validators.required]),
     nombre_modelo: new FormControl('',[this.MarcaAuto.bind(this)]),
-    capacidad: new FormControl('',[]),
+    capacidad: new FormControl('', [this.capacidadValidator.bind(this)]),
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 
   });
 
@@ -58,6 +58,49 @@ export class AdministrarPage implements OnInit {
     this.usuarios = this.usuarioService.getUsuarios();
   }
 
+
+  //Validador de fecha
+  fechaNacimientoValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const fechaNacimiento = control.value;
+      if (!fechaNacimiento) {
+        return null; // No validar si no hay fecha
+      }
+  
+      const fecha = new Date(fechaNacimiento);
+      let edad = new Date().getFullYear() - fecha.getFullYear();
+      const mes = new Date().getMonth() - fecha.getMonth();
+  
+      if (mes < 0 || (mes === 0 && new Date().getDate() < fecha.getDate())) {
+        edad--;
+      }
+  
+      if (edad < 17) {
+        return { menorDeEdad: true }; // Retorna error si es menor de 17 años
+      }
+      return null; // No hay error
+    };
+  }
+
+
+  // Validador personalizado para la capacidad
+capacidadValidator(control: AbstractControl) {
+  const capacidad = control.value;
+
+  if (capacidad === 0){
+    return { capacidadInvalida: true };
+  }
+  // Si el campo está vacío, no considerarlo inválido
+  if (!capacidad) {
+    return null;
+  }
+
+  // Verificar si la capacidad es válida
+  if (capacidad <= 0 || capacidad > 15) {
+    return { capacidadInvalida: true };
+  }
+  return null;
+}
 
   //Marca Auto
   MarcaAuto(control: AbstractControl) {
