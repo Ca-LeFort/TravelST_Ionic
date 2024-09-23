@@ -4,13 +4,16 @@
 
 TravelST es una **aplicación móvil** diseñada para facilitar el retorno de los alumnos de **Duoc UC** a sus hogares tras la jornada académica. En el contexto de la pandemia, muchos estudiantes se han enfrentado a desafíos en el transporte. Esta aplicación busca resolver esas dificultades, promoviendo la colaboración entre estudiantes y fomentando un ambiente de compañerismo.
 
+
 ## 🌍 Contexto
+
 Durante la pandemia, las instituciones de educación superior se vieron obligadas a adaptar sus modalidades de enseñanza, pasando de clases presenciales a remotas. Con el regreso gradual a la presencialidad, han surgido problemas en el transporte de los estudiantes, especialmente en horas vespertinas. Las principales dificultades son:
 
 - ❌ Falta de transporte público en horario vespertino.
 - 💸 Alto costo de servicios de transporte particular (Uber, taxi, etc.).
 - 🚶‍♂️ Ausencia de movilización propia.
 - 🏫 Falta de transporte facilitado por la institución.
+
 
 ## 🎯 Objetivos de la App
 
@@ -20,6 +23,7 @@ TravelST tiene como objetivos principales:
 - 🤝 **Fomentar el compañerismo** entre alumnos.
 - 📚 **Instar a los alumnos** a asistir presencialmente a clases.
 - 🌱 **Reducir la huella de carbono** promoviendo el uso compartido de vehículos.
+
 
 ## 🔄 Funcionamiento de la Aplicación
 
@@ -36,6 +40,7 @@ La lógica de funcionamiento de TravelST es la siguiente:
 3. **Organización del Viaje**:
    - 👥 Los alumnos se reúnen, pagan su tarifa y comienzan el viaje.
 
+
 ## ⚙️ Tecnologías Utilizadas
 
 TravelST se desarrollará utilizando las siguientes tecnologías:
@@ -49,6 +54,22 @@ TravelST se desarrollará utilizando las siguientes tecnologías:
 - **JSON**: Para el intercambio de datos entre el cliente y el servidor.
 - **Visual Studio Code**: Como entorno de desarrollo integrado.
 
+## ⚙️ Instalación del proyecto
 
+1. **Clonar repositorio**:
+  ```
+  git clone https://github.com/Ca-LeFort/TravelST_Ionic.git
+  ```
 
+2. **Instalar Depedencias**:
+Dirígete a la carpeta del proyecto TravelST y ejecuta el siguiente comando:
+```
+npm install
+```
+
+3. **Ejecutar Proyecto**:
+   Para comenzar la ejecución y visualizar su funcionamiento, deberás ejecutar el siguiente comando en una terminal (cmd o bash):
+   ```
+   ionic serve
+   ```
 ¡Gracias por tu interés en **TravelST**! Juntos, podemos hacer que el transporte entre compañeros sea más accesible y eficiente. 🚀
