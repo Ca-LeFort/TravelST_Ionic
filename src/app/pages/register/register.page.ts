@@ -68,6 +68,21 @@ export class RegisterPage implements OnInit {
 
 
   ngOnInit() {
+    // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
+  this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
+    if (value === 'si') {
+      // Agregar validadores cuando el usuario tiene un vehículo
+      this.usuario.get('nombre_modelo')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
+      this.usuario.get('capacidad')?.setValidators([Validators.required, this.capacidadValidator.bind(this)]);
+    } else {
+      // Eliminar validadores si el usuario no tiene vehículo
+      this.usuario.get('nombre_modelo')?.clearValidators();
+      this.usuario.get('capacidad')?.clearValidators();
+    }
+    // Refrescar las validaciones
+    this.usuario.get('nombre_modelo')?.updateValueAndValidity();
+    this.usuario.get('capacidad')?.updateValueAndValidity();
+  });
   }
 
   //Validador de fecha

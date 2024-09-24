@@ -58,17 +58,23 @@
 
         <ion-item>
           <ion-label>¿Tiene Vehiculo?</ion-label>
-      <ion-radio-group formControlName="tiene_vehiculo">
-        <ion-radio value="si">Si</ion-radio>
-        <ion-radio value="no">No</ion-radio>
-      </ion-radio-group>
+          <ion-radio-group formControlName="tiene_vehiculo">
+            <ion-radio value="si">Si</ion-radio>
+            <ion-radio value="no">No</ion-radio>
+          </ion-radio-group>
         </ion-item>
-        <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
-        <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="usuario.controls.tiene_vehiculo.value=='si'">
-        <ion-input formControlName="capacidad" type="Number" label="Capacidad" labelPlacement="stacked"></ion-input>
-      </ion-item>
+        
+        <!-- Mostrar y hacer obligatorios los campos si tiene_vehiculo es "si" -->
+        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+          <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+          <ion-input formControlName="capacidad" type="Number" label="Capacidad" labelPlacement="stacked"></ion-input>
+        </ion-item>
+        
+        
+
+      
         <ion-button id="present-alert" [disabled]="usuario.invalid || isPasswordMismatch()" type="submit" class="btnLogin"  expand="block" >Registrar</ion-button>
         <p><a a routerLink="/login">¿Ya tengo Cuenta?</a></p>
 
