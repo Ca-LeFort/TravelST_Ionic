@@ -16,8 +16,8 @@ export class AdministrarPage implements OnInit {
     fechaNacimiento: new FormControl('', [Validators.required, this.fechaNacimientoValidator()]),
     genero : new FormControl('',[Validators.required]),
     email : new FormControl('',[Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@duocuc\.cl$/),Validators.required]),
-    password : new FormControl('',[Validators.minLength(8),Validators.required]),
-    repeat_password : new FormControl('',[Validators.minLength(8),Validators.required]),
+    password :  new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
+    repeat_password :  new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
     tiene_vehiculo: new FormControl('si',[Validators.required]),
     nombre_modelo: new FormControl('',[this.MarcaAuto.bind(this)]),
     capacidad: new FormControl('', [this.capacidadValidator.bind(this)]),
@@ -31,8 +31,39 @@ export class AdministrarPage implements OnInit {
 
   
   //el servicio nos permite trabajar la información:
-  constructor(private usuarioService: UsuarioService,private alertController: AlertController) { }
+  constructor(private usuarioService: UsuarioService,private alertController: AlertController) {
 
+    this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);
+   }
+
+
+   validarRut():ValidatorFn{
+    return () => {
+      const rut = this.usuario.controls.rut.value;
+      const dv_validar = rut?.replace("-","").split("").splice(-1).reverse()[0];
+      let rut_limpio = [];
+      if(rut?.length==10){
+        rut_limpio = rut?.replace("-","").split("").splice(0,8).reverse();
+      }else{
+        rut_limpio = rut?.replace("-","").split("").splice(0,7).reverse() || [];
+      }
+      let factor = 2;
+      let total = 0;
+      for(let num of rut_limpio){
+        total = total + ((+num)*factor);
+        factor = factor + 1;
+        if(factor==8){
+          factor = 2;
+        }
+      }
+      var dv = (11-(total%11)).toString();
+      if(+dv>=10){
+        dv = "k";
+      }
+      if(dv_validar!=dv.toString()) return {isValid: false};
+      return null;
+    };
+  }
   //Lista de marcas
   marcasAuto: string[] = [
     'abarth', 'acura', 'alfa romeo', 'audi', 'bmw', 'bentley', 'buick', 'cadillac', 
@@ -223,6 +254,7 @@ capacidadValidator(control: AbstractControl) {
           handler: async () => {
             if (await  this.usuarioService.deleteUsuario(rut_eliminar)) {
               await this.presentAlert('Éxito', 'Usuario eliminado', 'USUARIO ELIMINADO CON ÉXITO!');
+              this.usuarios = await this.usuarioService.getUsuarios();
             } else {
               await this.presentAlert('Error', 'No se pudo eliminar', 'ERROR! USUARIO NO ELIMINADO!');
             }
