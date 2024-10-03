@@ -136,7 +136,7 @@ capacidadValidator(control: AbstractControl) {
     return null;
   }
 
-  public registrar(): void {
+  public async registrar(){
     // Validar que las contraseñas coincidan
     if (this.isPasswordMismatch()) {
       // Mostrar un mensaje de error, por ejemplo, usando un alert o un toast
@@ -146,7 +146,7 @@ capacidadValidator(control: AbstractControl) {
   
     // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
     //console.log(this.usuario.value);
-    if(this.usuarioService.createUsuario(this.usuario.value)){
+    if(await this.usuarioService.createUsuario(this.usuario.value)){
       this.presentAlert('¡Bienvenido a TravelSt!', 'Comienza tu aventura con nosotros', 'Tu cuenta ha sido creada exitosamente. Ya puedes empezar a explorar y planificar tu próximo viaje.');
       this.router.navigate(['/login']);
     }else{

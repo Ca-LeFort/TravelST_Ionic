@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
   async login() {
     // Autenticar el usuario usando el servicio
     const isAuthenticated = this.usuarioService.authenticate(this.email, this.password);
-    if (isAuthenticated) {
+    if (await isAuthenticated) {
       this.router.navigate(['/home']); // Navegar a la página principal
     } else {
       await this.presentAlert(); // Llama al método de alerta aquí

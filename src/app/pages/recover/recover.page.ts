@@ -35,18 +35,22 @@ export class RecoverPage implements OnInit {
   
   /* Método para verificar la existencia de un usuario */
   async comprobarUsuario() {
-    const user = this.usuarioService.getUsuarios().find((u: any) => u.rut === this.rut);
+    // Esperamos a que se obtengan los usuarios de manera asíncrona
+    const usuarios = await this.usuarioService.getUsuarios();
+    const user = usuarios.find((u: any) => u.rut === this.rut);
     
     if (user) {
-      // Si el usuario existe, muestra el mensaje de que se envió un correo
+      // Si el usuario existe, mostramos el mensaje y luego redirigimos
       await this.presentAlert(
         'Recuperar Contraseña', 
         'Proceso de recuperación', 
         `Se ha enviado un correo para recuperar la contraseña del usuario ${user.nombre}.`
       );
-      this.router.navigate(['/login'])
+      
+      // Después de mostrar la alerta, redirigimos al usuario
+      this.router.navigate(['/login']);
     } else {
-      // Si el usuario no existe, muestra un mensaje de error
+      // Si el usuario no existe, mostramos el mensaje de error
       await this.presentAlert(
         'Error', 
         'Usuario no encontrado', 
@@ -54,4 +58,5 @@ export class RecoverPage implements OnInit {
       );
     }
   }
+  
 }

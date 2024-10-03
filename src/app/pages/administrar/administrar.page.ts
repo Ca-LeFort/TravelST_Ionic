@@ -54,8 +54,8 @@ export class AdministrarPage implements OnInit {
 ];
 
 
-  ngOnInit() {
-    this.usuarios = this.usuarioService.getUsuarios();
+  async ngOnInit() {
+    this.usuarios = await  this.usuarioService.getUsuarios();
     // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
   this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
     if (value === 'si') {
@@ -144,13 +144,14 @@ capacidadValidator(control: AbstractControl) {
     }
   
     // Intentar crear el usuario
-    if (this.usuarioService.createUsuario(this.usuario.value)) {
+    if (await this.usuarioService.createUsuario(this.usuario.value)) {
       await this.presentAlert(
         'Operacion exitosa', 
         'Registrado', 
         'Usuario registrado con exito'
       );
       this.usuario.reset();
+      this.usuarios = await this.usuarioService.getUsuarios();
     } else {
       await this.presentAlert(
         'Operacion fallida', 
@@ -160,8 +161,8 @@ capacidadValidator(control: AbstractControl) {
     }
   }
 
-  buscar(rut_buscar:string){
-    this.usuario.setValue( this.usuarioService.getUsuario(rut_buscar) );
+  async buscar(rut_buscar:string){
+    this.usuario.setValue( await this.usuarioService.getUsuario(rut_buscar) );
     this.botonModificar = false;
   }
 
@@ -183,10 +184,11 @@ capacidadValidator(control: AbstractControl) {
           handler: async () => {
             if (!this.isPasswordMismatch()) {
               const rut_buscar: string = this.usuario.controls.rut.value || "";
-              if (this.usuarioService.updateUsuario(rut_buscar, this.usuario.value)) {
+              if ( await this.usuarioService.updateUsuario(rut_buscar, this.usuario.value)) {
                 await this.presentAlert('Éxito', 'Usuario modificado', 'USUARIO MODIFICADO CON ÉXITO!');
                 this.botonModificar = true;
                 this.usuario.reset();
+                this.usuarios = await this.usuarioService.getUsuarios();
               } else {
                 await this.presentAlert('Error', 'No se pudo modificar', 'ERROR! USUARIO NO MODIFICADO!');
               }
@@ -219,7 +221,7 @@ capacidadValidator(control: AbstractControl) {
           text: 'OK',
           role: 'confirm',
           handler: async () => {
-            if (this.usuarioService.deleteUsuario(rut_eliminar)) {
+            if (await  this.usuarioService.deleteUsuario(rut_eliminar)) {
               await this.presentAlert('Éxito', 'Usuario eliminado', 'USUARIO ELIMINADO CON ÉXITO!');
             } else {
               await this.presentAlert('Error', 'No se pudo eliminar', 'ERROR! USUARIO NO ELIMINADO!');

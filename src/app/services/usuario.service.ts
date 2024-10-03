@@ -1,95 +1,93 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-
-  //acá podemos crear variables:
   usuarios: any[] = [];
   private usuariosAutenticados: any = null;  
 
-  constructor() { 
-    this.usuarios.push( 
-      {
-        "rut": "21638902-6",
-        "nombre": "javier",
-        "fechaNacimiento": "2004-08-01",
-        "apellidos": "soto jaque",
-        "genero": "Masculino",
-        "email": "javier@duocuc.cl",
-        "password": "administrador",
-        "repeat_password": "administrador",
-        "tiene_vehiculo" : "si",
-        "nombre_modelo" : "ferrari",
-        "capacidad":2 ,
-        "tipo_usuario" : "administrador"
-      },
-      {
-        "rut": "15444532-6",
-        "nombre": "alejandro",
-        "fechaNacimiento": "2000-05-02",
-        "apellidos": "gonzales",
-        "genero": "Masculino",
-        "email": "gonz@duocuc.cl",
-        "password": "12345678",
-        "repeat_password": "12345678",
-        "tiene_vehiculo" : "si",
-        "nombre_modelo" : "abarth",
-        "capacidad":3 ,
-        "tipo_usuario" : "estudiante"
-      }
-    );
+  //y en el constructor se crea una variable del módulo:
+  constructor(private storage: Storage) { 
+    this.init();
   }
 
-  //logica
-  //DAO:
-  public createUsuario(usuario:any):boolean{
-    if (this.getUsuario(usuario.rut) == undefined){
-      this.usuarios.push(usuario);
-      return true;
-    }
-    return false;
+  async init() {
+    await this.storage.create();
+    let admin = {
+      "rut": "21638902-6",
+      "nombre": "javier",
+      "fechaNacimiento": "2004-08-01",
+      "apellidos": "soto jaque",
+      "genero": "Masculino",
+      "email": "javier@duocuc.cl",
+      "password": "administrador",
+      "repeat_password": "administrador",
+      "tiene_vehiculo": "si",
+      "nombre_modelo": "ferrari",
+      "capacidad": 2,
+      "tipo_usuario": "administrador"
+    };
+    await this.createUsuario(admin);
   }
 
-  public getUsuario(rut:string){
-    return this.usuarios.find(elemento=> elemento.rut == rut);
-  }
+  // DAO methods using local storage
 
-  public getUsuarios(){
-    return this.usuarios
-  }
-
-  public updateUsuario(rut:string, nuevoUsuario:any){
-    const indice = this.usuarios.findIndex(elemento => elemento.rut==rut);
-    if(indice==-1){
+  public async createUsuario(usuario: any): Promise<boolean> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    if (usuarios.find(usu => usu.rut === usuario.rut) !== undefined) {
       return false;
     }
-    this.usuarios[indice] = nuevoUsuario;
+    usuarios.push(usuario);
+    await this.storage.set("usuarios", usuarios);
     return true;
   }
 
-  public deleteUsuario(rut:string):boolean{
-    const indice = this.usuarios.findIndex(elemento => elemento.rut == rut);
-    if (indice ==-1){
+  public async getUsuario(rut: string): Promise<any> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    return usuarios.find(usu => usu.rut === rut);
+  }
+
+  public async getUsuarios(): Promise<any[]> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    return usuarios;
+  }
+
+  public async updateUsuario(rut: string, nuevoUsuario: any): Promise<boolean> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    let indice: number = usuarios.findIndex(usu => usu.rut === rut);
+    if (indice === -1) {
       return false;
     }
-    this.usuarios.splice(indice,1);
+    usuarios[indice] = nuevoUsuario;
+    await this.storage.set("usuarios", usuarios);
     return true;
   }
 
+  public async deleteUsuario(rut: string): Promise<boolean> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    let indice: number = usuarios.findIndex(usu => usu.rut === rut);
+    if (indice === -1) {
+      return false;
+    }
+    usuarios.splice(indice, 1);
+    await this.storage.set("usuarios", usuarios);
+    return true;
+  }
 
-  public authenticate(email: string, password: string): boolean {
-    const usuario = this.usuarios.find(user => user.email === email && user.password === password);
+  public async authenticate(email: string, password: string): Promise<boolean> {
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    const usuario = usuarios.find(user => user.email === email && user.password === password);
     if (usuario) {
-      this.usuariosAutenticados = usuario; // Asegúrate de que esto esté configurado correctamente
+      this.usuariosAutenticados = usuario;
       return true;
     }
     return false;
   }
 
   public getUsuarioAutenticado() {
-    return this.usuariosAutenticados; // Obtener usuario autenticado
+    return this.usuariosAutenticados;
   }
 
 }
