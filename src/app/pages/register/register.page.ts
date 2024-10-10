@@ -22,11 +22,24 @@ export class RegisterPage implements OnInit {
     password :  new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
     repeat_password :  new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
     tiene_vehiculo: new FormControl('no',[Validators.required]),
-    nombre_modelo: new FormControl('',[this.MarcaAuto.bind(this)]),
+    nombre_marca: new FormControl('',[this.MarcaAuto.bind(this)]),
     capacidad: new FormControl('', [this.capacidadValidator.bind(this)]),
+    nombre_modelo: new FormControl('',[]),
+    patente: new FormControl('', [this.validarPatente.bind(this)]),
     // Campo oculto que indica el tipo de usuario
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 'normal'
   });
+
+
+  // Método para validar la patente chilena
+  validarPatente(control: AbstractControl): { [key: string]: boolean } | null {
+    const patente = control.value;
+    const regex = /^[A-Z]{2}-[A-Z]{2}-[0-9]{2}$/; // Formato BB-CC·12
+    if (patente && !regex.test(patente.toUpperCase())) {
+      return { formatoInvalido: true };
+    }
+    return null;
+  }
 
   // Método para comprobar si las contraseñas coinciden
   isPasswordMismatch(): boolean {
@@ -75,16 +88,22 @@ export class RegisterPage implements OnInit {
   this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
     if (value === 'si') {
       // Agregar validadores cuando el usuario tiene un vehículo
-      this.usuario.get('nombre_modelo')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
+      this.usuario.get('nombre_marca')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
       this.usuario.get('capacidad')?.setValidators([Validators.required, this.capacidadValidator.bind(this)]);
+      this.usuario.get('nombre_modelo')?.setValidators([Validators.required,Validators.minLength(3)]);
+      this.usuario.get('patente')?.setValidators([Validators.required, this.validarPatente.bind(this)]);
     } else {
       // Eliminar validadores si el usuario no tiene vehículo
-      this.usuario.get('nombre_modelo')?.clearValidators();
+      this.usuario.get('nombre_marca')?.clearValidators();
       this.usuario.get('capacidad')?.clearValidators();
+      this.usuario.get('nombre_modelo')?.clearValidators();
+      this.usuario.get('patente')?.clearValidators();
     }
     // Refrescar las validaciones
-    this.usuario.get('nombre_modelo')?.updateValueAndValidity();
+    this.usuario.get('nombre_marca')?.updateValueAndValidity();
     this.usuario.get('capacidad')?.updateValueAndValidity();
+    this.usuario.get('nombre_modelo')?.updateValueAndValidity();
+    this.usuario.get('patente')?.updateValueAndValidity();
   });
   }
 

@@ -25,8 +25,10 @@ export class UsuarioService {
       "password": "administrador",
       "repeat_password": "administrador",
       "tiene_vehiculo": "si",
-      "nombre_modelo": "ferrari",
+      "nombre_marca": "ferrari",
       "capacidad": 2,
+      "nombre_modelo": "Mauil",
+      "patente": "CC-BB-12",
       "tipo_usuario": "administrador"
     };
     await this.createUsuario(admin);
