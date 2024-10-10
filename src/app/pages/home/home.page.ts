@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -8,11 +9,18 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class HomePage implements OnInit {
 
-  constructor(public usuarioService: UsuarioService) {}
+  // Vamos a crear una variable que almacenara la informacion del localstorage
+  usuario: any;
+
+  constructor(public usuarioService: UsuarioService, private navController: NavController) {}
 
   ngOnInit() {
-    const usuarioAutenticado = this.usuarioService.getUsuarioAutenticado();
-    console.log('Usuario autenticado:', usuarioAutenticado);
+    this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
+  }
+
+  logout() {
+    localStorage.removeItem('usuario');
+    this.navController.navigateRoot('/login');
   }
 
 }

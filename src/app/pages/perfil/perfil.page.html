@@ -1,7 +1,8 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-        <p class="text-center">¡Bienvenido, Usuario!</p>
+        <p class="text-center">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
+        <p>Correo electrónico: {{usuario.email}}</p>
     </ion-card-content>
   </ion-card>
 
@@ -9,9 +10,9 @@
     <br>
     <ion-button class="btnModify" expand="block" fill="outline"><ion-icon name="man-outline"></ion-icon>Editar perfil</ion-button>
     <br>
-    <ion-button class="btnConfig" expand="block" fill="outline"><ion-icon name="settings-outline" slot="start"></ion-icon>Configuración</ion-button>
+    <ion-button class="btnConfig" expand="block" fill="outline"><ion-icon name="airplane-outline"></ion-icon>Mis viajes</ion-button>
     <br>
-    <ion-button class="btnLogout" expand="block" fill="outline"><ion-icon name="log-out-outline" slot="start"></ion-icon>Cerrar Sesión</ion-button>
+    <ion-button class="btnLogout" expand="block" fill="outline" (click)="logout()"><ion-icon name="log-out-outline" slot="start"></ion-icon>Cerrar Sesión</ion-button>
     <p>Derechos de autor TravelST</p>
     <p>Desarrollado por estudiantes de Ingeniería en Informática</p>
   </div>

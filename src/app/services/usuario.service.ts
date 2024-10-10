@@ -80,6 +80,7 @@ export class UsuarioService {
     let usuarios: any[] = await this.storage.get("usuarios") || [];
     const usuario = usuarios.find(user => user.email === email && user.password === password);
     if (usuario) {
+      localStorage.setItem("usuario", JSON.stringify(usuario) );
       this.usuariosAutenticados = usuario;
       return true;
     }

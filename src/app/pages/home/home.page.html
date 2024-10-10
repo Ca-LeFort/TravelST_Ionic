@@ -1,8 +1,10 @@
 <ion-header>
   <ion-toolbar color="dark">
+    <p slot="end">Bienvenido: {{usuario.nombre | titlecase}} </p>
     <ion-title>Home</ion-title>
     <ion-buttons slot="end">
-      <ion-button class="cerrar"><a routerLink="/login">Cerrar Sesion</a></ion-button>
+      <ion-button class="cerrar" (click)="logout()"><a routerLink="/login">
+      <ion-icon name="log-out"></ion-icon></a></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -17,7 +19,7 @@
       </ion-tab-button>
       
        <!-- Ocultar el botón si el usuario es estudiante -->
-       <ion-tab-button tab="administrar" *ngIf="usuarioService.getUsuarioAutenticado()?.tipo_usuario !== 'estudiante'">
+      <ion-tab-button tab="administrar" *ngIf="usuarioService.getUsuarioAutenticado()?.tipo_usuario !== 'estudiante'">
         <ion-icon name="key-sharp"></ion-icon>
       </ion-tab-button>
 
