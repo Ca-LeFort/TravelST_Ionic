@@ -29,6 +29,9 @@ export class ReservasPage implements OnInit {
   initMap(){
     // ACÁ CARGAMOS E INICIALIZAMOS EL MAPA
     this.map = L.map("map").setView([-33.59836727695556, -70.578819737547], 15);
+    let marker = L.marker([-33.59836727695556, -70.578819737547]).addTo(this.map);
+
+    marker.bindPopup("<b>Duoc UC: Sede Puente Alto</b>");
 
     // ES LA PLANTILLA PARA QUE SE VEA EL MAPA
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -71,5 +74,4 @@ export class ReservasPage implements OnInit {
       }
     });
   }
-
 }

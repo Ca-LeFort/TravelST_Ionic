@@ -1,8 +1,14 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-        <p class="text-center">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
+        <p id="nombre_usuario">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
+        <br>
         <p>Correo electrónico: {{usuario.email}}</p>
+        <p>Tiene vehículo: {{usuario.tiene_vehiculo | titlecase}}</p>
+        <div *ngIf="usuarioService.getUsuarioAutenticado()?.tiene_vehiculo !== 'no'">
+          <p>Modelo del vehículo: {{usuario.nombre_marca | titlecase}} {{usuario.nombre_modelo | titlecase}}</p>
+          <p>Patente: {{usuario.patente}}</p>
+        </div>
     </ion-card-content>
   </ion-card>
 
@@ -10,10 +16,23 @@
     <br>
     <ion-button class="btnModify" expand="block" fill="outline"><ion-icon name="man-outline"></ion-icon>Editar perfil</ion-button>
     <br>
-    <ion-button class="btnConfig" expand="block" fill="outline"><ion-icon name="airplane-outline"></ion-icon>Mis viajes</ion-button>
-    <br>
+    <div *ngIf="usuarioService.getUsuarioAutenticado()?.tiene_vehiculo !== 'no'">
+      <ion-button class="btnConfig" expand="block" fill="outline">
+        <ion-icon name="airplane-outline"></ion-icon>Mis viajes
+      </ion-button>
+      <br>
+    </div>
+    <div *ngIf="usuarioService.getUsuarioAutenticado().tiene_vehiculo !== 'si'">
+      <ion-button expand="block" fill="outline">
+        <ion-icon name="newspaper-outline"></ion-icon>Historial de viajes
+      </ion-button>
+      <br>
+    </div>
     <ion-button class="btnLogout" expand="block" fill="outline" (click)="logout()"><ion-icon name="log-out-outline" slot="start"></ion-icon>Cerrar Sesión</ion-button>
-    <p>Derechos de autor TravelST</p>
-    <p>Desarrollado por estudiantes de Ingeniería en Informática</p>
   </div>
 </ion-content>
+
+<ion-footer>
+  <p>© Derechos de autor TravelST</p>
+  <p>Desarrollado por estudiantes de Ingeniería en Informática</p>
+</ion-footer>

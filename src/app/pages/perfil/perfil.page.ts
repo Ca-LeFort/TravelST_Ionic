@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-perfil',
@@ -10,7 +11,7 @@ export class PerfilPage implements OnInit {
 
   usuario: any;
 
-  constructor(private navController: NavController) { }
+  constructor(public usuarioService: UsuarioService, private navController: NavController) { }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || '');

@@ -6,4 +6,25 @@
   <ion-input label="Tiempo (segundos)" [(ngModel)]="tiempo_segundos"></ion-input>
 
   <div id="map"></div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+
+    <ion-fab-button>
+      <ion-icon name="chevron-up-circle"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-list side="top">
+      <ion-fab-button>
+        <ion-icon name="layers-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="calendar-number-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="airplane-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+
+  </ion-fab>
+
 </ion-content>
