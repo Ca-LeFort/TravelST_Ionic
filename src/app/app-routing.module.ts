@@ -31,10 +31,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/administrar/administrar.module').then( m => m.AdministrarPageModule)
   },
   {
-    path: '**',
-    loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
-  },
-  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
@@ -42,10 +38,14 @@ const routes: Routes = [
     path: 'reservas',
     loadChildren: () => import('./pages/reservas/reservas.module').then( m => m.ReservasPageModule)
   },
-
-
-
-  
+  {
+    path: 'home/reservas/detalle-reserva/:id',
+    loadChildren: () => import('./pages/detalle-reserva/detalle-reserva.module').then( m => m.DetalleReservaPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
+  },
 ];
 
 @NgModule({

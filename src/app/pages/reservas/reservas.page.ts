@@ -20,6 +20,53 @@ export class ReservasPage implements OnInit {
   distancia_metros: number = 0;
   tiempo_segundos: number = 0;
 
+  // Simulación de una lista de viajes ya creados: eventualmente se cargan datos
+  viajes: any[] = [{
+      "id":1,
+      "conductor": "Lalo Cura",
+      "asientos_disponibles": 4,
+      "nombre_destino": "Santa isabel",
+      "latitud": -33.59,
+      "longitud": -70.59,
+      "distancia_metros": 5000,
+      "tiempo_segundos": 320,
+      "estado_viaje": "Pendiente",
+      "pasajeros": []
+    },{
+      "id":2,
+      "conductor": "Elba Lazo",
+      "asientos_disponibles": 1,
+      "nombre_destino": "Santa isabel",
+      "latitud": -33.59,
+      "longitud": -70.59,
+      "distancia_metros": 5000,
+      "tiempo_segundos": 320,
+      "estado_viaje": "En curso",
+      "pasajeros": [17888444, 15966525]
+    },{
+      "id":3,
+      "conductor": "Elvis Teck",
+      "asientos_disponibles": 0,
+      "nombre_destino": "Santa isabel",
+      "latitud": -33.59,
+      "longitud": -70.59,
+      "distancia_metros": 5000,
+      "tiempo_segundos": 320,
+      "estado_viaje": "Terminado",
+      "pasajeros": [14525652, 20626598]
+    },{
+      "id":4,
+      "conductor": "Armando Casas",
+      "asientos_disponibles": 0,
+      "nombre_destino": "Santa isabel",
+      "latitud": -33.59,
+      "longitud": -70.59,
+      "distancia_metros": 5000,
+      "tiempo_segundos": 320,
+      "estado_viaje": "Pendiente",
+      "pasajeros": [14525652, 20626598, 14848595, 15888444]
+    }];
+
   constructor() { }
 
   ngOnInit() {
