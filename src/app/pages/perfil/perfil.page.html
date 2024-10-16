@@ -2,13 +2,56 @@
   <ion-card>
     <ion-card-content>
         <p id="nombre_usuario">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
-        <br>
-        <p>Correo electrónico: {{usuario.email}}</p>
-        <p>Tiene vehículo: {{usuario.tiene_vehiculo | titlecase}}</p>
-        <div *ngIf="usuarioService.getUsuarioAutenticado()?.tiene_vehiculo !== 'no'">
-          <p>Modelo del vehículo: {{usuario.nombre_marca | titlecase}} {{usuario.nombre_modelo | titlecase}}</p>
-          <p>Patente: {{usuario.patente}}</p>
+       
+      
+        <div class="avatar-container">
+          <ion-avatar>
+            <img [src]="selectedImage ? selectedImage : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Avatar" />
+          </ion-avatar>
         </div>
+        
+        <!-- Input oculto -->
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" id="file-input" #fileInput style="display: none;" />
+      
+      <!-- Botón que actúa como label -->
+        <ion-button expand="full" (click)="fileInput.click()">
+        <ion-icon name="add-circle-outline"></ion-icon> Seleccionar imagen
+      </ion-button>
+
+        <br>
+        <p class="campos">Email Duoc</p>
+        <p>{{usuario.email}}</p>
+        <br>
+        <p class="campos">Nombre</p>
+        <p>{{usuario.nombre}}</p>
+        <br>
+        <p class="campos">Apellidos</p>
+        <p>{{usuario.apellidos}}</p>
+        <br>
+        <p class="campos">Fecha de Nacimiento</p>
+        <p>{{usuario.fechaNacimiento}}</p>
+        <br>
+        <p class="campos">Genero</p>
+        <p>{{usuario.genero}}</p>
+        <br>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="usuario?.tiene_vehiculo === 'si'">
+    <ion-card-content >
+      <br>
+      <p class="campos">Marca</p>
+      <p>{{ usuario?.nombre_marca }}</p>
+      <br>
+      <p class="campos">Modelo</p>
+      <p>{{ usuario?.nombre_modelo }}</p>
+      <br>
+      <p class="campos">Capacidad</p>
+      <p>{{ usuario?.capacidad }}</p>
+      <br>
+      <p class="campos">Patente</p>
+      <p>{{ usuario?.patente }}</p>
+      <br>
     </ion-card-content>
   </ion-card>
 

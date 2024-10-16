@@ -6,6 +6,7 @@ ion-button {
 
 ion-icon {
     margin-right: 10px;
+    width: 200px;
 }
 
 #nombre_usuario {
@@ -18,3 +19,38 @@ ion-footer {
     position: relative;
     margin: 10px;
 }
+
+ion-card{
+    width: 85%;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+ion-avatar {
+    width: 100px; /* Ajusta el ancho según sea necesario */
+    height: 100px; /* Ajusta la altura según sea necesario */
+}
+
+ion-avatar img {
+    width: 100%; /* Asegúrate de que la imagen ocupe todo el contenedor */
+    height: 100%; /* Mantiene la imagen dentro del contenedor */
+    object-fit: cover; /* Mantiene la relación de aspecto y cubre el contenedor */
+}
+
+.campos{
+    font-weight: bold;
+}
+
+.custom-file-button ion-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
