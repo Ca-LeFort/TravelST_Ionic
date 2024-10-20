@@ -10,6 +10,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class PerfilPage implements OnInit {
   usuario: any;
   selectedImage: string | ArrayBuffer | null = null;
+  isEditing = false; // Nueva variable para controlar el estado de edición
+
 
   constructor(public usuarioService: UsuarioService, private navController: NavController) { }
 
@@ -35,7 +37,23 @@ export class PerfilPage implements OnInit {
   }
 }
 
+  editProfile() {
+    this.isEditing = true; // Cambiar el estado a editar
+  }
+
+  async saveProfile() {
+    const rut = this.usuario.rut; // Asegúrate de que el RUT esté disponible
+    const resultado = await this.usuarioService.updateUsuario(rut, this.usuario);
+    
+    if (resultado) {
+      this.isEditing = false; // Salir del modo de edición
+    } else {
+      console.error('No se pudo actualizar el usuario.');
+    }
+  }
   
+
+
   logout() {
     localStorage.removeItem('usuario');
     this.navController.navigateRoot('/login');

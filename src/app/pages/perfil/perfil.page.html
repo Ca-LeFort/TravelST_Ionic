@@ -56,8 +56,43 @@
   </ion-card>
 
   <div class="profile-container">
+    <ion-button class="btnModify" expand="block" fill="outline" (click)="editProfile()">
+      <ion-icon name="man-outline"></ion-icon>Editar perfil
+    </ion-button>
     <br>
-    <ion-button class="btnModify" expand="block" fill="outline"><ion-icon name="man-outline"></ion-icon>Editar perfil</ion-button>
+    
+    <ion-card *ngIf="isEditing">
+      <ion-card-content>
+        <form (ngSubmit)="saveProfile()">
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input [(ngModel)]="usuario.nombre" name="nombre" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Email Duoc</ion-label>
+            <ion-input [(ngModel)]="usuario.email" name="email" type="email" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Apellidos</ion-label>
+            <ion-input [(ngModel)]="usuario.apellidos" name="apellidos" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Fecha de Nacimiento</ion-label>
+            <ion-input [(ngModel)]="usuario.fechaNacimiento" name="fechaNacimiento" type="date" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Género</ion-label>
+            <ion-input [(ngModel)]="usuario.genero" name="genero" required></ion-input>
+          </ion-item>
+          <ion-button expand="full" type="submit">Guardar</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+    
+    
+
+    
+    
     <br>
     <div *ngIf="usuarioService.getUsuarioAutenticado()?.tiene_vehiculo !== 'no'">
       <ion-button class="btnConfig" expand="block" fill="outline">
