@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 import * as G from 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { ViajeService } from 'src/app/services/viaje.service';
 
 @Component({
   selector: 'app-reservas',
@@ -13,12 +17,27 @@ export class ReservasPage implements OnInit {
   // Variables
   private map: L.Map | undefined;
   private geocoder: G.Geocoder | undefined;
+  usuario: any;
 
   latitud: number = 0;
   longitud: number = 0;
   direccion: string = "";
   distancia_metros: number = 0;
-  tiempo_segundos: number = 0;
+  tiempo_minutos: number = 0;
+
+  viaje = new FormGroup({
+    id: new FormControl(),
+    conductor: new FormControl('', [Validators.required]),
+    asientos_disponibles: new FormControl('', [Validators.required]),
+    destino: new FormControl('', [Validators.required]),
+    latitud: new FormControl('', [Validators.required]),
+    longitud: new FormControl('', [Validators.required]),
+    distancia_metros: new FormControl('', [Validators.required]),
+    tiempo_minutos: new FormControl('', [Validators.required]),
+    precio: new FormControl(),
+    estado_viaje: new FormControl('pendiente'),
+    pasajeros: new FormControl([])
+  });
 
   // Simulación de una lista de viajes ya creados: eventualmente se cargan datos
   viajes: any[] = [{
@@ -67,9 +86,10 @@ export class ReservasPage implements OnInit {
       "pasajeros": [14525652, 20626598, 14848595, 15888444]
     }];
 
-  constructor() { }
+  constructor(private viajeService: ViajeService, private usuarioService: UsuarioService, private alertController: AlertController) { }
 
   ngOnInit() {
+    this.usuario = JSON.parse(localStorage.getItem("usuario") || "");
     this.initMap();
   }
 
@@ -116,9 +136,37 @@ export class ReservasPage implements OnInit {
           fitSelectedRoutes: true
         }).on('routesfound', (e)=>{
           this.distancia_metros = e.routes[0].summary.totalDistance;
-          this.tiempo_segundos = e.routes[0].summary.totalTime;
+          this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime/60);
         }).addTo(this.map);
       }
     });
+  }
+
+  async registrarViaje(){
+    if(this.viaje.valid){
+      const nextId = await this.viajeService.getNextId();
+      this.viaje.controls.id.setValue(nextId);
+
+      const viaje = this.viaje.value;
+      const registroViaje = await this.viajeService.createViaje(viaje);
+
+      if(registroViaje){
+        await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
+        this.viaje.reset();
+        console.log('Viaje registrado');
+      } else {
+        console.log('Formulario invalido');
+        await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos');
+      }
+    }
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 }

@@ -1,51 +1,48 @@
 <ion-content>
-  <ion-accordion-group>
-    <ion-accordion value="Viajes">
-      <ion-item slot="header" color="light">
-        <ion-label>First Accordion</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content" *ngFor="let v of viajes">
-        <ion-card *ngIf="v.estado_viaje == 'Pendiente'">
-          <ion-card-header>
-            <ion-card-title>{{v.nombre_destino}}</ion-card-title>
-            <ion-card-subtitle>{{v.estado_viaje}}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
-            <p>Precio: {{v.distancia_metros/400 * 100 | currency:'CLP'}}</p>
-          </ion-card-content>
-          <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
-        </ion-card>
-      </div>
-    </ion-accordion>
-  </ion-accordion-group>
+  <div>
+    <div id="map"></div>
+    <ion-accordion-group>
+      <ion-accordion value="Viajes">
+        <ion-item slot="header" color="light">
+          <ion-label>First Accordion</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" *ngFor="let v of viajes">
+          <ion-card *ngIf="v.estado_viaje == 'Pendiente'">
+            <ion-card-header>
+              <ion-card-title>{{v.nombre_destino}}</ion-card-title>
+              <ion-card-subtitle>{{v.estado_viaje}}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
+              <p>Precio: {{v.distancia_metros/400 * 100 | currency:'CLP'}}</p>
+            </ion-card-content>
+            <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
+          </ion-card>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <br>
+    <form [formGroup]="viaje" (ngSubmit)="registrarViaje()">
+      <ion-input label="Conductor" labelPlacement="stacked" [(ngModel)]="usuario.nombre" formControlName="conductor" fill="outline" name="conductor" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Asientos Disponibles" labelPlacement="stacked" [(ngModel)]="usuario.capacidad" formControlName="asientos_disponibles"  fill="outline" name="asientos_disponibles" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Destino" labelPlacement="stacked" [(ngModel)]="direccion" formControlName="destino" fill="outline" name="destino" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Latitud" labelPlacement="stacked" [(ngModel)]="latitud" formControlName="latitud" fill="outline" name="latitud" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Longitud" labelPlacement="stacked" [(ngModel)]="longitud" formControlName="longitud" fill="outline" name="longitud" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Distancia (metros)" labelPlacement="stacked" [(ngModel)]="distancia_metros" formControlName="distancia_metros" fill="outline" name="distancia_metros" readonly="true"></ion-input>
+      <br>
+      <ion-input label="Tiempo (minutos)" labelPlacement="stacked" [(ngModel)]="tiempo_minutos" formControlName="tiempo_minutos" fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
+      <br>
+      <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon slot="start" name="add-circle-outline"></ion-icon>Crear viaje</ion-button>
+    </form>
+  </div>
+    
+  <div>
 
-  <ion-input label="Latitud" [(ngModel)]="latitud"></ion-input>
-  <ion-input label="Longitud" [(ngModel)]="longitud"></ion-input>
-  <ion-input label="Dirección" [(ngModel)]="direccion"></ion-input>
-  <ion-input label="Distancia (metros)" [(ngModel)]="distancia_metros"></ion-input>
-  <ion-input label="Tiempo (segundos)" [(ngModel)]="tiempo_segundos"></ion-input>
-
-  <div id="map"></div>
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-
-    <ion-fab-button>
-      <ion-icon name="chevron-up-circle"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-list side="top">
-      <ion-fab-button>
-        <ion-icon name="layers-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="calendar-number-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="airplane-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-
-  </ion-fab>
+  </div>
 
 </ion-content>
