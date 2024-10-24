@@ -6,28 +6,34 @@
   </ion-header>
 
 <ion-content>
-    
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <div id="map"></div>
     <form>
-        <ion-input label="Conductor" labelPlacement="stacked" 
+        <ion-input label="Conductor" [(ngModel)]="conductor" labelPlacement="stacked" 
             fill="outline" name="conductor" readonly="true"></ion-input>
         <br>
-        <ion-input label="Asientos Disponibles" labelPlacement="stacked"
+        <ion-input label="Asientos Disponibles" [(ngModel)]="asientos_disponibles" labelPlacement="stacked"
             fill="outline" name="asientos_disponibles"
             readonly="true"></ion-input>
         <br>
-        <ion-input label="Destino" labelPlacement="stacked"
+        <ion-input label="Destino" [(ngModel)]="destino" labelPlacement="stacked"
             fill="outline" name="destino" readonly="true"></ion-input>
         <br>
-        <ion-input label="Distancia (metros)" labelPlacement="stacked"
+        <ion-input label="Distancia (metros)" [(ngModel)]="distancia_metros" labelPlacement="stacked"
             fill="outline" name="distancia_metros" readonly="true"></ion-input>
         <br>
-        <ion-input label="Tiempo (minutos)" labelPlacement="stacked"
+        <ion-input label="Tiempo (minutos)" [(ngModel)]="tiempo_minutos" labelPlacement="stacked"
             fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
         <br>
-        <ion-input label="Precio" labelPlacement="stacked" fill="outline"
+        <ion-input label="Precio" [(ngModel)]="precio" labelPlacement="stacked" fill="outline"
             name="precio" readonly="true"></ion-input>
         <br>
-        <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+        <ion-button *ngIf="asientos_disponibles > 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+        <br>
     </form>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </ion-content>

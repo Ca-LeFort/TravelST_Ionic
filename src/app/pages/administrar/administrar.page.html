@@ -163,8 +163,6 @@
               <br>
     
               <!--BOTONES-->
-              <ion-button [disabled]="viaje.invalid" type="submit" fill="outline" size="block" color="warning">REGISTRAR</ion-button>
-              <ion-button [disabled]="botonModificar || usuario.invalid || isPasswordMismatch()" fill="outline" (click)="modificar()" size="block" color="danger">MODIFICAR</ion-button>
               <ion-button type="reset" size="block" fill="outline" color="secondary">LIMPIAR</ion-button>
             </form>
           </div>
@@ -175,7 +173,7 @@
                 <ion-item-options side="start">
                   <ion-item-option (click)="buscarViaje(viaje.id)" color="warning">Buscar</ion-item-option>
                 </ion-item-options>
-                <ion-item>{{viaje.id}} - {{viaje.conductor}}</ion-item>
+                <ion-item>ID del viaje: {{viaje.id}}</ion-item>
                 <ion-item-options side="end">
                   <ion-item-option (click)="eliminarViaje(viaje.id)" color="danger">Eliminar</ion-item-option>
                 </ion-item-options>

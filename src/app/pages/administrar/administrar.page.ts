@@ -49,11 +49,10 @@ export class AdministrarPage implements OnInit {
   
   //el servicio nos permite trabajar la información:
   constructor(private usuarioService: UsuarioService,private alertController: AlertController, private viajeService: ViajeService) {
-
     this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);
-   }
+  }
 
-   // Método para validar la patente chilena
+  // Método para validar la patente chilena
   validarPatente(control: AbstractControl): { [key: string]: boolean } | null {
     const patente = control.value;
     const regex = /^[A-Z]{2}-[A-Z]{2}-[0-9]{2}$/; // Formato BB-CC·12
@@ -63,8 +62,7 @@ export class AdministrarPage implements OnInit {
     return null;
   }
 
-
-   validarRut():ValidatorFn{
+  validarRut():ValidatorFn{
     return () => {
       const rut = this.usuario.controls.rut.value;
       const dv_validar = rut?.replace("-","").split("").splice(-1).reverse()[0];
@@ -91,6 +89,7 @@ export class AdministrarPage implements OnInit {
       return null;
     };
   }
+
   //Lista de marcas
   marcasAuto: string[] = [
     'abarth', 'acura', 'alfa romeo', 'audi', 'bmw', 'bentley', 'buick', 'cadillac', 
@@ -109,7 +108,7 @@ export class AdministrarPage implements OnInit {
     'rally', 'morgan', 'tvr', 'viper', 'wiesmann', 'mercury', 
     'oldsmobile', 'packard', 'tucker', 'scion', 'saturn', 
     'lancia', 'alpine', 'ferrari', 'koenigsegg'
-];
+  ];
 
 
   async ngOnInit() {
@@ -347,9 +346,6 @@ capacidadValidator(control: AbstractControl) {
   }
 
   /*Alerta de modificar*/
-  
-
-
 
   /*VIAJES*/
   async registrarViaje() {
