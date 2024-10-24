@@ -2,17 +2,13 @@
   <ion-toolbar color="primary">
     <p slot="end">Bienvenido: {{usuario.nombre | titlecase}} </p>
     <ion-title>TravelST</ion-title>
-    <ion-buttons slot="end">
-      <ion-button class="cerrar" (click)="logout()"><a routerLink="/login">
-      <ion-icon name="log-out"></ion-icon></a></ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
   
-  <ion-tabs >
+  <ion-tabs>
     <ion-tab-bar slot="bottom" color="secondary">
 
       <ion-tab-button tab="reservas">

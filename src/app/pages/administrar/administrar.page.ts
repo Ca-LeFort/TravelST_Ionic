@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ViajeService } from 'src/app/services/viaje.service';
 
 @Component({
   selector: 'app-administrar',
@@ -26,12 +27,28 @@ export class AdministrarPage implements OnInit {
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 
   });
 
+  
+  viaje = new FormGroup({
+    id: new FormControl(),
+    conductor: new FormControl('', [Validators.required]),
+    asientos_disponibles: new FormControl('', [Validators.required]),
+    destino: new FormControl('', [Validators.required]),
+    latitud: new FormControl('', [Validators.required]),
+    longitud: new FormControl('', [Validators.required]),
+    distancia_metros: new FormControl('', [Validators.required]),
+    tiempo_minutos: new FormControl('', [Validators.required]),
+    precio: new FormControl(),
+    estado_viaje: new FormControl('pendiente'),
+    pasajeros: new FormControl([])
+  });
+
   usuarios:any[] = [];
+  viajes: any[] = [];
   botonModificar: boolean = true;
 
   
   //el servicio nos permite trabajar la información:
-  constructor(private usuarioService: UsuarioService,private alertController: AlertController) {
+  constructor(private usuarioService: UsuarioService,private alertController: AlertController, private viajeService: ViajeService) {
 
     this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);
    }
@@ -97,27 +114,28 @@ export class AdministrarPage implements OnInit {
 
   async ngOnInit() {
     this.usuarios = await  this.usuarioService.getUsuarios();
+    this.viajes = await this.viajeService.getViajes();
     // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
-  this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
-    if (value === 'si') {
-      // Agregar validadores cuando el usuario tiene un vehículo
-      this.usuario.get('nombre_marca')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
-      this.usuario.get('capacidad')?.setValidators([Validators.required, this.capacidadValidator.bind(this)]);
-      this.usuario.get('nombre_modelo')?.setValidators([Validators.required,Validators.minLength(3)]);
-      this.usuario.get('patente')?.setValidators([Validators.required, this.validarPatente.bind(this)]);
-    } else {
-      // Eliminar validadores si el usuario no tiene vehículo
-      this.usuario.get('nombre_marca')?.clearValidators();
-      this.usuario.get('capacidad')?.clearValidators();
-      this.usuario.get('nombre_modelo')?.clearValidators();
-      this.usuario.get('patente')?.clearValidators();
-    }
-    // Refrescar las validaciones
-    this.usuario.get('nombre_marca')?.updateValueAndValidity();
-    this.usuario.get('capacidad')?.updateValueAndValidity();
-    this.usuario.get('nombre_modelo')?.updateValueAndValidity();
-    this.usuario.get('patente')?.updateValueAndValidity();
-  });
+    this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
+      if (value === 'si') {
+        // Agregar validadores cuando el usuario tiene un vehículo
+        this.usuario.get('nombre_marca')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
+        this.usuario.get('capacidad')?.setValidators([Validators.required, this.capacidadValidator.bind(this)]);
+        this.usuario.get('nombre_modelo')?.setValidators([Validators.required,Validators.minLength(3)]);
+        this.usuario.get('patente')?.setValidators([Validators.required, this.validarPatente.bind(this)]);
+      } else {
+        // Eliminar validadores si el usuario no tiene vehículo
+        this.usuario.get('nombre_marca')?.clearValidators();
+        this.usuario.get('capacidad')?.clearValidators();
+        this.usuario.get('nombre_modelo')?.clearValidators();
+        this.usuario.get('patente')?.clearValidators();
+      }
+      // Refrescar las validaciones
+      this.usuario.get('nombre_marca')?.updateValueAndValidity();
+      this.usuario.get('capacidad')?.updateValueAndValidity();
+      this.usuario.get('nombre_modelo')?.updateValueAndValidity();
+      this.usuario.get('patente')?.updateValueAndValidity();
+    });
   }
 
 
@@ -213,6 +231,11 @@ capacidadValidator(control: AbstractControl) {
     this.botonModificar = false;
   }
 
+  async buscarViaje(id:number){
+    this.viaje.setValue( await this.viajeService.getViaje(id) );
+    this.botonModificar = false;
+  }
+
   async modificar() {
     const alert = await this.alertController.create({
       header: 'Confirmar modificación',
@@ -250,8 +273,6 @@ capacidadValidator(control: AbstractControl) {
     await alert.present();
   }
 
-
-
   async eliminar(rut_eliminar: string) {
     const alert = await this.alertController.create({
       header: 'Confirmar eliminación',
@@ -283,6 +304,36 @@ capacidadValidator(control: AbstractControl) {
   }
 
 
+  async eliminarViaje(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este viaje?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Eliminación cancelada');
+          }
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: async () => {
+            if (await  this.viajeService.deleteViaje(id)) {
+              await this.presentAlert('Éxito', 'Viaje eliminado', 'VIAJE ELIMINADO CON ÉXITO!');
+              this.viajes = await this.viajeService.getViajes();
+            } else {
+              await this.presentAlert('Error', 'No se pudo eliminar', 'ERROR! VIAJE NO ELIMINADO!');
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   /*Alerta*/
   async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
@@ -296,5 +347,33 @@ capacidadValidator(control: AbstractControl) {
   }
 
   /*Alerta de modificar*/
+  
+
+
+
+  /*VIAJES*/
+  async registrarViaje() {
+    if (this.viaje.valid) {
+      const nextId = await this.viajeService.getNextId();
+      this.viaje.controls.id.setValue(nextId);
+
+      const viaje = this.viaje.value;
+      const registroViaje = await this.viajeService.createViaje(viaje);
+
+      if (registroViaje) {
+        await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!','VIAJE REGISTRADO');
+        this.viaje.reset();
+        console.log('Viaje registrado');
+      } else {
+        console.log('Formulario invalido');
+        await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos','VIAJE NO REGISTRADO');
+      }
+    }
+  }
+
+  async listarViajes() {
+    this.viajes = await this.viajeService.getViajes();
+  }
+
   
 }

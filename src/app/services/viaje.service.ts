@@ -25,12 +25,12 @@ export class ViajeService {
     return true;
   }
 
-  public async getViaje(id: string): Promise<any>{
+  public async getViaje(id: number): Promise<any>{
     let viajes: any[] = await this.storage.get("viajes") || [];
     return viajes.find(v => v.id === id);
   }
 
-  public async getViajes(): Promise<any>{
+  public async getViajes(): Promise<any[]>{
     let viajes: any[] = await this.storage.get("viajes") || [];
     return viajes;
   }
@@ -46,7 +46,7 @@ export class ViajeService {
     return true;
   }
 
-  public async deleteViaje(id: string): Promise<boolean> {
+  public async deleteViaje(id: number): Promise<boolean> {
     let viajes: any[] = await this.storage.get("viajes") || [];
     let indice: number = viajes.findIndex(v => v.id === id);
     if(indice === -1){

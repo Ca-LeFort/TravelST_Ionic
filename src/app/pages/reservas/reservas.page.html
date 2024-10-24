@@ -1,26 +1,6 @@
 <ion-content>
   <div *ngIf="usuario.tiene_vehiculo=='si'">
     <div id="map"></div>
-    <ion-accordion-group>
-      <ion-accordion value="Viajes">
-        <ion-item slot="header" color="light">
-          <ion-label>First Accordion</ion-label>
-        </ion-item>
-        <div class="ion-padding" slot="content" *ngFor="let v of viajes">
-          <ion-card *ngIf="v.estado_viaje == 'Pendiente'">
-            <ion-card-header>
-              <ion-card-title>{{v.nombre_destino}}</ion-card-title>
-              <ion-card-subtitle>{{v.estado_viaje}}</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
-              <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
-              <p>Precio: {{v.distancia_metros/400 * 100 | currency:'CLP'}}</p>
-            </ion-card-content>
-            <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
-          </ion-card>
-        </div>
-      </ion-accordion>
-    </ion-accordion-group>
     <br>
     <form [formGroup]="viaje" (ngSubmit)="registrarViaje()">
       <ion-input label="Conductor" labelPlacement="stacked" [(ngModel)]="usuario.nombre" formControlName="conductor" fill="outline" name="conductor" readonly="true"></ion-input>
@@ -37,15 +17,31 @@
       <br>
       <ion-input label="Tiempo (minutos)" labelPlacement="stacked" [(ngModel)]="tiempo_minutos" formControlName="tiempo_minutos" fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
       <br>
+      <ion-input label="Precio" labelPlacement="stacked" [(ngModel)]="precio" formControlName="precio" fill="outline" name="precio" readonly="true"></ion-input>
+      <br>
       <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon slot="start" name="add-circle-outline"></ion-icon>Crear viaje</ion-button>
     </form>
     <br>
   </div>
     
-  <div *ngIf="usuario.tiene_vehiculo=='no'">
+  <div *ngIf="usuario.tiene_vehiculo=='no' || usuario.tipo_usuario=='administrador'">
     <ion-item slot="header">
-      <ion-label>Reservas disponibles</ion-label>
+      <h1>Reservas disponibles</h1>
     </ion-item>
+    <div *ngFor="let v of viajes">
+      <ion-card *ngIf="v.estado_viaje == 'pendiente'">
+        <ion-card-header>
+          <ion-card-title>{{v.destino}}</ion-card-title>
+          <ion-card-subtitle>{{v.estado_viaje | titlecase}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
+          <p>Precio: {{v.precio | currency:'CLP'}}</p>
+        </ion-card-content>
+        <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
+        <br>
+      </ion-card>
+    </div>
   </div>
 
 </ion-content>

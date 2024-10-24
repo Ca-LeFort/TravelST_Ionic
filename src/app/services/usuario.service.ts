@@ -78,6 +78,8 @@ export class UsuarioService {
     return true;
   }
 
+  
+
   public async authenticate(email: string, password: string): Promise<boolean> {
     let usuarios: any[] = await this.storage.get("usuarios") || [];
     const usuario = usuarios.find(user => user.email === email && user.password === password);

@@ -142,7 +142,52 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <h1>Administración de Viajes</h1>
+        <ion-card>
+          <div class="register">
+            <form [formGroup]="viaje" (ngSubmit)="registrarViaje()">
+              <ion-input label="Conductor" labelPlacement="stacked"  formControlName="conductor" fill="outline" name="conductor" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Asientos Disponibles" labelPlacement="stacked"  formControlName="asientos_disponibles"  fill="outline" name="asientos_disponibles" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Destino" labelPlacement="stacked"  formControlName="destino" fill="outline" name="destino" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Latitud" labelPlacement="stacked"  formControlName="latitud" fill="outline" name="latitud" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Longitud" labelPlacement="stacked"  formControlName="longitud" fill="outline" name="longitud" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Distancia (metros)" labelPlacement="stacked"  formControlName="distancia_metros" fill="outline" name="distancia_metros" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Tiempo (minutos)" labelPlacement="stacked"  formControlName="tiempo_minutos" fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
+              <br>
+              <ion-input label="Precio" labelPlacement="stacked"  formControlName="precio" fill="outline" name="precio" readonly="true"></ion-input>
+              <br>
+    
+              <!--BOTONES-->
+              <ion-button [disabled]="viaje.invalid" type="submit" fill="outline" size="block" color="warning">REGISTRAR</ion-button>
+              <ion-button [disabled]="botonModificar || usuario.invalid || isPasswordMismatch()" fill="outline" (click)="modificar()" size="block" color="danger">MODIFICAR</ion-button>
+              <ion-button type="reset" size="block" fill="outline" color="secondary">LIMPIAR</ion-button>
+            </form>
+          </div>
+
+          <div *ngIf="viajes.length > 0; else noHayViajes">
+            <ion-list *ngFor="let viaje of viajes">
+              <ion-item-sliding>
+                <ion-item-options side="start">
+                  <ion-item-option (click)="buscarViaje(viaje.id)" color="warning">Buscar</ion-item-option>
+                </ion-item-options>
+                <ion-item>{{viaje.id}} - {{viaje.conductor}}</ion-item>
+                <ion-item-options side="end">
+                  <ion-item-option (click)="eliminarViaje(viaje.id)" color="danger">Eliminar</ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-list>
+          </div>
+          <ng-template #noHayViajes>
+            <h1>No hay viajes</h1>
+          </ng-template>
+        </ion-card>
       </div>
     </ion-accordion>
   </ion-accordion-group>
 </ion-content>
+

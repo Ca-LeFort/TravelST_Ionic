@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
@@ -12,7 +12,7 @@ import { ViajeService } from 'src/app/services/viaje.service';
   templateUrl: './reservas.page.html',
   styleUrls: ['./reservas.page.scss'],
 })
-export class ReservasPage implements OnInit {
+export class ReservasPage implements OnInit, AfterViewInit {
 
   // Variables
   private map: L.Map | undefined;
@@ -24,6 +24,7 @@ export class ReservasPage implements OnInit {
   direccion: string = "";
   distancia_metros: number = 0;
   tiempo_minutos: number = 0;
+  precio: number = 0;
 
   viaje = new FormGroup({
     id: new FormControl(),
@@ -43,9 +44,16 @@ export class ReservasPage implements OnInit {
 
   constructor(private viajeService: ViajeService, private usuarioService: UsuarioService, private alertController: AlertController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || "");
-    this.initMap();
+    this.viaje.controls.conductor.setValue(this.usuario.nombre);
+    await this.listarViajes();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.initMap();
+    }, 2000);
   }
 
   initMap() {
@@ -93,6 +101,8 @@ export class ReservasPage implements OnInit {
           }).on('routesfound', (e) => {
             this.distancia_metros = e.routes[0].summary.totalDistance;
             this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime / 60);
+            this.precio = Math.round(this.distancia_metros/400 * 100);
+
           }).addTo(this.map);
         }
       });

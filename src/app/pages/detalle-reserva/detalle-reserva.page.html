@@ -1,3 +1,33 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Detalle del viaje</ion-title>
+      <ion-buttons slot="start"><ion-back-button></ion-back-button></ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
 <ion-content>
-  
+    
+
+    <form>
+        <ion-input label="Conductor" labelPlacement="stacked" 
+            fill="outline" name="conductor" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Asientos Disponibles" labelPlacement="stacked"
+            fill="outline" name="asientos_disponibles"
+            readonly="true"></ion-input>
+        <br>
+        <ion-input label="Destino" labelPlacement="stacked"
+            fill="outline" name="destino" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Distancia (metros)" labelPlacement="stacked"
+            fill="outline" name="distancia_metros" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Tiempo (minutos)" labelPlacement="stacked"
+            fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Precio" labelPlacement="stacked" fill="outline"
+            name="precio" readonly="true"></ion-input>
+        <br>
+        <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+    </form>
 </ion-content>
