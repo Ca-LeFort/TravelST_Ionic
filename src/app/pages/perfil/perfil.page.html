@@ -22,36 +22,31 @@
         <p class="campos">Email Duoc</p>
         <p>{{usuario.email}}</p>
         <br>
-        <p class="campos">Nombre</p>
-        <p>{{usuario.nombre}}</p>
-        <br>
-        <p class="campos">Apellidos</p>
-        <p>{{usuario.apellidos}}</p>
+        <p class="campos">Nombre Completo</p>
+        <p>{{usuario.nombre | titlecase}} {{usuario.apellidos | titlecase}}</p>
         <br>
         <p class="campos">Fecha de Nacimiento</p>
         <p>{{usuario.fechaNacimiento}}</p>
         <br>
-        <p class="campos">Genero</p>
+        <p class="campos">Género</p>
         <p>{{usuario.genero}}</p>
         <br>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="usuario?.tiene_vehiculo === 'si'">
-    <ion-card-content >
-      <br>
-      <p class="campos">Marca</p>
-      <p>{{ usuario?.nombre_marca }}</p>
-      <br>
-      <p class="campos">Modelo</p>
-      <p>{{ usuario?.nombre_modelo }}</p>
-      <br>
-      <p class="campos">Capacidad</p>
-      <p>{{ usuario?.capacidad }}</p>
-      <br>
-      <p class="campos">Patente</p>
-      <p>{{ usuario?.patente }}</p>
-      <br>
+        <p class="campos">Tiene vehículo</p>
+        <p>{{usuario.tiene_vehiculo | titlecase}}</p>
+        <br>
+        <div *ngIf="usuario?.tiene_vehiculo === 'si'">
+          <p class="campos">Marca</p>
+          <p>{{ usuario?.nombre_marca | titlecase }}</p>
+          <br>
+          <p class="campos">Modelo</p>
+          <p>{{ usuario?.nombre_modelo }}</p>
+          <br>
+          <p class="campos">Capacidad</p>
+          <p>{{ usuario?.capacidad }}</p>
+          <br>
+          <p class="campos">Patente</p>
+          <p>{{ usuario?.patente }}</p>
+        </div>
     </ion-card-content>
   </ion-card>
 

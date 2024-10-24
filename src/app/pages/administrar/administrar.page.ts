@@ -26,8 +26,6 @@ export class AdministrarPage implements OnInit {
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 
   });
 
-  
-
   usuarios:any[] = [];
   botonModificar: boolean = true;
 

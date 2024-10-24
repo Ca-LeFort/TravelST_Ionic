@@ -1,5 +1,5 @@
 <ion-content>
-  <div>
+  <div *ngIf="usuario.tiene_vehiculo=='si'">
     <div id="map"></div>
     <ion-accordion-group>
       <ion-accordion value="Viajes">
@@ -39,10 +39,13 @@
       <br>
       <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon slot="start" name="add-circle-outline"></ion-icon>Crear viaje</ion-button>
     </form>
+    <br>
   </div>
     
-  <div>
-
+  <div *ngIf="usuario.tiene_vehiculo=='no'">
+    <ion-item slot="header">
+      <ion-label>Reservas disponibles</ion-label>
+    </ion-item>
   </div>
 
 </ion-content>

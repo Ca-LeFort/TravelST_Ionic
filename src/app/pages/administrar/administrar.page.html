@@ -1,123 +1,148 @@
 <ion-content>
-
-  <ion-card>
-    <div class="register">
-    
-      <h1>Administracion de Usuarios</h1>
-      <form [formGroup]="usuario" (ngSubmit)="registrar()">
-  
-        <!--RUT-->
-        <ion-item>
-          <ion-input formControlName="rut" type="text" label="RUT" labelPlacement="stacked" placeholder="Ingrese su RUT con guion" aria-label="Light input" color="light"></ion-input>
-        </ion-item>
-  
-        <!--NOMBRE-->
-        <ion-item>
-          <ion-input formControlName="nombre" type="text" label="Nombre" labelPlacement="stacked" placeholder="Ingrese su nombre" aria-label="Light input" color="light"></ion-input>
-        </ion-item>
-  
-        <!--APELLIDOS-->
-        <ion-item>
-          <ion-input formControlName="apellidos" type="text" label="Apellidos" labelPlacement="stacked" placeholder="Ingrese apellidos" aria-label="Light input" color="light"></ion-input>
-        </ion-item>
-  
-        <!--FECHA-->
-        <ion-item>
-          <ion-input formControlName="fechaNacimiento" type="date" label="Fecha de Nacimiento" labelPlacement="stacked" placeholder="Ingrese su fecha de nacimiento" aria-label="Fecha de Nacimiento" color="light">
-          </ion-input>
-        </ion-item>
-  
-        <!--GENERO-->
-        <ion-item>
-          <ion-select formControlName="genero"  label="Género" label-placement="stacked" placeholder="Seleccionar" aria-label="Light input" color="light">
-            <ion-select-option>Masculino</ion-select-option>
-            <ion-select-option>Femenino</ion-select-option>
-            <ion-select-option>Otro</ion-select-option>
-          </ion-select>
-        </ion-item>
-  
-        <!--EMAIL-->
-        <ion-item>
-          <ion-input formControlName="email" label="Email" type="email" labelPlacement="stacked" placeholder="Ingrese su correo electronico" aria-label="Light input" color="light" ></ion-input>
-        </ion-item>
-  
-        <!--PASSWORDS-->
-        <ion-item>
-          <ion-input formControlName="password" type="password" label="Contraseña" labelPlacement="stacked" placeholder="Ingrese contraseña" aria-label="Light input" color="light">
-            <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
-          </ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-input formControlName="repeat_password" type="password" label="Repetir Contraseña" labelPlacement="stacked" placeholder="Repita la contraseña" aria-label="Light input" color="light" [ngClass]="{'invalid': isPasswordMismatch()}">
-            <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
-          </ion-input>
-        </ion-item>
-        <ion-item *ngIf="isPasswordMismatch()" class="error-message" color="danger">
-          <p>Las contraseñas no coinciden.</p>
-        </ion-item>
-  
-  
-        <!--VEHICULO-->
-        <ion-item>
-            <ion-label>¿Tiene Vehiculo?</ion-label>
-          <ion-radio-group formControlName="tiene_vehiculo">
-            <ion-radio value="si">Si</ion-radio>
-            <ion-radio value="no">No</ion-radio>
-          </ion-radio-group>
-        </ion-item>
-  
-        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
-          <ion-input formControlName="nombre_marca" type="text" label="Marca" labelPlacement="stacked" ></ion-input>
-        </ion-item>
-        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
-          <ion-input formControlName="capacidad" type="Number" label="Capacidad" labelPlacement="stacked" ></ion-input>
-        </ion-item>
-        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
-          <ion-input formControlName="nombre_modelo" type="text" label="Modelo" labelPlacement="stacked" ></ion-input>
-        </ion-item>
-        <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
-          <ion-input formControlName="patente" type="text" label="Patente" labelPlacement="stacked" ></ion-input>
-        </ion-item>
-  
-      <!--USUARIO-->
-      <ion-item>
-        <ion-label>Tipo de usuario</ion-label>
-        <ion-radio-group formControlName="tipo_usuario">
-          <ion-radio value="estudiante">Estudiante</ion-radio>
-          <ion-radio value="administrador">Administrador</ion-radio>
-        </ion-radio-group>
+  <div class="header">
+    <img src="../../../assets/icon/logo.png" alt="">
+    <h1>Administración de TravelST</h1>
+  </div>
+  <ion-accordion-group>
+    <ion-accordion value="first">
+      <ion-item slot="header" color="light">
+        <ion-label><ion-icon name="person-sharp"></ion-icon>Administración de Usuarios</ion-label>
       </ion-item>
-        
-      <!--BOTONES-->
-        <ion-button [disabled]="usuario.invalid || isPasswordMismatch()" type="submit" fill="outline" size="block" color="warning" >REGISTRAR</ion-button>
-        <ion-button [disabled]="botonModificar || usuario.invalid || isPasswordMismatch()" fill="outline" (click)="modificar()" size="block" color="danger">MODIFICAR</ion-button>
-        <ion-button type="reset" size="block" fill="outline" color="secondary">LIMPIAR</ion-button>
-        
-        
-        
-      </form>
-    </div>
-      
-    <div *ngIf="usuarios.length > 0; else noHayUsuarios">
-      <ion-list *ngFor="let usuario of usuarios">  
-        <ion-item-sliding>
-          <ion-item-options side="start">
-            <ion-item-option (click)="buscar(usuario.rut)" color="warning">Buscar</ion-item-option>
-          </ion-item-options>
-          <ion-item>{{usuario.rut}} - {{usuario.nombre}}</ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="eliminar(usuario.rut)" color="danger">Eliminar</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
-    </div>
-    <ng-template #noHayUsuarios>
-      <h1>No hay usuarios</h1>
-    </ng-template>
-  
-  </ion-card>
+      <div class="ion-padding" slot="content">
+        <ion-card>
+          <div class="register">
+            <form [formGroup]="usuario" (ngSubmit)="registrar()">
 
+              <!--RUT-->
+              <ion-item>
+                <ion-input formControlName="rut" type="text" label="RUT" labelPlacement="stacked"
+                  placeholder="Ingrese su RUT con guion" aria-label="Light input" color="light"></ion-input>
+              </ion-item>
 
+              <!--NOMBRE-->
+              <ion-item>
+                <ion-input formControlName="nombre" type="text" label="Nombre" labelPlacement="stacked"
+                  placeholder="Ingrese su nombre" aria-label="Light input" color="light"></ion-input>
+              </ion-item>
 
+              <!--APELLIDOS-->
+              <ion-item>
+                <ion-input formControlName="apellidos" type="text" label="Apellidos" labelPlacement="stacked"
+                  placeholder="Ingrese apellidos" aria-label="Light input" color="light"></ion-input>
+              </ion-item>
+
+              <!--FECHA-->
+              <ion-item>
+                <ion-input formControlName="fechaNacimiento" type="date" label="Fecha de Nacimiento"
+                  labelPlacement="stacked" placeholder="Ingrese su fecha de nacimiento" aria-label="Fecha de Nacimiento"
+                  color="light">
+                </ion-input>
+              </ion-item>
+
+              <!--GENERO-->
+              <ion-item>
+                <ion-select formControlName="genero" label="Género" label-placement="stacked" placeholder="Seleccionar"
+                  aria-label="Light input" color="light">
+                  <ion-select-option>Masculino</ion-select-option>
+                  <ion-select-option>Femenino</ion-select-option>
+                  <ion-select-option>Otro</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <!--EMAIL-->
+              <ion-item>
+                <ion-input formControlName="email" label="Email" type="email" labelPlacement="stacked"
+                  placeholder="Ingrese su correo electronico" aria-label="Light input" color="light"></ion-input>
+              </ion-item>
+
+              <!--PASSWORDS-->
+              <ion-item>
+                <ion-input formControlName="password" type="password" label="Contraseña" labelPlacement="stacked"
+                  placeholder="Ingrese contraseña" aria-label="Light input" color="light">
+                  <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input formControlName="repeat_password" type="password" label="Repetir Contraseña"
+                  labelPlacement="stacked" placeholder="Repita la contraseña" aria-label="Light input" color="light"
+                  [ngClass]="{'invalid': isPasswordMismatch()}">
+                  <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
+                </ion-input>
+              </ion-item>
+              <ion-item *ngIf="isPasswordMismatch()" class="error-message" color="danger">
+                <p>Las contraseñas no coinciden.</p>
+              </ion-item>
+
+              <!--VEHICULO-->
+              <ion-item>
+                <ion-label>¿Tiene Vehiculo?</ion-label>
+                <ion-radio-group formControlName="tiene_vehiculo">
+                  <ion-radio value="si">Si</ion-radio>
+                  <ion-radio value="no">No</ion-radio>
+                </ion-radio-group>
+              </ion-item>
+
+              <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+                <ion-input formControlName="nombre_marca" type="text" label="Marca"
+                  labelPlacement="stacked"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+                <ion-input formControlName="capacidad" type="Number" label="Capacidad"
+                  labelPlacement="stacked"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+                <ion-input formControlName="nombre_modelo" type="text" label="Modelo"
+                  labelPlacement="stacked"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="usuario.get('tiene_vehiculo')?.value === 'si'">
+                <ion-input formControlName="patente" type="text" label="Patente" labelPlacement="stacked"></ion-input>
+              </ion-item>
+
+              <!--USUARIO-->
+              <ion-item>
+                <ion-label>Tipo de usuario</ion-label>
+                <ion-radio-group formControlName="tipo_usuario">
+                  <ion-radio value="estudiante">Estudiante</ion-radio>
+                  <ion-radio value="administrador">Administrador</ion-radio>
+                </ion-radio-group>
+              </ion-item>
+
+              <!--BOTONES-->
+              <ion-button [disabled]="usuario.invalid || isPasswordMismatch()" type="submit" fill="outline" size="block"
+                color="warning">REGISTRAR</ion-button>
+              <ion-button [disabled]="botonModificar || usuario.invalid || isPasswordMismatch()" fill="outline"
+                (click)="modificar()" size="block" color="danger">MODIFICAR</ion-button>
+              <ion-button type="reset" size="block" fill="outline" color="secondary">LIMPIAR</ion-button>
+            </form>
+          </div>
+
+          <div *ngIf="usuarios.length > 0; else noHayUsuarios">
+            <ion-list *ngFor="let usuario of usuarios">
+              <ion-item-sliding>
+                <ion-item-options side="start">
+                  <ion-item-option (click)="buscar(usuario.rut)" color="warning">Buscar</ion-item-option>
+                </ion-item-options>
+                <ion-item>{{usuario.rut}} - {{usuario.nombre}}</ion-item>
+                <ion-item-options side="end">
+                  <ion-item-option (click)="eliminar(usuario.rut)" color="danger">Eliminar</ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-list>
+          </div>
+          <ng-template #noHayUsuarios>
+            <h1>No hay usuarios</h1>
+          </ng-template>
+        </ion-card>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-label><ion-icon name="car-sport-sharp"></ion-icon>Administración de Viajes</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <h1>Administración de Viajes</h1>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>
