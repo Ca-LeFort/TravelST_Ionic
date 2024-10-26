@@ -73,9 +73,12 @@ npm install
    ionic serve
    ```
 
-##🆘 Soporte
+
+## 🆘 Soporte
+
 Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con el equipo de desarrollo:
 
-Correo Electrónico: support@travelsTapp.com
+- **Correo Electrónico**: support@travelsTapp.com
 
-¡Gracias por tu interés en TravelST! Juntos, podemos hacer que el transporte entre compañeros sea más accesible y eficiente. 🚀
+¡Gracias por tu interés en **TravelST**! Juntos, podemos hacer que el transporte entre compañeros sea más accesible y eficiente. 🚀
+
