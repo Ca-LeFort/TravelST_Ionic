@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ViajeService } from 'src/app/services/viaje.service';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class DetalleReservaPage implements OnInit {
   tiempo_minutos = 0;
   precio = 0;
 
-  constructor(private viajeService: ViajeService, private activatedRoute: ActivatedRoute) {}
+  constructor(private viajeService: ViajeService, private activatedRoute: ActivatedRoute, private alertController: AlertController) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -71,6 +72,15 @@ export class DetalleReservaPage implements OnInit {
       routeWhileDragging: true,
       show: false,
     }).addTo(this.map);
+  }
+
+  async presentAlert(header: string, subHeader: string) {
+    const alert = await this.alertController.create({
+      header: header,       // Título de la alerta
+      subHeader: subHeader, // Subtítulo de la alerta
+    });
+
+    await alert.present();
   }
 
 }

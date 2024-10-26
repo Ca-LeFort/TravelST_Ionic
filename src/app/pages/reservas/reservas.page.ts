@@ -129,6 +129,58 @@ export class ReservasPage implements OnInit, AfterViewInit {
     }
   }
 
+  async reservarViaje(viaje: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar reserva',
+      message: '¿Estás seguro de que deseas reservar este viaje?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Reserva cancelada');
+          }
+        },
+        {
+          text: 'Sí',
+          role: 'confirm',
+          handler: async() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario") || '{}');
+            const viajes = await this.viajeService.getViajes();
+            const viajeReservado = viajes.some((v: any) => 
+              v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut)
+            );
+            
+            if(viajeReservado) {
+              await this.presentAlert('Error!', 'Ya has tomado un viaje, no puedes reservar otro');
+              return;
+            }
+        
+            if(viaje.asientos_disponibles > 0) {
+              viaje.asientos_disponibles -= 1;
+        
+              if(viaje.asientos_disponibles === 0){
+                viaje.estado_viaje = 'Agotado';
+              }
+        
+              viaje.pasajeros.push(usuario);
+        
+              const actualizado = await this.viajeService.updateViaje(viaje.id, viaje);
+              if(actualizado) {
+                await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
+              } else {
+                console.log('No se pudo actualizar el viaje')
+              }
+            } else {
+              console.log('No hay asientos disponibles');
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,

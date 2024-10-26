@@ -40,6 +40,8 @@
         </ion-card-content>
         <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
         <br>
+        <ion-button (click)="reservarViaje(v)" *ngIf="v.asientos_disponibles > 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+        <br>
       </ion-card>
     </div>
   </div>
