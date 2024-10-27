@@ -1,49 +1,59 @@
 <ion-content>
-  <div *ngIf="usuario.tiene_vehiculo=='si'">
-    <div id="map"></div>
-    <br>
-    <form [formGroup]="viaje" (ngSubmit)="registrarViaje()">
-      <ion-input label="Conductor" labelPlacement="stacked" [(ngModel)]="usuario.nombre" formControlName="conductor" fill="outline" name="conductor" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Asientos Disponibles" labelPlacement="stacked" [(ngModel)]="usuario.capacidad" formControlName="asientos_disponibles"  fill="outline" name="asientos_disponibles" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Destino" labelPlacement="stacked" [(ngModel)]="direccion" formControlName="destino" fill="outline" name="destino" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Latitud" labelPlacement="stacked" [(ngModel)]="latitud" formControlName="latitud" fill="outline" name="latitud" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Longitud" labelPlacement="stacked" [(ngModel)]="longitud" formControlName="longitud" fill="outline" name="longitud" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Distancia (metros)" labelPlacement="stacked" [(ngModel)]="distancia_metros" formControlName="distancia_metros" fill="outline" name="distancia_metros" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Tiempo (minutos)" labelPlacement="stacked" [(ngModel)]="tiempo_minutos" formControlName="tiempo_minutos" fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
-      <br>
-      <ion-input label="Precio" labelPlacement="stacked" [(ngModel)]="precio" formControlName="precio" fill="outline" name="precio" readonly="true"></ion-input>
-      <br>
-      <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon slot="start" name="add-circle-outline"></ion-icon>Crear viaje</ion-button>
-    </form>
-    <br>
-  </div>
-    
-  <div *ngIf="usuario.tiene_vehiculo=='no' || usuario.tipo_usuario=='administrador'">
-    <ion-item slot="header">
-      <h1>Reservas disponibles</h1>
-    </ion-item>
-    <div *ngFor="let v of viajes">
-      <ion-card *ngIf="v.estado_viaje == 'pendiente'">
-        <ion-card-header>
-          <ion-card-title>{{v.destino}}</ion-card-title>
-          <ion-card-subtitle>Estado: {{v.estado_viaje | titlecase}}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
-          <p>Precio: {{v.precio | currency:'CLP'}}</p>
-        </ion-card-content>
-        <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
-        <br>
-        <ion-button (click)="reservarViaje(v)" *ngIf="v.asientos_disponibles > 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
-        <br>
-      </ion-card>
+  <ion-card>
+    <div *ngIf="usuario.tiene_vehiculo=='si'" class="toggle-container" (click)="toggleDarkMode()" >
+      <div class="toggle-circle" [ngClass]="{'toggle-left': isDarkMode}" ></div>
     </div>
-  </div>
 
+    <div *ngIf="usuario.tiene_vehiculo=='si'" class="contenedorMap">
+      <div id="map"></div>
+      <br>
+      <form [formGroup]="viaje" (ngSubmit)="registrarViaje()">
+        <ion-input label="Conductor" labelPlacement="stacked" [(ngModel)]="usuario.nombre" formControlName="conductor" fill="outline" name="conductor" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Asientos Disponibles" labelPlacement="stacked" [(ngModel)]="usuario.capacidad" formControlName="asientos_disponibles"  fill="outline" name="asientos_disponibles" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Destino" labelPlacement="stacked" [(ngModel)]="direccion" formControlName="destino" fill="outline" name="destino" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Latitud" labelPlacement="stacked" [(ngModel)]="latitud" formControlName="latitud" fill="outline" name="latitud" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Longitud" labelPlacement="stacked" [(ngModel)]="longitud" formControlName="longitud" fill="outline" name="longitud" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Distancia (metros)" labelPlacement="stacked" [(ngModel)]="distancia_metros" formControlName="distancia_metros" fill="outline" name="distancia_metros" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Tiempo (minutos)" labelPlacement="stacked" [(ngModel)]="tiempo_minutos" formControlName="tiempo_minutos" fill="outline" name="tiempo_minutos" readonly="true"></ion-input>
+        <br>
+        <ion-input label="Precio" labelPlacement="stacked" [(ngModel)]="precio" formControlName="precio" fill="outline" name="precio" readonly="true"></ion-input>
+        <br>
+        <ion-button fill="outline" expand="block" type="submit" [disabled]="viaje.invalid"><ion-icon slot="start" name="add-circle-outline"></ion-icon>Crear viaje</ion-button>
+      </form>
+      <br>
+    </div>
+      
+    <div *ngIf="usuario.tiene_vehiculo=='no' || usuario.tipo_usuario=='administrador'">
+      <ion-item slot="header">
+        <h1>Reservas disponibles</h1>
+      </ion-item>
+      <div *ngFor="let v of viajes">
+        <ion-card *ngIf="v.estado_viaje == 'pendiente'">
+          <ion-card-header>
+            <ion-card-title>{{v.destino}}</ion-card-title>
+            <ion-card-subtitle>Estado: {{v.estado_viaje | titlecase}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
+            <p>Precio: {{v.precio | currency:'CLP'}}</p>
+          </ion-card-content>
+          <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
+          <br>
+          <ion-button (click)="reservarViaje(v)" *ngIf="v.asientos_disponibles > 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+          <br>
+        </ion-card>
+      </div>
+    </div>
+  </ion-card>
+  
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
+  <script src="leaflet-plugins-1.9.3/layer/tile/Google.js"></script>
 </ion-content>
+

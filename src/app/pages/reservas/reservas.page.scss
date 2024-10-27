@@ -1,3 +1,4 @@
+/*Estilo del mapa*/
 #map {
     height: 50vh;
     width: 100%;
@@ -12,3 +13,46 @@ ion-button {
     width: 90%;
     margin: auto;
 }
+
+ion-card{
+    margin: 50px;
+    padding: 10px;
+}
+
+/*Modo Oscuro*/
+.toggle-container {
+    margin: 5px;
+    position: absolute;
+    left: 50%;
+    width: 60px; /* Ancho reducido */
+    height: 35px; /* Altura reducida */
+    border-radius: 20px; /* Borde redondeado para el contenedor */
+    background-color: #ccc; /* Color de fondo */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para un efecto de profundidad */
+    transition: background-color 0.3s; /* Transición suave para el fondo */
+    z-index: 1000; /* Asegúrate de que el contenedor esté por encima de otros elementos */
+  }
+  
+
+  .toggle-container:hover {
+    background-color: #bbb; /* Color de fondo en hover */
+  }
+  
+.toggle-circle {
+    width: 28px; /* Ancho del círculo reducido */
+    height: 28px; /* Altura del círculo reducido */
+    background-color: #0d5bc2; /* Color del círculo */
+    border-radius: 50%; /* Redondeo completo para el círculo */
+    transition: transform 0.3s ease; /* Transición suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para el círculo */
+}
+  
+
+.toggle-left {
+    transform: translateX(70%); /* Desplaza el círculo hacia la derecha */
+}
+  

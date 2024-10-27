@@ -18,6 +18,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
   private map: L.Map | undefined;
   private geocoder: G.Geocoder | undefined;
   usuario: any;
+  isDarkMode: boolean = false; // Estado del modo oscuro
 
   latitud: number = 0;
   longitud: number = 0;
@@ -56,59 +57,97 @@ export class ReservasPage implements OnInit, AfterViewInit {
     }, 2000);
   }
 
+  
+
+
   initMap() {
     try {
-      // ACÁ CARGAMOS E INICIALIZAMOS EL MAPA
-      this.map = L.map("map").setView([-33.59836727695556, -70.578819737547], 15);
-      let marker = L.marker([-33.59836727695556, -70.578819737547]).addTo(this.map);
+        // ACÁ CARGAMOS E INICIALIZAMOS EL MAPA
+        this.map = L.map("map").setView([-33.59836727695556, -70.578819737547], 15);
+        
+        let marker = L.marker([-33.59836727695556, -70.578819737547]).addTo(this.map);
+        marker.bindPopup("<b>Duoc UC: Sede Puente Alto</b>");
 
-      marker.bindPopup("<b>Duoc UC: Sede Puente Alto</b>");
+        // Definir las capas de mapa
+        const streetsLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
 
-      // ES LA PLANTILLA PARA QUE SE VEA EL MAPA
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(this.map);
+        const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
 
-      this.map.whenReady(() => {
-        setTimeout(() => {
-          this.map?.invalidateSize();
-        }, 500);
-      });
+        const googleTerrain = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
 
-      // VAMOS A AGREGAR UN BUSCADOR DE DIRECCIONES
-      this.geocoder = G.geocoder({
-        placeholder: "Ingrese la dirección a buscar",
-        errorMessage: "Dirección NO encontrada",
-      }).addTo(this.map);
+        const googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
 
-      this.map.on('locationfound', (e) => {
-        console.log(e.latlng.lat);
-        console.log(e.latlng.lng);
-      });
+        // Añadir la capa de calles por defecto
+        streetsLayer.addTo(this.map);
 
-      // Vamos a realizar una acción con el buscador, cuando ocurra algo con 
-      this.geocoder.on('markgeocode', (e) => {
-        this.latitud = e.geocode.properties['lat'];
-        this.longitud = e.geocode.properties['lon'];
-        this.direccion = e.geocode.properties['display_name'];
+        // Crear el control de capas
+        const baseLayers = {
+            "Calle": streetsLayer,
+            "Satélite": googleSat,
+            "Terreno": googleTerrain,
+            "Híbrido": googleHybrid
+        };
 
-        if (this.map) {
-          L.Routing.control({
-            waypoints: [L.latLng(-33.59836727695556, -70.578819737547),
-            L.latLng(this.latitud, this.longitud)],
-            fitSelectedRoutes: true
-          }).on('routesfound', (e) => {
-            this.distancia_metros = e.routes[0].summary.totalDistance;
-            this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime / 60);
-            this.precio = Math.round(this.distancia_metros/400 * 100);
+        // Añadir el control de capas al mapa
+        L.control.layers(baseLayers).addTo(this.map);
 
-          }).addTo(this.map);
-        }
-      });
+        this.map.whenReady(() => {
+            setTimeout(() => {
+                this.map?.invalidateSize();
+            }, 500);
+        });
+
+        // VAMOS A AGREGAR UN BUSCADOR DE DIRECCIONES
+        this.geocoder = G.geocoder({
+            placeholder: "Ingrese la dirección a buscar",
+            errorMessage: "Dirección NO encontrada",
+        }).addTo(this.map);
+
+        this.map.on('locationfound', (e) => {
+            console.log(e.latlng.lat);
+            console.log(e.latlng.lng);
+        });
+
+        // Vamos a realizar una acción con el buscador, cuando ocurra algo con 
+        this.geocoder.on('markgeocode', (e) => {
+            this.latitud = e.geocode.properties['lat'];
+            this.longitud = e.geocode.properties['lon'];
+            this.direccion = e.geocode.properties['display_name'];
+
+            if (this.map) {
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng(-33.59836727695556, -70.578819737547),
+                        L.latLng(this.latitud, this.longitud)
+                    ],
+                    fitSelectedRoutes: true
+                }).on('routesfound', (e) => {
+                    this.distancia_metros = e.routes[0].summary.totalDistance;
+                    this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime / 60);
+                    this.precio = Math.round(this.distancia_metros / 400 * 100);
+                }).addTo(this.map);
+            }
+        });
     } catch (error) {
+        console.error("Error al inicializar el mapa:", error);
     }
-  }
+}
+
+
+
+
 
   async registrarViaje() {
     if (this.viaje.valid) {
@@ -193,4 +232,21 @@ export class ReservasPage implements OnInit, AfterViewInit {
   async listarViajes() {
     this.viajes = await this.viajeService.getViajes();
   }
+
+
+  //METODO DEL MODO OSCURO
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+      if (this.isDarkMode) {
+        mapElement.style.filter = 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)';
+      } else {
+        mapElement.style.filter = 'none';
+      }
+    }
+  }
 }
+  
+
