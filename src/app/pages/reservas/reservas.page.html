@@ -43,9 +43,9 @@
             <p>Asientos disponibles: {{v.asientos_disponibles}}</p>
             <p>Precio: {{v.precio | currency:'CLP'}}</p>
           </ion-card-content>
-          <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block" [disabled]="v.asientos_disponibles == 0">Ver detalle</ion-button>
+          <ion-button routerLink="/home/reservas/detalle-reserva/{{v.id}}" size="block">Ver detalle</ion-button>
           <br>
-          <ion-button (click)="reservarViaje(v)" *ngIf="v.asientos_disponibles > 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
+          <ion-button (click)="reservarViaje(v)" [disabled]="v.asientos_disponibles === 0" fill="outline" expand="block" type="submit"><ion-icon name="car"></ion-icon>Reservar viaje</ion-button>
           <br>
         </ion-card>
       </div>
