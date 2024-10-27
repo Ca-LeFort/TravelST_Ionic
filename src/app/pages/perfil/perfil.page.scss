@@ -53,3 +53,34 @@ ion-avatar img {
     align-items: center;
     justify-content: center;
   }
+
+
+
+  ion-card table {
+    border-collapse: collapse; /* Elimina espacios entre celdas */
+    padding: 10px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el ion-card */
+    border-radius: 8px;
+}
+
+ion-card table th, ion-card table td {
+    padding: 12px 15px; /* Espacio dentro de las celdas */
+    text-align: left;
+    border: 1px solid #ddd; /* Borde de celdas */
+}
+
+ion-card table th {
+    background-color: #4CAF50; /* Fondo del encabezado */
+    color: white; /* Color del texto */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+ion-card table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color alterno en filas pares */
+}
+
+ion-card table tr:hover {
+    background-color: #f1f1f1; /* Color al pasar el ratón */
+}

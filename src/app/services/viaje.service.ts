@@ -15,6 +15,27 @@ export class ViajeService {
     this.storage.create();
   }
 
+
+
+  //Historial
+  async guardarHistorial(usuarioId: string, historial: any[]) {
+    const datos = await this.cargarDatosUsuarios();
+    datos[usuarioId] = { historial }; // Almacena el historial bajo la clave del ID del usuario
+    await this.storage.set('datosUsuarios', datos);
+    }
+
+    async cargarHistorial(usuarioId: string) {
+        const datos = await this.cargarDatosUsuarios();
+        return datos[usuarioId]?.historial || []; // Retorna el historial del usuario
+    }
+
+    private async cargarDatosUsuarios() {
+        return (await this.storage.get('datosUsuarios')) || {};
+    }
+
+
+
+  //Viaje
   public async createViaje(viaje: any): Promise<boolean>{
     let viajes: any[] = await this.storage.get("viajes") || [];
     if(viajes.find(v => v.id == viaje.id) != undefined){

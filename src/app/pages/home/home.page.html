@@ -16,7 +16,7 @@
       </ion-tab-button>
       
        <!-- Ocultar el botón si el usuario es estudiante -->
-      <ion-tab-button tab="administrar" *ngIf="usuarioService.getUsuarioAutenticado()?.tipo_usuario !== 'estudiante'">
+      <ion-tab-button tab="administrar" *ngIf="usuarioService.getUsuarioAutenticado()?.tipo_usuario === 'administrador'">
         <ion-icon name="key-sharp"></ion-icon>
       </ion-tab-button>
 

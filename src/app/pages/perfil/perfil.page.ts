@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ViajeService } from 'src/app/services/viaje.service';
 
 @Component({
   selector: 'app-perfil',
@@ -15,12 +16,15 @@ export class PerfilPage implements OnInit {
   capacidadInvalida: boolean = false; // Añadir esto si no lo has hecho
   patenteInvalida: boolean = false; // Añadir esto si no lo has hecho
   marcaInvalida: boolean = false; // Declarar esta propiedad
+  historial: any[] = [];
 
-  constructor(public usuarioService: UsuarioService, private navController: NavController) { }
+  constructor(public usuarioService: UsuarioService, private navController: NavController,
+    public viajeService: ViajeService,private alertController: AlertController) { }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
     this.selectedImage = this.usuario?.image || null;
+    this.mostrarHistorial(); // Carga el historial al iniciar
   }
 
   onFileSelected(event: Event) {
@@ -112,6 +116,23 @@ export class PerfilPage implements OnInit {
   MarcaAuto(marca: string): boolean {
     const marcaLower = marca ? marca.toLowerCase() : '';
     return !marcaLower || !this.marcasAuto.includes(marcaLower); // true si la marca no existe o es vacía
+  }
+  
+
+  async mostrarHistorial() {
+    this.historial = await this.viajeService.cargarHistorial(this.usuario.rut);
+    if (this.historial.length === 0) {
+      await this.presentAlert('Sin historial', 'No tienes viajes registrados.');
+    }
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['Cerrar'],
+    });
+    await alert.present();
   }
   
 }

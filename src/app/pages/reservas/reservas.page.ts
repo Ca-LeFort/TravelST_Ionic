@@ -42,6 +42,12 @@ export class ReservasPage implements OnInit, AfterViewInit {
   });
 
   viajes: any[] = [];
+  historial : any[] =[];
+  misViajes : any[] = [];
+
+
+
+
 
   constructor(private viajeService: ViajeService, private usuarioService: UsuarioService, private alertController: AlertController) { }
 
@@ -113,6 +119,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
         this.geocoder = G.geocoder({
             placeholder: "Ingrese la dirección a buscar",
             errorMessage: "Dirección NO encontrada",
+            position: 'topleft'
         }).addTo(this.map);
 
         this.map.on('locationfound', (e) => {
@@ -132,7 +139,14 @@ export class ReservasPage implements OnInit, AfterViewInit {
                         L.latLng(-33.59836727695556, -70.578819737547),
                         L.latLng(this.latitud, this.longitud)
                     ],
-                    fitSelectedRoutes: true
+                    fitSelectedRoutes: true,
+                    lineOptions: {
+                        styles: [
+                            { color: 'blue', opacity: 0.6, weight: 5 } // Personaliza el color, opacidad y grosor de la línea aquí
+                        ],
+                        extendToWaypoints: true,
+                        missingRouteTolerance: 1
+                    }
                 }).on('routesfound', (e) => {
                     this.distancia_metros = e.routes[0].summary.totalDistance;
                     this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime / 60);
@@ -149,76 +163,101 @@ export class ReservasPage implements OnInit, AfterViewInit {
 
 
 
-  async registrarViaje() {
-    if (this.viaje.valid) {
+
+
+async registrarViaje() {
+  if (this.viaje.valid) {
       const nextId = await this.viajeService.getNextId();
       this.viaje.controls.id.setValue(nextId);
 
       const viaje = this.viaje.value;
+      const id = this.usuario.rut; // Asignar el ID del usuario al viaje
+
       const registroViaje = await this.viajeService.createViaje(viaje);
 
       if (registroViaje) {
-        await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
-        this.viaje.reset();
-        console.log('Viaje registrado');
+          await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
+
+          // Cargar el historial existente del usuario
+          this.historial = await this.viajeService.cargarHistorial(this.usuario.rut);
+
+          // Agregar el nuevo viaje al historial
+          this.historial.push(viaje);
+
+          // Guardar el historial actualizado en el almacenamiento local
+          await this.viajeService.guardarHistorial(this.usuario.rut, this.historial);
+
+          this.viaje.reset();
+          console.log('Viaje registrado');
       } else {
-        console.log('Formulario invalido');
-        await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos');
+          console.log('Formulario inválido');
+          await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos');
       }
-    }
   }
+}
+
+
 
   async reservarViaje(viaje: any) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar reserva',
-      message: '¿Estás seguro de que deseas reservar este viaje?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('Reserva cancelada');
+  const alert = await this.alertController.create({
+    header: 'Confirmar reserva',
+    message: '¿Estás seguro de que deseas reservar este viaje?',
+    buttons: [
+      {
+        text: 'No',
+        role: 'cancel',
+        handler: () => {
+          console.log('Reserva cancelada');
+        }
+      },
+      {
+        text: 'Sí',
+        role: 'confirm',
+        handler: async () => {
+          const usuario = JSON.parse(localStorage.getItem("usuario") || '{}');
+          const viajes = await this.viajeService.getViajes();
+          const viajeReservado = viajes.some((v: any) => 
+            v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut)
+          );
+
+          if (viajeReservado) {
+            await this.presentAlert('Error!', 'Ya has tomado un viaje, no puedes reservar otro');
+            return;
           }
-        },
-        {
-          text: 'Sí',
-          role: 'confirm',
-          handler: async() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario") || '{}');
-            const viajes = await this.viajeService.getViajes();
-            const viajeReservado = viajes.some((v: any) => 
-              v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut)
-            );
-            
-            if(viajeReservado) {
-              await this.presentAlert('Error!', 'Ya has tomado un viaje, no puedes reservar otro');
-              return;
+
+          if (viaje.asientos_disponibles > 0) {
+            viaje.asientos_disponibles -= 1;
+
+            if (viaje.asientos_disponibles === 0) {
+              viaje.estado_viaje = 'Agotado';
             }
-        
-            if(viaje.asientos_disponibles > 0) {
-              viaje.asientos_disponibles -= 1;
-        
-              if(viaje.asientos_disponibles === 0){
-                viaje.estado_viaje = 'Agotado';
-              }
-        
-              viaje.pasajeros.push(usuario);
-        
-              const actualizado = await this.viajeService.updateViaje(viaje.id, viaje);
-              if(actualizado) {
-                await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
-              } else {
-                console.log('No se pudo actualizar el viaje')
-              }
+
+            viaje.pasajeros.push(usuario);
+
+            const actualizado = await this.viajeService.updateViaje(viaje.id, viaje);
+            if (actualizado) {
+              await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
+
+              // Registrar el viaje en el historial
+              const historial = await this.viajeService.cargarHistorial(usuario.rut);
+              historial.push(viaje); // Agregar el viaje al historial
+              await this.viajeService.guardarHistorial(usuario.rut, historial); // Guardar el historial actualizado
+
             } else {
-              console.log('No hay asientos disponibles');
+              console.log('No se pudo actualizar el viaje');
             }
+          } else {
+            console.log('No hay asientos disponibles');
           }
         }
-      ]
-    });
-    await alert.present();
-  }
+      }
+    ]
+  });
+  await alert.present();
+}
+
+
+
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-card>
+  <ion-card class="perfil">
     <ion-card-content>
         <p id="nombre_usuario">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
        
@@ -56,7 +56,7 @@
     </ion-button>
     <br>
     
-    <ion-card *ngIf="isEditing">
+    <ion-card *ngIf="isEditing" class="perfil">
       <ion-card-content>
         <form #miFormulario="ngForm" (ngSubmit)="saveProfile()" novalidate>
           <ion-item>
@@ -181,19 +181,26 @@
       </ion-card-content>
     </ion-card>
     
+    <ion-button expand="block" fill="outline">
+      <ion-icon name="newspaper-outline"></ion-icon>Historial de viajes
+    </ion-button>
+
+    <ion-card *ngFor="let viaje of historial">
+      <table>
+        <tr>
+          <th>Destino</th>
+          <th>Estado</th>
+          <th>Precio</th>
+        </tr>
+        <tr>
+          <td>{{ viaje.destino }}</td>
+          <td>{{ viaje.estado_viaje }}</td>
+          <td>{{viaje.precio | currency:'CLP'}}</td>
+        </tr>
+      </table>
+    </ion-card>
+
     <br>
-    <div *ngIf="usuario?.tiene_vehiculo !== 'no'">
-      <ion-button class="btnConfig" expand="block" fill="outline">
-        <ion-icon name="airplane-outline"></ion-icon>Mis viajes
-      </ion-button>
-      <br>
-    </div>
-    <div *ngIf="usuario?.tiene_vehiculo !== 'si'">
-      <ion-button expand="block" fill="outline">
-        <ion-icon name="newspaper-outline"></ion-icon>Historial de viajes
-      </ion-button>
-      <br>
-    </div>
     <ion-button class="btnLogout" expand="block" fill="outline" (click)="logout()"><ion-icon name="log-out-outline" slot="start"></ion-icon>Cerrar Sesión</ion-button>
   </div>
 </ion-content>
