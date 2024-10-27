@@ -62,17 +62,21 @@ TravelST se desarrollará utilizando las siguientes tecnologías:
   ```
 
 2. **Instalar Depedencias**:
-Dirígete a la carpeta del proyecto TravelST y ejecuta el siguiente comando:
+Dirígete a la carpeta del proyecto TravelST y ejecuta los siguientes comandos:
 ```
 npm install
+npm install leaflet
+npm install @types/leaflet
+npm install leaflet-control-geocoder
+npm install leaflet-routing-machine
+npm install @types/leaflet-routing-machine
 ```
 
 3. **Ejecutar Proyecto**:
-   Para comenzar la ejecución y visualizar su funcionamiento, deberás ejecutar el siguiente comando en una terminal (cmd o bash):
-   ```
-   ionic serve
-   ```
-
+Para comenzar la ejecución y visualizar su funcionamiento, deberás ejecutar el siguiente comando en una terminal (cmd o bash):
+```
+ionic serve
+```
 
 ## 🆘 Soporte
 
