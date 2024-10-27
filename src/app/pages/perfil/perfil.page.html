@@ -58,32 +58,125 @@
     
     <ion-card *ngIf="isEditing">
       <ion-card-content>
-        <form (ngSubmit)="saveProfile()">
+        <form #miFormulario="ngForm" (ngSubmit)="saveProfile()" novalidate>
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input [(ngModel)]="usuario.nombre" name="nombre" required></ion-input>
+            <ion-input 
+              [(ngModel)]="usuario.nombre" 
+              name="nombre" 
+              type="text" 
+              minlength="3" 
+              required>
+            </ion-input>
           </ion-item>
+        
           <ion-item>
             <ion-label position="floating">Email Duoc</ion-label>
-            <ion-input [(ngModel)]="usuario.email" name="email" type="email" required></ion-input>
+            <ion-input 
+              [(ngModel)]="usuario.email" 
+              name="email" 
+              type="email" 
+              required
+              pattern="^[a-zA-Z0-9._%+-]+@duocuc\.cl$">
+            </ion-input>
           </ion-item>
+        
           <ion-item>
             <ion-label position="floating">Apellidos</ion-label>
-            <ion-input [(ngModel)]="usuario.apellidos" name="apellidos" required></ion-input>
+            <ion-input 
+              [(ngModel)]="usuario.apellidos" 
+              name="apellidos" 
+              minlength="3" 
+              maxlength="20"
+              required>
+            </ion-input>
           </ion-item>
+        
           <ion-item>
             <ion-label position="floating">Fecha de Nacimiento</ion-label>
-            <ion-input [(ngModel)]="usuario.fechaNacimiento" name="fechaNacimiento" type="date" required></ion-input>
+            <ion-input 
+              [(ngModel)]="usuario.fechaNacimiento" 
+              name="fechaNacimiento" 
+              type="date" 
+              required 
+              (change)="fechaNacimientoValidator()">
+            </ion-input>
+            <div *ngIf="fechaInvalida">
+              <small>Debes ser mayor o igual a 17 años.</small>
+            </div>
           </ion-item>
+        
           <ion-item>
             <ion-label position="floating">Género</ion-label>
-            <ion-select [(ngModel)]="usuario.genero" position="floating"  name="genero">
-              <ion-select-option>Masculino</ion-select-option>
-              <ion-select-option>Femenino</ion-select-option>
-              <ion-select-option>Otro</ion-select-option>
+            <ion-select 
+              [(ngModel)]="usuario.genero" 
+              name="genero" 
+              required>
+              <ion-select-option value="Masculino">Masculino</ion-select-option>
+              <ion-select-option value="Femenino">Femenino</ion-select-option>
+              <ion-select-option value="Otro">Otro</ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-button expand="full" type="submit">Guardar</ion-button>
+          
+          <ion-item>
+            <ion-label>¿Tiene Vehículo?</ion-label>
+            <ion-radio-group [(ngModel)]="usuario.tiene_vehiculo" name="tieneVehiculo" required>
+              <ion-radio value="si">Sí</ion-radio>
+              <ion-radio value="no">No</ion-radio>
+            </ion-radio-group>
+          </ion-item>
+
+          <ion-item *ngIf="usuario.tiene_vehiculo === 'si'">
+            <ion-input label="Marca" labelPlacement="stacked"
+              [(ngModel)]="usuario.nombre_marca" 
+              name="marca"
+              (ngModelChange)="marcaInvalida = MarcaAuto(usuario.nombre_marca)">
+            </ion-input>
+            <ion-note *ngIf="marcaInvalida">
+              La marca ingresada no es válida.
+            </ion-note>
+          </ion-item>
+          
+          <ion-item *ngIf="usuario.tiene_vehiculo === 'si'">
+            <ion-input label="capacidad" labelPlacement="stacked"
+              [(ngModel)]="usuario.capacidad" 
+              type="number" 
+              name="capacidad" 
+              (ngModelChange)="capacidadInvalida = !capacidadValidator(usuario.capacidad)" required>
+            </ion-input>
+            <ion-note *ngIf="capacidadInvalida">
+              La capacidad debe ser entre 1 y 15.
+            </ion-note>
+          </ion-item>
+          
+          <ion-item *ngIf="usuario.tiene_vehiculo === 'si'">
+            <ion-input [(ngModel)]="usuario.nombre_modelo" label="Modelo" name="nombre_modelo"  name="nombre_modelo" labelPlacement="stacked" type="text" minlength="3"  required></ion-input>
+          </ion-item>
+          
+          <ion-item *ngIf="usuario.tiene_vehiculo === 'si'">
+            <ion-input label="Patente" labelPlacement="stacked"
+              [(ngModel)]="usuario.patente" 
+              name="patente"
+              (ngModelChange)="patenteInvalida = validarPatente(usuario.patente)" required>
+            </ion-input>
+            <ion-note *ngIf="patenteInvalida">
+              Formato de patente inválido. Debe ser BB-CC-12.
+            </ion-note>
+          </ion-item>
+          
+          
+          
+          
+
+
+          <ion-button 
+          expand="full" 
+          type="submit" 
+          [disabled]="!miFormulario.valid || fechaInvalida || capacidadInvalida || patenteInvalida || marcaInvalida">
+          Guardar
+        </ion-button>
+
+
         </form>
       </ion-card-content>
     </ion-card>
