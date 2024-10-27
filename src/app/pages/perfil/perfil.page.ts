@@ -17,6 +17,7 @@ export class PerfilPage implements OnInit {
   patenteInvalida: boolean = false; // Añadir esto si no lo has hecho
   marcaInvalida: boolean = false; // Declarar esta propiedad
   historial: any[] = [];
+  botonHistorial = false; // Variable para controlar la visibilidad de la tabla
 
   constructor(public usuarioService: UsuarioService, private navController: NavController,
     public viajeService: ViajeService,private alertController: AlertController) { }
@@ -135,4 +136,9 @@ export class PerfilPage implements OnInit {
     await alert.present();
   }
   
+
+
+  toggleHistorial() {
+    this.botonHistorial = !this.botonHistorial; // Alterna la visibilidad de la tabla
+  }
 }

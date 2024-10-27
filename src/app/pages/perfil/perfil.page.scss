@@ -59,10 +59,11 @@ ion-avatar img {
   ion-card table {
     border-collapse: collapse; /* Elimina espacios entre celdas */
     padding: 10px;
-    margin: 20px;
+    margin: 20px auto; /* Centra la tabla */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el ion-card */
     border-radius: 8px;
 }
+
 
 ion-card table th, ion-card table td {
     padding: 12px 15px; /* Espacio dentro de las celdas */

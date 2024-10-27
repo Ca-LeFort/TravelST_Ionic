@@ -181,21 +181,21 @@
       </ion-card-content>
     </ion-card>
     
-    <ion-button expand="block" fill="outline">
+    <ion-button expand="block" fill="outline" (click)="toggleHistorial()">
       <ion-icon name="newspaper-outline"></ion-icon>Historial de viajes
     </ion-button>
-
-    <ion-card *ngFor="let viaje of historial">
+    
+    <ion-card *ngIf="botonHistorial">
       <table>
         <tr>
           <th>Destino</th>
           <th>Estado</th>
           <th>Precio</th>
         </tr>
-        <tr>
+        <tr *ngFor="let viaje of historial">
           <td>{{ viaje.destino }}</td>
           <td>{{ viaje.estado_viaje }}</td>
-          <td>{{viaje.precio | currency:'CLP'}}</td>
+          <td>{{ viaje.precio | currency: 'CLP' }}</td>
         </tr>
       </table>
     </ion-card>
