@@ -12,7 +12,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./detalle-reserva.page.scss'],
 })
 export class DetalleReservaPage implements OnInit {
-
+  isDarkMode: boolean = false; // Estado del modo oscuro
+  
   private map: L.Map | undefined;
   id: number = 0;
   conductor: string = '';
@@ -52,6 +53,42 @@ export class DetalleReservaPage implements OnInit {
       attribution: 'Map data © OpenStreetMap contributors',
     }).addTo(this.map);
 
+    // Definir las capas de mapa
+    const streetsLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    const googleTerrain = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    const googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    // Añadir la capa de calles por defecto
+    streetsLayer.addTo(this.map);
+
+    // Crear el control de capas
+    const baseLayers = {
+        "Calle": streetsLayer,
+        "Satélite": googleSat,
+        "Terreno": googleTerrain,
+        "Híbrido": googleHybrid
+    };
+
+    // Añadir el control de capas al mapa
+    L.control.layers(baseLayers).addTo(this.map);
+
+  
     const plan = L.Routing.plan(
       [
         L.latLng(-33.59836727695556, -70.578819737547),  // Punto de inicio
@@ -83,4 +120,18 @@ export class DetalleReservaPage implements OnInit {
     await alert.present();
   }
 
+
+  //METODO DEL MODO OSCURO
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+      if (this.isDarkMode) {
+        mapElement.style.filter = 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)';
+      } else {
+        mapElement.style.filter = 'none';
+      }
+    }
+  }
 }
