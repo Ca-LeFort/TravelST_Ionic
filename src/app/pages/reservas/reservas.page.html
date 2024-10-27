@@ -34,7 +34,7 @@
         <h1>Reservas disponibles</h1>
       </ion-item>
       <div *ngFor="let v of viajes">
-        <ion-card *ngIf="v.estado_viaje == 'pendiente'">
+        <ion-card>
           <ion-card-header>
             <ion-card-title>{{v.destino}}</ion-card-title>
             <ion-card-subtitle>Estado: {{v.estado_viaje | titlecase}}</ion-card-subtitle>

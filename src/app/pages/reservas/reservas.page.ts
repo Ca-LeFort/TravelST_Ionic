@@ -37,7 +37,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
     distancia_metros: new FormControl('', [Validators.required]),
     tiempo_minutos: new FormControl('', [Validators.required]),
     precio: new FormControl(),
-    estado_viaje: new FormControl('pendiente'),
+    estado_viaje: new FormControl('disponible'),
     pasajeros: new FormControl([])
   });
 
@@ -229,7 +229,7 @@ async registrarViaje() {
             viaje.asientos_disponibles -= 1;
 
             if (viaje.asientos_disponibles === 0) {
-              viaje.estado_viaje = 'Agotado';
+              viaje.estado_viaje = 'en preparación';
             }
 
             viaje.pasajeros.push(usuario);
