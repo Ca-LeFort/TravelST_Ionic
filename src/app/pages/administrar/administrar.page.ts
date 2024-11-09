@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
+import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ViajeService } from 'src/app/services/viaje.service';
 
@@ -48,7 +49,7 @@ export class AdministrarPage implements OnInit {
 
   
   //el servicio nos permite trabajar la información:
-  constructor(private usuarioService: UsuarioService,private alertController: AlertController, private viajeService: ViajeService) {
+  constructor(private fireService : FireService,private usuarioService: UsuarioService,private alertController: AlertController, private viajeService: ViajeService) {
     this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);
   }
 
@@ -112,6 +113,7 @@ export class AdministrarPage implements OnInit {
 
 
   async ngOnInit() {
+    this.cargarUsuario();
     this.usuarios = await  this.usuarioService.getUsuarios();
     this.viajes = await this.viajeService.getViajes();
     // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
@@ -200,22 +202,32 @@ capacidadValidator(control: AbstractControl) {
     return !!(password && repeatPassword && password !== repeatPassword);
   }
 
+ 
+
+  //CRUD USUARIOS
+
+  cargarUsuario(){
+    this.fireService.getUsuarios().subscribe(data=>{
+      this.usuarios=data;
+    });
+  }
+
+
+  //Registrar firebase
   async registrar() {
-    // Validar que las contraseñas coincidan
     if (this.isPasswordMismatch()) {
       alert("ERROR! LAS CONTRASEÑAS NO COINCIDEN!");
       return;
     }
   
-    // Intentar crear el usuario
-    if (await this.usuarioService.createUsuario(this.usuario.value)) {
+    if (await this.fireService.crearUsuario(this.usuario.value)) {
       await this.presentAlert(
         'Operacion exitosa', 
         'Registrado', 
         'Usuario registrado con exito'
       );
       this.usuario.reset();
-      this.usuarios = await this.usuarioService.getUsuarios();
+      //this.usuarios = await this.usuarioService.getUsuarios();
     } else {
       await this.presentAlert(
         'Operacion fallida', 
@@ -225,16 +237,21 @@ capacidadValidator(control: AbstractControl) {
     }
   }
 
+  /*Buscar con Storage
   async buscar(rut_buscar:string){
     this.usuario.setValue( await this.usuarioService.getUsuario(rut_buscar) );
     this.botonModificar = false;
   }
+  */
 
-  async buscarViaje(id:number){
-    this.viaje.setValue( await this.viajeService.getViaje(id) );
+  //Buscar firebase 
+  async buscar(usuarioe: any){
+    this.usuario.setValue(usuarioe);
     this.botonModificar = false;
   }
 
+
+  //Modificar firebase 
   async modificar() {
     const alert = await this.alertController.create({
       header: 'Confirmar modificación',
@@ -253,14 +270,33 @@ capacidadValidator(control: AbstractControl) {
           handler: async () => {
             if (!this.isPasswordMismatch()) {
               const rut_buscar: string = this.usuario.controls.rut.value || "";
-              if ( await this.usuarioService.updateUsuario(rut_buscar, this.usuario.value)) {
+              
+              // Llamada a Firebase para actualizar el usuario
+              this.fireService.updateUsuario(this.usuario.value).then(async () => {
+                // Mensaje de éxito
                 await this.presentAlert('Éxito', 'Usuario modificado', 'USUARIO MODIFICADO CON ÉXITO!');
-                this.botonModificar = true;
+                
+                // Restablece el formulario
                 this.usuario.reset();
-                this.usuarios = await this.usuarioService.getUsuarios();
-              } else {
+                this.botonModificar = true;
+  
+                //this.usuarios = await this.usuarioService.getUsuarios();
+  
+                /* Código antiguo comentado:
+                if (await this.usuarioService.updateUsuario(rut_buscar, this.usuario.value)) {
+                  await this.presentAlert('Éxito', 'Usuario modificado', 'USUARIO MODIFICADO CON ÉXITO!');
+                  this.botonModificar = true;
+                  this.usuario.reset();
+                  this.usuarios = await this.usuarioService.getUsuarios();
+                } else {
+                  await this.presentAlert('Error', 'No se pudo modificar', 'ERROR! USUARIO NO MODIFICADO!');
+                }
+                */
+              }).catch(async (error) => {
+                // Mensaje de error en caso de falla
                 await this.presentAlert('Error', 'No se pudo modificar', 'ERROR! USUARIO NO MODIFICADO!');
-              }
+                console.error("Error al modificar el usuario:", error);
+              });
             } else {
               await this.presentAlert('Error', 'Contraseñas no coinciden', 'ERROR! LAS CONTRASEÑAS NO COINCIDEN!');
             }
@@ -268,10 +304,12 @@ capacidadValidator(control: AbstractControl) {
         }
       ]
     });
-
+  
     await alert.present();
   }
+  
 
+  //Eliminar firebase 
   async eliminar(rut_eliminar: string) {
     const alert = await this.alertController.create({
       header: 'Confirmar eliminación',
@@ -288,20 +326,65 @@ capacidadValidator(control: AbstractControl) {
           text: 'OK',
           role: 'confirm',
           handler: async () => {
-            if (await  this.usuarioService.deleteUsuario(rut_eliminar)) {
+            // Llamada a Firebase para eliminar el usuario
+            this.fireService.deleteUsuario(rut_eliminar).then(async () => {
+              // Mensaje de éxito
               await this.presentAlert('Éxito', 'Usuario eliminado', 'USUARIO ELIMINADO CON ÉXITO!');
-              this.usuarios = await this.usuarioService.getUsuarios();
-            } else {
+              
+              //this.usuarios = await this.usuarioService.getUsuarios();
+  
+              /* Código antiguo comentado:
+              if (await this.usuarioService.deleteUsuario(rut_eliminar)) {
+                await this.presentAlert('Éxito', 'Usuario eliminado', 'USUARIO ELIMINADO CON ÉXITO!');
+                this.usuarios = await this.usuarioService.getUsuarios();
+              } else {
+                await this.presentAlert('Error', 'No se pudo eliminar', 'ERROR! USUARIO NO ELIMINADO!');
+              }
+              */
+            }).catch(async (error) => {
+              // Mensaje de error en caso de falla
               await this.presentAlert('Error', 'No se pudo eliminar', 'ERROR! USUARIO NO ELIMINADO!');
-            }
+              console.error("Error al eliminar el usuario:", error);
+            });
           }
         }
       ]
     });
-
+  
     await alert.present();
   }
+  
 
+
+
+
+  
+
+  /*VIAJES*/
+  async registrarViaje() {
+    if (this.viaje.valid) {
+      const nextId = await this.viajeService.getNextId();
+      this.viaje.controls.id.setValue(nextId);
+
+      const viaje = this.viaje.value;
+      const registroViaje = await this.viajeService.createViaje(viaje);
+
+      if (registroViaje) {
+        await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!','VIAJE REGISTRADO');
+        this.viaje.reset();
+        console.log('Viaje registrado');
+      } else {
+        console.log('Formulario invalido');
+        await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos','VIAJE NO REGISTRADO');
+      }
+    }
+  }
+
+  //Buscar - Viajes
+  async buscarViaje(id:number){
+    this.viaje.setValue( await this.viajeService.getViaje(id) );
+    this.botonModificar = false;
+  }
 
   async eliminarViaje(id: number) {
     const alert = await this.alertController.create({
@@ -333,6 +416,13 @@ capacidadValidator(control: AbstractControl) {
     await alert.present();
   }
 
+
+  async listarViajes() {
+    this.viajes = await this.viajeService.getViajes();
+  }
+
+  
+
   /*Alerta*/
   async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
@@ -344,32 +434,4 @@ capacidadValidator(control: AbstractControl) {
   
     await alert.present();
   }
-
-  /*Alerta de modificar*/
-
-  /*VIAJES*/
-  async registrarViaje() {
-    if (this.viaje.valid) {
-      const nextId = await this.viajeService.getNextId();
-      this.viaje.controls.id.setValue(nextId);
-
-      const viaje = this.viaje.value;
-      const registroViaje = await this.viajeService.createViaje(viaje);
-
-      if (registroViaje) {
-        await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!','VIAJE REGISTRADO');
-        this.viaje.reset();
-        console.log('Viaje registrado');
-      } else {
-        console.log('Formulario invalido');
-        await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos','VIAJE NO REGISTRADO');
-      }
-    }
-  }
-
-  async listarViajes() {
-    this.viajes = await this.viajeService.getViajes();
-  }
-
-  
 }
