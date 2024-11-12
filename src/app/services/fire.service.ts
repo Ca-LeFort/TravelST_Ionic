@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
@@ -6,7 +7,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class FireService {
 
-  constructor(private fireStore: AngularFirestore) { }
+  constructor(private fireStore: AngularFirestore, 
+              private fireAuth: AngularFireAuth) { }
 
   async crearUsuario(usuario: any){
     const docRef = this.fireStore.collection('usuarios').doc(usuario.rut);
@@ -14,7 +16,12 @@ export class FireService {
     if(docActual?.exists){
       return false;
     }
-    await docRef.set(usuario);
+
+
+    const credencialesUsuario = await this.fireAuth.createUserWithEmailAndPassword(usuario.email, usuario.password);
+    const uid = credencialesUsuario.user?.uid;
+
+    await docRef.set( {...usuario, uid} );
     return true;
     //return this.fireStore.collection('usuarios').doc(usuario.rut).set(usuario);
   }

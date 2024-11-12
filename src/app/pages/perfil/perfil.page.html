@@ -2,8 +2,6 @@
   <ion-card class="perfil">
     <ion-card-content>
         <p id="nombre_usuario">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
-       
-      
         <div class="avatar-container">
           <ion-avatar>
             <img [src]="selectedImage ? selectedImage : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Avatar" />
@@ -47,8 +45,30 @@
           <p class="campos">Patente</p>
           <p>{{ usuario?.patente }}</p>
         </div>
+        <br>
+        <div>
+          <p>Código QR del Usuario</p>
+          <qrcode
+            [qrdata]="usuario.rut"
+            [allowEmptyString]="true"
+            [ariaLabel]="'QR Code image with the following content...'"
+            [cssClass]="'center'"
+            [colorDark]="'#000000ff'"
+            [colorLight]="'#ffffffff'"
+            [elementType]="'canvas'"
+            [errorCorrectionLevel]="'M'"
+            [imageSrc]="'./assets/icon/logo.png'"
+            [imageHeight]="75"
+            [imageWidth]="75"
+            [margin]="4"
+            [scale]="1"
+            [title]="'A custom title attribute'"
+            [width]="300"
+          ></qrcode>
+        </div>
     </ion-card-content>
   </ion-card>
+
 
   <div class="profile-container">
     <ion-button class="btnModify" expand="block" fill="outline" (click)="editProfile()">

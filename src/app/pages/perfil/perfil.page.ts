@@ -136,9 +136,10 @@ export class PerfilPage implements OnInit {
     await alert.present();
   }
   
-
-
   toggleHistorial() {
     this.botonHistorial = !this.botonHistorial; // Alterna la visibilidad de la tabla
   }
+
+
+  
 }
