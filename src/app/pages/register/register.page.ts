@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -55,7 +56,8 @@ export class RegisterPage implements OnInit {
 
   constructor(private router : Router, 
     private usuarioService: UsuarioService,
-    private alertController: AlertController) { 
+    private alertController: AlertController,
+    private fireService: FireService) { 
 
       this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);  
     }
@@ -199,7 +201,7 @@ capacidadValidator(control: AbstractControl) {
   
     // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
     //console.log(this.usuario.value);
-    if(await this.usuarioService.createUsuario(this.usuario.value)){
+    if(await this.usuarioService.createUsuario(this.usuario.value) && await this.fireService.crearUsuario(this.usuario.value)){
       this.presentAlert('¡Bienvenido a TravelSt!', 'Comienza tu aventura con nosotros', 'Tu cuenta ha sido creada exitosamente. Ya puedes empezar a explorar y planificar tu próximo viaje.');
       this.router.navigate(['/login']);
     }else{

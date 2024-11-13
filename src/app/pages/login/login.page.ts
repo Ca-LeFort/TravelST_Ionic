@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { getAuth, signInWithEmailAndPassword, user } from '@angular/fire/auth';
+import { initializeApp } from '@angular/fire/app'
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-login',
@@ -27,7 +32,9 @@ export class LoginPage implements OnInit {
   tipo_user:string="";
 
   constructor(private router: Router, private usuarioService: UsuarioService,
-    private alertController: AlertController // Controlador de alerta
+    private alertController: AlertController, // Controlador de alerta
+    private fireService: FireService,
+    private fireAuth: AngularFireAuth
   ) { }
 
   ngOnInit() {
@@ -36,16 +43,38 @@ export class LoginPage implements OnInit {
   //Alerta del boton de login
   alertButtons = ['Aceptar'];
 
+  isAuthenticated(): Observable<boolean> {
+    return new Observable((observer) => {
+      this.fireAuth.authState.subscribe((user) => {
+        observer.next(!!user); // Emitirá true si hay usuario, false si no
+      });
+    });
+  }
 
   //método asociado al boton para hacer un login:
   async login() {
-    // Autenticar el usuario usando el servicio
-    const isAuthenticated = this.usuarioService.authenticate(this.email, this.password);
-    if (await isAuthenticated) {
+
+    const auth = getAuth();
+
+    //Llamar a firebase para autenticar al usuario
+    signInWithEmailAndPassword(auth,this.email,this.password)
+      .then((userCredential) => {
+        //Autenticacion exitosa
+        const user = userCredential.user;
+        console.log('usuario autenticado',user)
+        this.router.navigate(['/home']);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      })
+
+    
+    /*if (await isAuthenticated) {
       this.router.navigate(['/home']); // Navegar a la página principal
     } else {
       await this.presentAlert(); // Llama al método de alerta aquí
-    }
+    }*/
   }
   
 
