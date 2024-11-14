@@ -16,7 +16,7 @@ import { Observable } from 'rxjs'
 })
 export class LoginPage implements OnInit {
   
-    //aquí podemos crear variables, constrantes, listas, arreglos, json, etc:
+  //aquí podemos crear variables, constrantes, listas, arreglos, json, etc:
   //NOMBRE_VARIABLE: TIPO_DATO = VALOR;
   titulo: string = "PÁGINA DE LOGIN";
   numero: number = 5;
@@ -43,26 +43,19 @@ export class LoginPage implements OnInit {
   //Alerta del boton de login
   alertButtons = ['Aceptar'];
 
-  isAuthenticated(): Observable<boolean> {
-    return new Observable((observer) => {
-      this.fireAuth.authState.subscribe((user) => {
-        observer.next(!!user); // Emitirá true si hay usuario, false si no
-      });
-    });
-  }
-
   //método asociado al boton para hacer un login:
   async login() {
 
     const auth = getAuth();
-
+    var isAuthenticated: boolean = false;
+    const isAuthenticatedLocalStorage = this.usuarioService.authenticate(this.email, this.password);
     //Llamar a firebase para autenticar al usuario
     signInWithEmailAndPassword(auth,this.email,this.password)
       .then((userCredential) => {
         //Autenticacion exitosa
         const user = userCredential.user;
         console.log('usuario autenticado',user)
-        this.router.navigate(['/home']);
+        isAuthenticated = true;
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -70,11 +63,13 @@ export class LoginPage implements OnInit {
       })
 
     
-    /*if (await isAuthenticated) {
-      this.router.navigate(['/home']); // Navegar a la página principal
-    } else {
-      await this.presentAlert(); // Llama al método de alerta aquí
-    }*/
+    if (isAuthenticated) {
+      if(await isAuthenticatedLocalStorage){
+        this.router.navigate(['/home']); // Navegar a la página principal
+      } else {
+        await this.presentAlert(); // Llama al método de alerta aquí
+      }
+    } 
   }
   
 
