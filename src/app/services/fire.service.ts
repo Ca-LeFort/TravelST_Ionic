@@ -8,7 +8,27 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class FireService {
 
   constructor(private fireStore: AngularFirestore, 
-              private fireAuth: AngularFireAuth) { }
+              private fireAuth: AngularFireAuth,) {this.init();}
+
+
+  async init(){
+    const admin = {
+      rut: "21638902-6",
+      nombre: "javier",
+      fechaNacimiento: "2004-08-01",
+      apellidos: "soto jaque",
+      genero: "Masculino",
+      email: "javier@duocuc.cl",
+      password: "2468Pr..",
+      repeat_password: "2468Pr..",
+      tiene_vehiculo: "si",
+      nombre_marca: "ferrari",
+      capacidad: 2,
+      nombre_modelo: "Mauil",
+      patente: "CC-BB-12",
+      tipo_usuario: "administrador"};
+      await this.crearUsuario(admin);
+  }
 
   async crearUsuario(usuario: any){
     const docRef = this.fireStore.collection('usuarios').doc(usuario.rut);
@@ -67,4 +87,23 @@ export class FireService {
   deleteViaje(id: string){
     return this.fireStore.collection('viajes').doc(id).delete();
   }
+
+  getUsuarioByUID(uid: string): Promise<any> {
+    return this.fireStore.collection('usuarios', ref => ref.where('uid', '==', uid))
+      .get()
+      .toPromise()
+      .then((snapshot) => {
+        // Verifica si snapshot es válido y no está vacío
+        if (snapshot && !snapshot.empty) {
+          return snapshot.docs[0].data(); // Devuelve el primer documento encontrado
+        }
+        return null; // Si no encuentra documentos o snapshot es inválido
+      })
+      .catch((error) => {
+        console.error('Error al obtener el usuario:', error);
+        return null; // Maneja errores retornando null
+      });
+  }
+  
+  
 }

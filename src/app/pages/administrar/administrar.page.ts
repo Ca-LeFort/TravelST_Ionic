@@ -26,6 +26,7 @@ export class AdministrarPage implements OnInit {
     nombre_modelo: new FormControl('',[]),
     patente: new FormControl('', [this.validarPatente.bind(this)]),
     tipo_usuario: new FormControl('estudiante', []), // Valor por defecto 
+    uid: new FormControl(''),
   });
 
   
@@ -245,8 +246,8 @@ capacidadValidator(control: AbstractControl) {
   */
 
   //Buscar firebase 
-  async buscar(usuarioe: any){
-    this.usuario.setValue(usuarioe);
+  async buscar(usuarios: any){
+    this.usuario.setValue(usuarios);
     this.botonModificar = false;
   }
 

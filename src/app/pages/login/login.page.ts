@@ -5,9 +5,10 @@ import { AlertController } from '@ionic/angular';
 import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { getAuth, signInWithEmailAndPassword, user } from '@angular/fire/auth';
-import { initializeApp } from '@angular/fire/app'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable } from 'rxjs'
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { auth, firestore } from 'src/app/firestore-config';
+import { setDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-login',
@@ -44,33 +45,45 @@ export class LoginPage implements OnInit {
   alertButtons = ['Aceptar'];
 
   //método asociado al boton para hacer un login:
-  async login() {
-
-    const auth = getAuth();
-    var isAuthenticated: boolean = false;
-    const isAuthenticatedLocalStorage = this.usuarioService.authenticate(this.email, this.password);
-    //Llamar a firebase para autenticar al usuario
-    signInWithEmailAndPassword(auth,this.email,this.password)
+  login() {
+    // Autenticar al usuario con Firebase
+    signInWithEmailAndPassword(auth, this.email, this.password)
       .then((userCredential) => {
-        //Autenticacion exitosa
+        // Autenticación exitosa
         const user = userCredential.user;
-        console.log('usuario autenticado',user)
-        isAuthenticated = true;
+        const uid = user.uid; // Obtener el UID del usuario
+        console.log('Usuario autenticado con UID:', uid);
+  
+        // Usar el servicio FireService para obtener los datos del usuario
+        this.fireService.getUsuarioByUID(uid)
+          .then((userData) => {
+            if (userData) {
+              console.log('Datos del usuario:', userData);
+    
+              // Guardar el objeto del usuario en el localStorage
+              localStorage.setItem('usuario', JSON.stringify(userData));
+    
+              // Redirigir al usuario a la página principal
+              this.router.navigate(['/home']);
+            } else {
+              console.error('El documento del usuario no existe en la base de datos.');
+              
+            }
+          })
+          .catch((error) => {
+            console.error('Error al obtener los datos del usuario:', error);
+           
+          });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      })
-
-    
-    if (isAuthenticated) {
-      if(await isAuthenticatedLocalStorage){
-        this.router.navigate(['/home']); // Navegar a la página principal
-      } else {
-        await this.presentAlert(); // Llama al método de alerta aquí
-      }
-    } 
+        console.error('Error durante el inicio de sesión:', error);
+        console.error('Código de error:', error.code);
+        console.error('Mensaje del error:', error.message);
+        
+      });
   }
+  
+  
   
 
   async presentAlert() {

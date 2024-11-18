@@ -10,9 +10,9 @@ export class UsuarioService {
 
   //y en el constructor se crea una variable del módulo:
   constructor(private storage: Storage) { 
-    this.init();
+    //this.init();
   }
-
+  /*
   async init() {
     await this.storage.create();
     let admin = {
@@ -33,6 +33,7 @@ export class UsuarioService {
     };
     await this.createUsuario(admin);
   }
+  */
 
   // DAO methods using local storage
 
