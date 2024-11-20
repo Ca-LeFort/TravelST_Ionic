@@ -4,6 +4,8 @@ import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 import * as G from 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
+import { ApiService } from 'src/app/services/api.service';
+import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ViajeService } from 'src/app/services/viaje.service';
 
@@ -26,6 +28,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
   distancia_metros: number = 0;
   tiempo_minutos: number = 0;
   precio: number = 0;
+  pesoCLP: number = 0;
 
   viaje = new FormGroup({
     id: new FormControl(),
@@ -45,16 +48,21 @@ export class ReservasPage implements OnInit, AfterViewInit {
   historial : any[] =[];
   misViajes : any[] = [];
 
-
-
-
-
-  constructor(private viajeService: ViajeService, private usuarioService: UsuarioService, private alertController: AlertController) { }
+  constructor(private viajeService: ViajeService, private usuarioService: UsuarioService, private alertController: AlertController,
+              private apiService: ApiService, private fireService: FireService
+  ) { }
 
   async ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || "");
     this.viaje.controls.conductor.setValue(this.usuario.nombre);
+    this.consumoApiPeso();
     await this.listarViajes();
+  }
+
+  consumoApiPeso(){
+    this.apiService.getDolar().subscribe((data:any)=>{
+      this.pesoCLP = Math.round(data.dolar.valor * 0.15);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -62,9 +70,6 @@ export class ReservasPage implements OnInit, AfterViewInit {
       this.initMap();
     }, 2000);
   }
-
-  
-
 
   initMap() {
     try {
@@ -150,7 +155,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
                 }).on('routesfound', (e) => {
                     this.distancia_metros = e.routes[0].summary.totalDistance;
                     this.tiempo_minutos = Math.round(e.routes[0].summary.totalTime / 60);
-                    this.precio = Math.round(this.distancia_metros / 400 * 100);
+                    this.precio = Math.round(this.distancia_metros / 400 * this.pesoCLP);
                 }).addTo(this.map);
             }
         });
@@ -159,13 +164,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
     }
 }
 
-
-
-
-
-
-
-async registrarViaje() {
+  async registrarViaje() {
   if (this.viaje.valid) {
       const nextId = await this.viajeService.getNextId();
       this.viaje.controls.id.setValue(nextId);
@@ -174,7 +173,6 @@ async registrarViaje() {
       const id = this.usuario.rut; // Asignar el ID del usuario al viaje
 
       const registroViaje = await this.viajeService.createViaje(viaje);
-
       if (registroViaje) {
           await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
 
@@ -195,8 +193,6 @@ async registrarViaje() {
       }
   }
 }
-
-
 
   async reservarViaje(viaje: any) {
   const alert = await this.alertController.create({
@@ -256,9 +252,6 @@ async registrarViaje() {
   await alert.present();
 }
 
-
-
-
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
@@ -271,7 +264,6 @@ async registrarViaje() {
   async listarViajes() {
     this.viajes = await this.viajeService.getViajes();
   }
-
 
   //METODO DEL MODO OSCURO
   toggleDarkMode() {

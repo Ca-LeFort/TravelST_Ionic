@@ -15,8 +15,6 @@ export class ViajeService {
     this.storage.create();
   }
 
-
-
   //Historial
   async guardarHistorial(usuarioId: string, historial: any[]) {
     const datos = await this.cargarDatosUsuarios();

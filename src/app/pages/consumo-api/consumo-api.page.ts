@@ -10,6 +10,7 @@ export class ConsumoApiPage implements OnInit {
 
   // Variable para almacenar la información que consume la API
   dolar: number = 0;
+  dolarPrueba: number = 0;
   datos: any = [];
 
   constructor(private api: ApiService) { }
@@ -21,11 +22,12 @@ export class ConsumoApiPage implements OnInit {
   
   //vamos a crear un metodo que invoque al metodo get de la api
   consumirAPI(){
-    this.api.getDatos().subscribe((data:any)=>{
+    this.api.getDolar().subscribe((data:any)=>{
       //console.log(data)
       //console.log(data.dolar);
       //console.log(data.dolar.valor);
       this.dolar = data.dolar.valor;
+      this.dolarPrueba = Math.round(data.dolar.valor * 0.15);
     });
   }
 

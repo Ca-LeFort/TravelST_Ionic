@@ -83,8 +83,6 @@ export class RegisterPage implements OnInit {
     'lancia', 'alpine', 'ferrari', 'koenigsegg'
 ];
 
-
-
   ngOnInit() {
     // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
   this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {

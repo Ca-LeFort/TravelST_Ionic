@@ -12,7 +12,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   // Métodos
-  getDatos(){
+  getDolar(){
     return this.http.get(this.url);
   }
 
