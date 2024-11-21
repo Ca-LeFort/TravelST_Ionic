@@ -56,10 +56,12 @@ describe('Página Home', () => {
 
   it('2. Verificar el nombre del usuario', () => {
     expect(component.usuario.nombre).toEqual('javier');
-  })
+  });
 
-  it('3 Validar el usuario COMPLETO', () => {
+  it('3. Validar el usuario COMPLETO', () => {
     expect(localStorage.getItem).toHaveBeenCalledWith('usuario');
     expect(component.usuario).toEqual(usuarioPrueba);
-  })
+  });
+
+  
 });

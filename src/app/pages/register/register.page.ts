@@ -58,10 +58,8 @@ export class RegisterPage implements OnInit {
     private usuarioService: UsuarioService,
     private alertController: AlertController,
     private fireService: FireService) { 
-
       this.usuario.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);  
-    }
-
+  }
 
   //Lista de marcas
   marcasAuto: string[] = [
@@ -81,11 +79,11 @@ export class RegisterPage implements OnInit {
     'rally', 'morgan', 'tvr', 'viper', 'wiesmann', 'mercury', 
     'oldsmobile', 'packard', 'tucker', 'scion', 'saturn', 
     'lancia', 'alpine', 'ferrari', 'koenigsegg'
-];
+  ];
 
   ngOnInit() {
     // Observa el valor de 'tiene_vehiculo' para agregar validaciones dinámicas
-  this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
+    this.usuario.get('tiene_vehiculo')?.valueChanges.subscribe(value => {
     if (value === 'si') {
       // Agregar validadores cuando el usuario tiene un vehículo
       this.usuario.get('nombre_marca')?.setValidators([Validators.required, this.MarcaAuto.bind(this)]);
@@ -158,7 +156,6 @@ capacidadValidator(control: AbstractControl) {
     return null;
   }
 
-
   //Validar rut
   validarRut():ValidatorFn{
     return () => {
@@ -218,9 +215,6 @@ capacidadValidator(control: AbstractControl) {
     await alert.present();
   }
 
-  
-  
-
  /* 
   public habilitar_boton():boolean{
     if (this.usuario.valid){
@@ -230,6 +224,4 @@ capacidadValidator(control: AbstractControl) {
   }
   */
 
-
-  
 }
