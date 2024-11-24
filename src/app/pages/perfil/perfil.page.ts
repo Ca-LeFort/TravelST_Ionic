@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
+import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ViajeService } from 'src/app/services/viaje.service';
 
@@ -20,7 +21,8 @@ export class PerfilPage implements OnInit {
   botonHistorial = false; // Variable para controlar la visibilidad de la tabla
 
   constructor(public usuarioService: UsuarioService, private navController: NavController,
-    public viajeService: ViajeService,private alertController: AlertController) { }
+    public viajeService: ViajeService,private alertController: AlertController,
+    public fireService : FireService) { }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
@@ -50,15 +52,29 @@ export class PerfilPage implements OnInit {
   }
 
   async saveProfile() {
-    const rut = this.usuario.rut;
-    const resultado = await this.usuarioService.updateUsuario(rut, this.usuario);
+    const usuario = this.usuario;
+    //const resultado = await this.usuarioService.updateUsuario(rut, this.usuario);
+    try {
+      // Llama al servicio Firestore para actualizar el usuario
+      await this.fireService.updateUsuario(usuario)
 
+      //Si la actualizacion es exitosa, desactiva la edicion
+      this.isEditing = false;
+    } catch (error) {
+      // Si ocurre un error, muestra un mensaje de error en la consola
+      console.error('No se pudo actualizar el usuario.', error);
+    }
+
+    /* 
     if (resultado) {
       this.isEditing = false;
     } else {
       console.error('No se pudo actualizar el usuario.');
     }
   }
+    */
+  }
+
 
   logout() {
     localStorage.removeItem('usuario');

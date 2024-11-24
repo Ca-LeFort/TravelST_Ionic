@@ -45,16 +45,25 @@ export class FireService {
     //return this.fireStore.collection('usuarios').doc(usuario.rut).set(usuario);
   }
 
-  async crearViaje(viaje: any){
-    const docRef = this.fireStore.collection('viajes').doc(viaje.id);
-    const docActual = await docRef.get().toPromise();
-    if(docActual?.exists){
+  async crearViaje(viaje: any) {
+    if (!viaje.id) {
+      console.error("El ID del viaje es requerido.");
       return false;
     }
-
-    await docRef.set( {...viaje} );
+  
+    const docRef = this.fireStore.collection('viajes').doc(viaje.id.toString()); // Asegurarse de convertir a string
+    const docActual = await docRef.get().toPromise();
+  
+    if(docActual && docActual.exists) {
+      console.log('El viaje ya existe');
+      return false;
+    }
+  
+    // Si no existe el viaje, lo creamos
+    await docRef.set({ ...viaje });
     return true;
   }
+  
 
   getUsuarios(){
     return this.fireStore.collection('usuarios').valueChanges();
@@ -68,8 +77,8 @@ export class FireService {
     return this.fireStore.collection('usuarios').doc(rut).valueChanges();
   }
 
-  getViaje(id: string){
-    return this.fireStore.collection('viajes').doc(id).valueChanges();
+  getViaje(id: number){
+    return this.fireStore.collection('viajes').doc(id.toString()).valueChanges();
   }
 
   updateUsuario(usuario: any){
@@ -105,5 +114,92 @@ export class FireService {
       });
   }
   
+
+  // Guardar el historial del usuario en Firestore
+async guardarHistorial(usuarioId: string, historial: any[]) {
+  const docRef = this.fireStore.collection('historiales').doc(usuarioId);
   
+  // Obtener el documento y verificar si existe
+  const docActual = await docRef.get().toPromise();
+  if (docActual && docActual.exists) {
+    // Si el historial ya existe, actualiza solo el campo historial
+    await docRef.update({ historial });
+  } else {
+    // Si no existe, crea un nuevo documento con el historial
+    await docRef.set({ historial });
+  }
 }
+
+  // Cargar el historial del usuario desde Firestore
+async cargarHistorial(usuarioId: string) {
+  const docRef = this.fireStore.collection('historiales').doc(usuarioId);
+  const doc = await docRef.get().toPromise();
+
+  // Verificamos si el documento existe
+  if (doc && doc.exists) {
+    const data = doc.data() as { [key: string]: any };
+
+    // Verificamos que 'historial' sea un array antes de devolverlo
+    if (data && Array.isArray(data['historial'])) {
+      return data['historial']; // Si 'historial' es un array, lo retornamos
+    } else {
+      return []; // Si 'historial' no es un array o no existe, retornamos un array vacío
+    }
+  } else {
+    return []; // Si no existe el documento, retornamos un array vacío
+  }
+}
+
+  // Método privado para cargar los datos de los usuarios desde Firestore
+private async cargarDatosUsuarios() {
+  const usuariosRef = this.fireStore.collection('usuarios');
+  const snapshot = await usuariosRef.get().toPromise();
+
+  // Verificar si snapshot es válido y no vacío
+  if (!snapshot || snapshot.empty) {
+    return {}; // Si la colección está vacía o snapshot es undefined, retorna un objeto vacío
+  }
+
+  let datosUsuarios: any = {};
+
+  snapshot.forEach(doc => {
+    datosUsuarios[doc.id] = doc.data(); // Guardamos los datos del usuario bajo su 'id' o 'rut'
+  });
+
+  return datosUsuarios; // Devuelve los datos de todos los usuarios
+}
+   
+
+// Método para obtener el siguiente ID
+public async getNextId(): Promise<number> {
+  // Obtener todos los documentos de la colección 'viajes'
+  const viajesRef = this.fireStore.collection('viajes');
+  const snapshot = await viajesRef.get().toPromise();
+
+  // Verificar si el snapshot es válido y no está vacío
+  if (!snapshot || snapshot.empty) {
+    return 1; // Si no hay viajes, comienza desde 1
+  }
+
+  let maxId = 0;
+
+  snapshot.forEach(doc => {
+    const viajeData = doc.data() as { id?: number }; // Aseguramos que 'viajeData' tiene la propiedad 'id' como número opcional
+
+    // Verificar si 'id' es un número
+    const id = viajeData?.id;
+
+    if (typeof id === 'number') {
+      maxId = Math.max(maxId, id); // Encontrar el ID más alto
+    }
+  });
+
+  // Retornar el siguiente ID incrementado
+  return maxId + 1;
+}
+
+}
+
+
+
+

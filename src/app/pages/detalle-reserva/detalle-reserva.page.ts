@@ -4,6 +4,7 @@ import { ViajeService } from 'src/app/services/viaje.service';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { AlertController } from '@ionic/angular';
+import { FireService } from 'src/app/services/fire.service';
 
 
 @Component({
@@ -25,14 +26,14 @@ export class DetalleReservaPage implements OnInit {
   tiempo_minutos = 0;
   precio = 0;
 
-  constructor(private viajeService: ViajeService, private activatedRoute: ActivatedRoute, private alertController: AlertController) {}
+  constructor(private viajeService: ViajeService, private activatedRoute: ActivatedRoute, private alertController: AlertController, private fireService:FireService) {}
 
   ngOnInit() {
     setTimeout(() => {
       this.initMap();
     }, 2000);
     this.id = +(this.activatedRoute.snapshot.paramMap.get("id") || 0);
-    this.viajeService.getViaje(this.id).then((viaje: any) => {
+    this.fireService.getViaje(this.id).subscribe((viaje: any) => {
       if(viaje){
         this.conductor = viaje.conductor || '';
         this.asientos_disponibles = viaje.asientos_disponibles || 0;

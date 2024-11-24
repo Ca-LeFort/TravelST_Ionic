@@ -56,7 +56,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || "");
     this.viaje.controls.conductor.setValue(this.usuario.nombre);
     this.consumoApiPeso();
-    await this.listarViajes();
+    this.listarViajes();
   }
 
   consumoApiPeso(){
@@ -164,35 +164,38 @@ export class ReservasPage implements OnInit, AfterViewInit {
     }
 }
 
-  async registrarViaje() {
+async registrarViaje() {
   if (this.viaje.valid) {
-      const nextId = await this.viajeService.getNextId();
-      this.viaje.controls.id.setValue(nextId);
+    const nextId = await this.fireService.getNextId();
+    this.viaje.controls.id.setValue(nextId);
 
-      const viaje = this.viaje.value;
-      const id = this.usuario.rut; // Asignar el ID del usuario al viaje
+    const viaje = this.viaje.value;
+    const id = this.usuario.rut; // Asignar el ID del usuario al viaje
 
-      const registroViaje = await this.viajeService.createViaje(viaje);
-      if (registroViaje) {
-          await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
+    // Registro del viaje en la base de datos
+    const registroViaje = await this.fireService.crearViaje(viaje);
+    if (registroViaje) {
+      await this.presentAlert('Bien', 'El viaje ha sido registrado con éxito!');
 
-          // Cargar el historial existente del usuario
-          this.historial = await this.viajeService.cargarHistorial(this.usuario.rut);
+      // Cargar el historial existente del usuario desde Firestore
+      this.historial = await this.fireService.cargarHistorial(this.usuario.rut);
 
-          // Agregar el nuevo viaje al historial
-          this.historial.push(viaje);
+      // Agregar el nuevo viaje al historial
+      this.historial.push(viaje);
 
-          // Guardar el historial actualizado en el almacenamiento local
-          await this.viajeService.guardarHistorial(this.usuario.rut, this.historial);
+      // Guardar el historial actualizado en Firestore
+      await this.fireService.guardarHistorial(this.usuario.rut, this.historial);
 
-          this.viaje.reset();
-          console.log('Viaje registrado');
-      } else {
-          console.log('Formulario inválido');
-          await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos');
-      }
+      // Resetear el formulario después de guardar
+      this.viaje.reset();
+      console.log('Viaje registrado');
+    } else {
+      console.log('Formulario inválido');
+      await this.presentAlert('Error', 'El Formulario del registro es inválido, complete los campos');
+    }
   }
 }
+
 
   async reservarViaje(viaje: any) {
   const alert = await this.alertController.create({
@@ -262,9 +265,13 @@ export class ReservasPage implements OnInit, AfterViewInit {
   }
 
   async listarViajes() {
-    this.viajes = await this.viajeService.getViajes();
+    //this.viajes = await this.viajeService.getViajes();
+    this.fireService.getViajes().subscribe(data=>{
+      this.viajes=data;
+    })
   }
 
+  
   //METODO DEL MODO OSCURO
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;

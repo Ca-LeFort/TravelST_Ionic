@@ -196,7 +196,7 @@ capacidadValidator(control: AbstractControl) {
   
     // Aquí puedes agregar lógica adicional, como llamar a un DAO o API para registrar al usuario
     //console.log(this.usuario.value);
-    if(await this.usuarioService.createUsuario(this.usuario.value) && await this.fireService.crearUsuario(this.usuario.value)){
+    if(await this.fireService.crearUsuario(this.usuario.value)){
       this.presentAlert('¡Bienvenido a TravelSt!', 'Comienza tu aventura con nosotros', 'Tu cuenta ha sido creada exitosamente. Ya puedes empezar a explorar y planificar tu próximo viaje.');
       this.router.navigate(['/login']);
     }else{
