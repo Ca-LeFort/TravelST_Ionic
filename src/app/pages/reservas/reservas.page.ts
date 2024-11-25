@@ -197,7 +197,7 @@ async registrarViaje() {
 }
 
 
-  async reservarViaje(viaje: any) {
+async reservarViaje(viaje: any) {
   const alert = await this.alertController.create({
     header: 'Confirmar reserva',
     message: '¿Estás seguro de que deseas reservar este viaje?',
@@ -215,8 +215,10 @@ async registrarViaje() {
         handler: async () => {
           const usuario = JSON.parse(localStorage.getItem("usuario") || '{}');
           const viajes = await this.viajeService.getViajes();
+          
+          // Verificar si el usuario ya tiene una reserva activa
           const viajeReservado = viajes.some((v: any) => 
-            v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut)
+            v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut) 
           );
 
           if (viajeReservado) {
@@ -233,17 +235,18 @@ async registrarViaje() {
 
             viaje.pasajeros.push(usuario);
 
-            const actualizado = await this.viajeService.updateViaje(viaje.id, viaje);
-            if (actualizado) {
+            try {
+              // Aquí se intenta actualizar el viaje, si no hay errores se asume que se actualizó correctamente
+              await this.fireService.updateViaje(viaje);  // No esperamos un valor, solo esperamos que se complete correctamente
               await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
 
               // Registrar el viaje en el historial
-              const historial = await this.viajeService.cargarHistorial(usuario.rut);
+              const historial = await this.fireService.cargarHistorial(usuario.rut);
               historial.push(viaje); // Agregar el viaje al historial
-              await this.viajeService.guardarHistorial(usuario.rut, historial); // Guardar el historial actualizado
+              await this.fireService.guardarHistorial(usuario.rut, historial); // Guardar el historial actualizado
 
-            } else {
-              console.log('No se pudo actualizar el viaje');
+            } catch (error) {
+              console.log('Error al actualizar el viaje:', error);
             }
           } else {
             console.log('No hay asientos disponibles');
@@ -254,6 +257,12 @@ async registrarViaje() {
   });
   await alert.present();
 }
+
+
+
+
+
+
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

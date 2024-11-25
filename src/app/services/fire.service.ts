@@ -85,9 +85,14 @@ export class FireService {
     return this.fireStore.collection('usuarios').doc(usuario.rut).update(usuario);
   }
 
-  updateViaje(viaje: any){
-    return this.fireStore.collection('viaje').doc(viaje.id).update(viaje);
+  updateViaje(viaje: any) {
+    const idAsString = viaje.id.toString();
+    return this.fireStore.collection('viajes').doc(idAsString).update(viaje);
   }
+  
+  
+  
+  
 
   deleteUsuario(rut: string){
     return this.fireStore.collection('usuarios').doc(rut).delete();

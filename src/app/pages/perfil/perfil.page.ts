@@ -137,7 +137,7 @@ export class PerfilPage implements OnInit {
   
 
   async mostrarHistorial() {
-    this.historial = await this.viajeService.cargarHistorial(this.usuario.rut);
+    this.historial = await this.fireService.cargarHistorial(this.usuario.rut);
     if (this.historial.length === 0) {
       await this.presentAlert('Sin historial', 'No tienes viajes registrados.');
     }
