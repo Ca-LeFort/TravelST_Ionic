@@ -68,7 +68,7 @@ describe('Página Registro', () => {
     expect(botonRegistrar.disabled).toBeTrue();
   });
 
-  it('3.1 Botón registrar habilitado', ()=> {
+  it('3.2 Botón registrar habilitado', ()=> {
     component.usuario.setValue({
       "rut": "21638902-6",
       "nombre": "javier",
@@ -107,5 +107,19 @@ describe('Página Registro', () => {
       "tipo_usuario": "administrador"
     });
     expect(component.usuario.valid).toBeTrue();
+  });
+
+  it('5.1 Correo de Duoc validado', ()=> {
+    const correoControl = component.usuario.get('email');
+    correoControl?.setValue('benja@duocuc.cl');
+    expect(correoControl?.hasError('pattern')).toBeFalse();
+    expect(correoControl?.valid).toBeTrue();
+  });
+
+  it('5.2 Correo de Duoc inválido', ()=> {
+    const correoControl = component.usuario.get('email');
+    correoControl?.setValue('benja@gmail.com');
+    expect(correoControl?.hasError('pattern')).toBeTrue();
+    expect(correoControl?.valid).toBeFalse();
   });
 });

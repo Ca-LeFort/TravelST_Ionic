@@ -196,7 +196,6 @@ async registrarViaje() {
   }
 }
 
-
 async reservarViaje(viaje: any) {
   const alert = await this.alertController.create({
     header: 'Confirmar reserva',
@@ -257,12 +256,6 @@ async reservarViaje(viaje: any) {
   });
   await alert.present();
 }
-
-
-
-
-
-
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
