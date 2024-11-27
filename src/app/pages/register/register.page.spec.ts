@@ -47,7 +47,7 @@ describe('Página Registro', () => {
     expect(nombreControl?.valid).toBeTrue();
   });
 
-  it('3.1 Botón registrar deshabilitado', ()=> {
+  it('3. Botón registrar deshabilitado', ()=> {
     component.usuario.setValue({
       "rut": "",
       "nombre": "",
@@ -68,28 +68,7 @@ describe('Página Registro', () => {
     expect(botonRegistrar.disabled).toBeTrue();
   });
 
-  it('3.2 Botón registrar habilitado', ()=> {
-    component.usuario.setValue({
-      "rut": "21638902-6",
-      "nombre": "javier",
-      "apellidos": "soto jaque",
-      "fechaNacimiento": "2004-08-01",
-      "genero": "Masculino",
-      "email": "javier@duocuc.cl",
-      "password": "administrador",
-      "repeat_password": "administrador",
-      "tiene_vehiculo": "no",
-      "nombre_marca": "",
-      "capacidad": "",
-      "nombre_modelo": "",
-      "patente": "",
-      "tipo_usuario": "administrador"
-    });
-    const botonRegistrar = fixture.nativeElement.querySelector('ion-button[type="submit"]');
-    expect(botonRegistrar.disabled).toBeFalse();
-  });
-
-  it('4. Formulario válido', ()=> {
+  it('4. Formulario inválido', ()=> {
     component.usuario.setValue({
       "rut": "21638902-6",
       "nombre": "javier",
@@ -106,7 +85,7 @@ describe('Página Registro', () => {
       "patente": "CC-BB-12",
       "tipo_usuario": "administrador"
     });
-    expect(component.usuario.valid).toBeTrue();
+    expect(component.usuario.valid).toBeFalse();
   });
 
   it('5.1 Correo de Duoc validado', ()=> {

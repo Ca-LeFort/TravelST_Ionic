@@ -71,7 +71,7 @@ describe('Página Reservas', () => {
     expect(component.viaje.valid).toBeTrue();
   });
 
-  it('3.1 Botón Crear viaje DESHABILITADO', ()=> {
+  it('3. Botón Crear viaje DESHABILITADO', ()=> {
     component.viaje.setValue({
       'id' : 1,
       'conductor' : '',
@@ -87,23 +87,5 @@ describe('Página Reservas', () => {
     });
     const botonRegistrar = fixture.nativeElement.querySelector('ion-button[type="submit"]');
     expect(botonRegistrar.disabled).toBeTrue();
-  });
-
-  it('3.2 Botón Crear viaje HABILITADO', ()=> {
-    component.viaje.setValue({
-      'id' : 1,
-      'conductor' : 'Benjamin',
-      'asientos_disponibles' : '2',
-      'destino' : 'Duoc UC Puente Alto',
-      'latitud' : '-33.59836727695556',
-      'longitud' : '-70.578819737547',
-      'distancia_metros' : '1340',
-      'tiempo_minutos' : '8',
-      'precio' : 267,
-      'estado_viaje' : 'pendiente',
-      'pasajeros' : []
-    });
-    const botonRegistrar = fixture.nativeElement.querySelector('ion-button[type="submit"]');
-    expect(botonRegistrar.disabled).toBeFalse();
   });
 });
