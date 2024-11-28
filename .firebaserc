@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "travelst-e4d8f"
-  }
+    "default": "travelst-e4d8f",
+    "travelst": "travelst-e4d8f"
+  },
+  "targets": {},
+  "etags": {}
 }

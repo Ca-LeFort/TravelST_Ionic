@@ -29,6 +29,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
   direccion: string = "";
   distancia_metros: number = 0;
   tiempo_minutos: number = 0;
+  hora_comienzo: string = "";
   precio: number = 0;
   pesoCLP: number = 0;
 
@@ -41,6 +42,7 @@ export class ReservasPage implements OnInit, AfterViewInit {
     longitud: new FormControl('', [Validators.required]),
     distancia_metros: new FormControl('', [Validators.required]),
     tiempo_minutos: new FormControl('', [Validators.required]),
+    hora_comienzo: new FormControl('', [Validators.required]),
     precio: new FormControl(),
     estado_viaje: new FormControl('disponible'),
     pasajeros: new FormControl([])
@@ -139,6 +141,9 @@ export class ReservasPage implements OnInit, AfterViewInit {
             this.latitud = e.geocode.properties['lat'];
             this.longitud = e.geocode.properties['lon'];
             this.direccion = e.geocode.properties['display_name'];
+
+            this.viaje.controls.latitud.setValue(this.latitud.toString());
+            this.viaje.controls.longitud.setValue(this.longitud.toString());
 
             if (this.map) {
                 L.Routing.control({

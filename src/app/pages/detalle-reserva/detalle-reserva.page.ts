@@ -24,6 +24,7 @@ export class DetalleReservaPage implements OnInit {
   longitud_destino: number = 0;
   distancia_metros = 0;
   tiempo_minutos = 0;
+  hora_comienzo = "";
   precio = 0;
 
   constructor(private viajeService: ViajeService, private activatedRoute: ActivatedRoute, private alertController: AlertController, private fireService:FireService) {}
@@ -38,13 +39,15 @@ export class DetalleReservaPage implements OnInit {
         this.conductor = viaje.conductor || '';
         this.asientos_disponibles = viaje.asientos_disponibles || 0;
         this.destino = viaje.destino;
-        this.latitud_destino = viaje.latitud || 0;
-        this.longitud_destino = viaje.longitud || 0;
+        this.latitud_destino = parseFloat(viaje.latitud) || 0;
+        this.longitud_destino = parseFloat(viaje.longitud) || 0;
         this.distancia_metros = viaje.distancia_metros;
         this.tiempo_minutos = viaje.tiempo_minutos;
+        this.hora_comienzo = viaje.hora_comienzo || '';
         this.precio = viaje.precio
       }
     });
+    console.log(this.fireService)
   }
 
   initMap(){
