@@ -8,6 +8,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { FireService } from 'src/app/services/fire.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ViajeService } from 'src/app/services/viaje.service';
+import { firstValueFrom } from 'rxjs'; // Asegúrate de importar firstValueFrom
+
 
 @Component({
   selector: 'app-reservas',
@@ -213,42 +215,48 @@ async reservarViaje(viaje: any) {
         role: 'confirm',
         handler: async () => {
           const usuario = JSON.parse(localStorage.getItem("usuario") || '{}');
-          const viajes = await this.viajeService.getViajes();
-          
-          // Verificar si el usuario ya tiene una reserva activa
-          const viajeReservado = viajes.some((v: any) => 
-            v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut) 
-          );
 
-          if (viajeReservado) {
-            await this.presentAlert('Error!', 'Ya has tomado un viaje, no puedes reservar otro');
-            return;
-          }
+          try {
+            // Convertir el Observable a una Promesa para obtener el Array de viajes
+            const viajes = await firstValueFrom(this.fireService.getViajes());
 
-          if (viaje.asientos_disponibles > 0) {
-            viaje.asientos_disponibles -= 1;
+            // Verificar si el usuario ya tiene una reserva activa
+            const viajeReservado = viajes.some((v: any) =>
+              v.pasajeros.some((pasajero: any) => pasajero.rut === usuario.rut)
+            );
 
-            if (viaje.asientos_disponibles === 0) {
-              viaje.estado_viaje = 'en preparación';
+            if (viajeReservado) {
+              await this.presentAlert('Error!', 'Ya has tomado un viaje, no puedes reservar otro');
+              return;
             }
 
-            viaje.pasajeros.push(usuario);
+            if (viaje.asientos_disponibles > 0) {
+              viaje.asientos_disponibles -= 1;
 
-            try {
-              // Aquí se intenta actualizar el viaje, si no hay errores se asume que se actualizó correctamente
-              await this.fireService.updateViaje(viaje);  // No esperamos un valor, solo esperamos que se complete correctamente
-              await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
+              if (viaje.asientos_disponibles === 0) {
+                viaje.estado_viaje = 'en preparación';
+              }
 
-              // Registrar el viaje en el historial
-              const historial = await this.fireService.cargarHistorial(usuario.rut);
-              historial.push(viaje); // Agregar el viaje al historial
-              await this.fireService.guardarHistorial(usuario.rut, historial); // Guardar el historial actualizado
+              viaje.pasajeros.push(usuario);
 
-            } catch (error) {
-              console.log('Error al actualizar el viaje:', error);
+              try {
+                // Aquí se intenta actualizar el viaje, si no hay errores se asume que se actualizó correctamente
+                await this.fireService.updateViaje(viaje);
+                await this.presentAlert('Reservado', 'El viaje ha sido reservado con éxito!');
+
+                // Registrar el viaje en el historial
+                const historial = await this.fireService.cargarHistorial(usuario.rut);
+                historial.push(viaje); // Agregar el viaje al historial
+                await this.fireService.guardarHistorial(usuario.rut, historial); // Guardar el historial actualizado
+
+              } catch (error) {
+                console.log('Error al actualizar el viaje:', error);
+              }
+            } else {
+              console.log('No hay asientos disponibles');
             }
-          } else {
-            console.log('No hay asientos disponibles');
+          } catch (error) {
+            console.error('Error al obtener los viajes:', error);
           }
         }
       }

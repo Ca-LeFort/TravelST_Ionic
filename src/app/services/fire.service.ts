@@ -18,7 +18,7 @@ export class FireService {
       fechaNacimiento: "2004-08-01",
       apellidos: "soto jaque",
       genero: "Masculino",
-      email: "javier@duocuc.cl",
+      email: "ja.sotoj@duocuc.cl",
       password: "2468Pr..",
       repeat_password: "2468Pr..",
       tiene_vehiculo: "si",
