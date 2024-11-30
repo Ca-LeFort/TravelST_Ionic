@@ -53,6 +53,17 @@ TravelST se desarrollará utilizando las siguientes tecnologías:
 - **GitHub**: Para el control de versiones y colaboración en el desarrollo.
 - **JSON**: Para el intercambio de datos entre el cliente y el servidor.
 - **Visual Studio Code**: Como entorno de desarrollo integrado.
+- **Firebase**: Como plataforma para el desarrollo de aplicaciones web y Mobile
+
+## ⚙️ APIs y configuraciones implementadas
+1. **Firebase**:
+   - **Fireauth**: Para realizar inicio de sesión de la aplicación
+   - **Firestore**: Para almacenamiento de usuarios y viajes registrados
+   - **Hosting**: Para ver la página web alojado: https://travelst-e4d8f.web.app/
+2. **APIs consumidas**:
+   - **Mindicador**: Valor dólar a peso chileno, implementado en el precio de registro de viajes.
+   - **PokeAPI**: Imágenes de Pokémon, implementado para fotos de perfiles de forma aleatoria
+3. **Código QR**: Código QR implementado en la página de usuarios, lo cual el código tiene información del RUT del usuario logueado
 
 ## ⚙️ Instalación del proyecto
 
@@ -70,6 +81,9 @@ npm install @types/leaflet
 npm install leaflet-control-geocoder
 npm install leaflet-routing-machine
 npm install @types/leaflet-routing-machine
+npm install angularx-qrcode
+npm install firebase
+npm install @angular/fire
 ```
 
 3. **Ejecutar Proyecto**:
