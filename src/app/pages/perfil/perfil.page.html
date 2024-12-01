@@ -4,7 +4,15 @@
         <p id="nombre_usuario">¡Bienvenido, {{usuario.nombre | titlecase}}!</p>
         <div class="avatar-container">
           <ion-avatar>
-            <img [src]="selectedImage ? selectedImage : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Avatar" />
+            <!-- Mostrar la imagen solo si la propiedad usuario.image está definida -->
+            <div *ngIf="usuario.image">
+              <img [src]="usuario.image" alt="Imagen de Pokémon" />
+            </div>
+
+            <!-- Si no hay imagen disponible -->
+            <div *ngIf="!usuario.image">
+              <p>No hay imagen disponible</p>
+            </div>
           </ion-avatar>
         </div>
         

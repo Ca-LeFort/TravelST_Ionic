@@ -27,6 +27,9 @@ export class PerfilPage implements OnInit {
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
     this.selectedImage = this.usuario?.image || null;
+  
+    // Llamada para agregar la imagen del Pokémon automáticamente
+    this.addRandomPokemonImage();  // Carga la imagen de Pokémon aleatoria al iniciar
     this.mostrarHistorial(); // Carga el historial al iniciar
   }
 
@@ -46,6 +49,31 @@ export class PerfilPage implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
+  addRandomPokemonImage() {
+    const randomPokemonId = Math.floor(Math.random() * 1000) + 1;  // Generar un número aleatorio entre 1 y 1000 (PokeAPI tiene más de 1000 Pokémon)
+    
+    console.log(`Obteniendo imagen del Pokémon con ID: ${randomPokemonId}`);
+  
+    // Realizar la petición a la API de PokeAPI
+    fetch(`https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`)
+      .then(response => response.json())
+      .then(data => {
+        const pokemonImageUrl = data.sprites.front_default; // Obtener la imagen del Pokémon
+        console.log(`Imagen del Pokémon: ${pokemonImageUrl}`);  // Verificar que la URL de la imagen sea válida
+  
+        if (pokemonImageUrl) {
+          this.usuario.image = pokemonImageUrl;  // Asignar la URL de la imagen al objeto usuario
+          localStorage.setItem("usuario", JSON.stringify(this.usuario));  // Guardar en localStorage
+        } else {
+          console.error('No se encontró una imagen para este Pokémon');
+        }
+      })
+      .catch(error => {
+        console.error('Error al obtener la imagen del Pokémon:', error);
+      });
+  }
+
 
   editProfile() {
     this.isEditing = true;
